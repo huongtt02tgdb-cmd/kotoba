@@ -130,7 +130,8 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .mc.bad{background:color-mix(in srgb,var(--bad) 25%,var(--card));border-color:var(--bad);animation:sh .3s}
 @keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media(prefers-reduced-motion:reduce){.mc.bad{animation:none}}
-.got .ab+.ab{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.ex{margin-top:10px;padding:12px 14px;border-radius:10px;background:color-mix(in srgb,var(--acc) 16%,transparent);font-size:15px;line-height:1.65;text-align:left}.ex .jp{font-size:inherit}.ex div+div{margin-top:6px}.ex b{color:var(--mute)}.btn:disabled{opacity:.5;cursor:not-allowed}.got .ansg b{font-size:18px}
+.got .ab+.ab{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.ex{margin-top:10px;padding:12px 14px;border-radius:10px;background:color-mix(in srgb,var(--acc) 16%,transparent);font-size:15px;line-height:1.65;text-align:left}.ex .jp{font-size:inherit}.ex div+div{margin-top:6px}.ex b{color:var(--mute)}.vh{position:absolute;opacity:0;width:1px;height:1px;overflow:hidden}
+.btn:disabled{opacity:.5;cursor:not-allowed}.got .ansg b{font-size:18px}
 .spk{background:none;border:2px solid var(--line);border-radius:50%;width:34px;height:34px;padding:0;font-size:16px;line-height:1;flex:none}.spk:hover{border-color:var(--pri)}.ansg .spk{margin-top:16px}
 .bigs{width:88px;height:88px;font-size:40px;margin:4px auto 8px;display:block}
 .tcfg{border:2px dashed var(--line);border-radius:12px;padding:12px;margin-bottom:12px}.tcfg .chk{margin:6px 0}.tcfg select{margin:6px 0 10px}
@@ -226,27 +227,44 @@ async function unzip(b64){
   w.write(u);w.close();
   return new TextDecoder().decode(await new Response(ds.readable).arrayBuffer());
 }
-async function bkMake(slim){
-  const list=slim===true?words.map(({d,h,k,m})=>({d,h,k,m})):words;
-  const json=JSON.stringify({kotoba:1,words:list});
-  let out=json;
-  try{if(window.CompressionStream)out='K1:'+await zip(json)}catch(e){}
-  $('#bk').value=out;
-  $('#bkm').textContent=`Đã tạo mã${slim===true?' gọn (chỉ từ vựng cơ bản)':' đầy đủ'} cho ${words.length} từ, dài ${out.length.toLocaleString('vi-VN')} ký tự. Bấm "Copy mã" rồi dán sang trình duyệt khác.`;
+async function bkCode(){
+  const json=JSON.stringify({kotoba:1,words});
+  try{if(window.CompressionStream)return'K1:'+await zip(json)}catch(e){}
+  return json;
+}
+async function bkMake(){
+  const out=await bkCode();$('#bk').value=out;
+  $('#bkm').textContent=`Đã tạo mã cho ${words.length} từ, dài ${out.length.toLocaleString('vi-VN')} ký tự. Bấm "Copy mã" rồi dán sang trình duyệt khác.`;
+}
+async function bkDownload(){
+  const m=$('#bkm');
+  if(!words.length)return m.textContent='Chưa có từ nào để sao lưu.';
+  const code=await bkCode(),d=new Date().toISOString().slice(0,10),name=`kotoba-sao-luu-${d}.txt`;
+  const text=`KOTOBA - FILE SAO LƯU DỮ LIỆU\nSố từ: ${words.length} | Ngày tạo: ${d}\nKhông sửa nội dung bên dưới. Trong app, chọn "Khôi phục từ file" và chọn file này.\n----------------------------------------\n${code}\n`;
+  let dl=null;try{dl=await window.claude?.use?.('downloads')}catch(e){}
+  try{
+    if(dl){await dl.save({filename:name,data:text});m.textContent=`Đã tạo file ${name} (${words.length} từ).`}
+    else{
+      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=name;
+      document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+      m.textContent=`Đã tạo file ${name} (${words.length} từ). Nếu không thấy file tải về, hãy dùng mã văn bản bên dưới.`;
+    }
+  }catch(e){m.textContent=e&&e.code==='declined'?'Bạn đã hủy việc tải file.':'Không tải được file. Hãy dùng mã văn bản bên dưới.'}
 }
 async function bkCopy(){
   const t=$('#bk');if(!t.value)await bkMake();t.select();let ok=false;
   try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(e2){}}
   $('#bkm').textContent=ok?'Đã copy. Mở app ở trình duyệt khác và dán vào ô này, rồi bấm "Khôi phục từ mã".':'Chưa tự copy được: mã đang được chọn, hãy nhấn Ctrl+C.';
 }
-async function bkRestore(){
+async function restoreText(t){
   const m=$('#bkm');let data;
   try{
-    let t=$('#bk').value.trim();
-    if(t.startsWith('K1:'))t=await unzip(t.slice(3));
+    t=t.trim();const k=t.match(/K1:[A-Za-z0-9+\/=]+/);
+    if(k)t=await unzip(k[0].slice(3));
+    else{const i=t.indexOf('{"kotoba"');if(i>=0)t=t.slice(i)}
     data=JSON.parse(t);
-  }catch(e){return m.textContent='Mã không hợp lệ. Hãy dán đúng toàn bộ mã sao lưu (không thiếu đầu hoặc đuôi).'}
-  if(!data||!Array.isArray(data.words))return m.textContent='Mã không hợp lệ.';
+  }catch(e){return m.textContent='Không đọc được dữ liệu. Hãy chọn đúng file sao lưu, hoặc dán đủ toàn bộ mã (không thiếu đầu hoặc đuôi).'}
+  if(!data||!Array.isArray(data.words))return m.textContent='Dữ liệu không hợp lệ.';
   const mp=new Map(words.map(w=>[wk(w),w]));let add=0,upd=0;
   data.words.forEach(w=>{
     if(!w||!w.m||!(w.h||w.k))return;
@@ -257,6 +275,8 @@ async function bkRestore(){
   if(!sel.size)days().forEach(x=>sel.add(x[0]));
   msg=`Đã khôi phục ${add} từ mới${upd?`, bổ sung thông tin cho ${upd} từ`:''}.`;save();render();
 }
+const bkRestore=()=>restoreText($('#bk').value);
+async function bkFile(fl){const f=fl&&fl[0];if(!f)return;let t;try{t=await f.text()}catch(e){return $('#bkm').textContent='Không đọc được file.'}restoreText(t)}
 function clearAll(){if(confirm('Xóa toàn bộ từ vựng đã nhập?')){words=[];sel=new Set();save();msg='';render()}}
 function tog(i){const d=DL[i];sel.has(d)?sel.delete(d):sel.add(d);save();render()}
 function selAll(){const all=DL.length&&DL.every(d=>sel.has(d));sel=new Set(all?[]:DL);save();render()}
@@ -494,10 +514,12 @@ ${chosen.length?`<div class="panel"><h2>Các từ đã chọn (${chosen.length})
 <details><summary>Thêm nhiều từ cùng lúc</summary><textarea id="m-bulk" rows="6" placeholder="がくせい | 学生 | học sinh&#10;ほん | 本 | sách&#10;ありがとう | | cảm ơn"></textarea><button class="btn" onclick="addBulk()">Thêm tất cả vào ngày trên</button>
 <p class="hint">Mỗi dòng một từ: <b>Hiragana | Kanji | Nghĩa</b> (từ không có Kanji thì để trống ở giữa). Dán thẳng từ Excel cũng được (các cột ngăn bằng Tab). Muốn mỗi dòng một ngày riêng, thêm ngày ở đầu dòng: <b>Ngày | Hiragana | Kanji | Nghĩa</b>.</p></details>
 <div id="mmsg" class="hint" role="status"></div>
-<details><summary>Sao lưu / chuyển dữ liệu sang trình duyệt khác</summary>
-<p class="hint">Bấm "Tạo mã đầy đủ" (kèm cấu tạo, gợi nhớ, ví dụ) hoặc "Tạo mã gọn" (chỉ ngày, hiragana, kanji, nghĩa), copy mã trong ô, rồi mở app ở trình duyệt hoặc máy khác, dán vào ô này và bấm "Khôi phục từ mã". Dữ liệu chỉ lưu riêng trong từng trình duyệt nên nên sao lưu định kỳ.</p>
+<details><summary>Sao lưu / chuyển dữ liệu sang trình duyệt hoặc máy khác</summary>
+<p class="hint">Dữ liệu chỉ lưu riêng trong từng trình duyệt, nên hãy tải file sao lưu định kỳ. Muốn chuyển sang trình duyệt hoặc máy khác: tải file ở đây, rồi mở app ở nơi mới và chọn "Khôi phục từ file".</p>
+<div class="row"><button class="btn" onclick="bkDownload()">⬇ Tải file sao lưu (.txt)</button><label class="btn" style="cursor:pointer">⬆ Khôi phục từ file…<input class="vh" type="file" accept=".txt,.json,text/plain" onchange="bkFile(this.files)"></label></div>
+<details style="margin-top:10px"><summary style="font-weight:500;color:var(--mute)">Không tải được file? Dùng mã văn bản</summary>
 <textarea id="bk" rows="4" aria-label="Mã sao lưu" placeholder="Mã sao lưu hiện ở đây. Hoặc dán mã sao lưu vào đây để khôi phục."></textarea>
-<div class="row"><button class="btn" onclick="bkMake()">Tạo mã đầy đủ</button><button class="btn" onclick="bkMake(true)">Tạo mã gọn (chỉ từ vựng)</button><button class="btn" onclick="bkCopy()">Copy mã</button><button class="btn" onclick="bkRestore()">Khôi phục từ mã</button></div>
+<div class="row"><button class="btn" onclick="bkMake()">Tạo mã sao lưu</button><button class="btn" onclick="bkCopy()">Copy mã</button><button class="btn" onclick="bkRestore()">Khôi phục từ mã</button></div></details>
 <div id="bkm" class="hint" role="status"></div></details>
 <div class="row" style="margin-top:10px">${words.length?`<button class="btn" onclick="clearAll()">Xóa tất cả (${words.length} từ)</button>`:''}</div></div>
 </div>
