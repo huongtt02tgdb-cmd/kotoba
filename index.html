@@ -214,15 +214,38 @@ async function imp(fl){
   msg=add||upd?`Đã thêm ${add} từ${upd?`, bổ sung thông tin cho ${upd} từ`:''}.`:'Không tìm thấy từ mới. Kiểm tra các cột Ngày | Hiragana | Kanji | Nghĩa.';
   save();render();
 }
-function bkMake(){$('#bk').value=JSON.stringify({kotoba:1,words});$('#bkm').textContent=`Đã tạo mã cho ${words.length} từ. Bấm "Copy mã" rồi dán sang trình duyệt khác.`}
+async function zip(str){
+  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();
+  w.write(new TextEncoder().encode(str));w.close();
+  const u=new Uint8Array(await new Response(cs.readable).arrayBuffer());let b='';
+  for(let i=0;i<u.length;i+=8192)b+=String.fromCharCode.apply(null,u.subarray(i,i+8192));
+  return btoa(b);
+}
+async function unzip(b64){
+  const u=Uint8Array.from(atob(b64),c=>c.charCodeAt(0)),ds=new DecompressionStream('deflate-raw'),w=ds.writable.getWriter();
+  w.write(u);w.close();
+  return new TextDecoder().decode(await new Response(ds.readable).arrayBuffer());
+}
+async function bkMake(slim){
+  const list=slim===true?words.map(({d,h,k,m})=>({d,h,k,m})):words;
+  const json=JSON.stringify({kotoba:1,words:list});
+  let out=json;
+  try{if(window.CompressionStream)out='K1:'+await zip(json)}catch(e){}
+  $('#bk').value=out;
+  $('#bkm').textContent=`Đã tạo mã${slim===true?' gọn (chỉ từ vựng cơ bản)':' đầy đủ'} cho ${words.length} từ, dài ${out.length.toLocaleString('vi-VN')} ký tự. Bấm "Copy mã" rồi dán sang trình duyệt khác.`;
+}
 async function bkCopy(){
-  const t=$('#bk');if(!t.value)bkMake();t.select();let ok=false;
+  const t=$('#bk');if(!t.value)await bkMake();t.select();let ok=false;
   try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(e2){}}
   $('#bkm').textContent=ok?'Đã copy. Mở app ở trình duyệt khác và dán vào ô này, rồi bấm "Khôi phục từ mã".':'Chưa tự copy được: mã đang được chọn, hãy nhấn Ctrl+C.';
 }
-function bkRestore(){
+async function bkRestore(){
   const m=$('#bkm');let data;
-  try{data=JSON.parse($('#bk').value.trim())}catch(e){return m.textContent='Mã không hợp lệ. Hãy dán đúng toàn bộ mã sao lưu.'}
+  try{
+    let t=$('#bk').value.trim();
+    if(t.startsWith('K1:'))t=await unzip(t.slice(3));
+    data=JSON.parse(t);
+  }catch(e){return m.textContent='Mã không hợp lệ. Hãy dán đúng toàn bộ mã sao lưu (không thiếu đầu hoặc đuôi).'}
   if(!data||!Array.isArray(data.words))return m.textContent='Mã không hợp lệ.';
   const mp=new Map(words.map(w=>[wk(w),w]));let add=0,upd=0;
   data.words.forEach(w=>{
@@ -472,9 +495,9 @@ ${chosen.length?`<div class="panel"><h2>Các từ đã chọn (${chosen.length})
 <p class="hint">Mỗi dòng một từ: <b>Hiragana | Kanji | Nghĩa</b> (từ không có Kanji thì để trống ở giữa). Dán thẳng từ Excel cũng được (các cột ngăn bằng Tab). Muốn mỗi dòng một ngày riêng, thêm ngày ở đầu dòng: <b>Ngày | Hiragana | Kanji | Nghĩa</b>.</p></details>
 <div id="mmsg" class="hint" role="status"></div>
 <details><summary>Sao lưu / chuyển dữ liệu sang trình duyệt khác</summary>
-<p class="hint">Bấm "Tạo mã sao lưu", copy mã trong ô, rồi mở app ở trình duyệt hoặc máy khác, dán vào ô này và bấm "Khôi phục từ mã". Dữ liệu chỉ lưu riêng trong từng trình duyệt nên nên sao lưu định kỳ.</p>
+<p class="hint">Bấm "Tạo mã đầy đủ" (kèm cấu tạo, gợi nhớ, ví dụ) hoặc "Tạo mã gọn" (chỉ ngày, hiragana, kanji, nghĩa), copy mã trong ô, rồi mở app ở trình duyệt hoặc máy khác, dán vào ô này và bấm "Khôi phục từ mã". Dữ liệu chỉ lưu riêng trong từng trình duyệt nên nên sao lưu định kỳ.</p>
 <textarea id="bk" rows="4" aria-label="Mã sao lưu" placeholder="Mã sao lưu hiện ở đây. Hoặc dán mã sao lưu vào đây để khôi phục."></textarea>
-<div class="row"><button class="btn" onclick="bkMake()">Tạo mã sao lưu</button><button class="btn" onclick="bkCopy()">Copy mã</button><button class="btn" onclick="bkRestore()">Khôi phục từ mã</button></div>
+<div class="row"><button class="btn" onclick="bkMake()">Tạo mã đầy đủ</button><button class="btn" onclick="bkMake(true)">Tạo mã gọn (chỉ từ vựng)</button><button class="btn" onclick="bkCopy()">Copy mã</button><button class="btn" onclick="bkRestore()">Khôi phục từ mã</button></div>
 <div id="bkm" class="hint" role="status"></div></details>
 <div class="row" style="margin-top:10px">${words.length?`<button class="btn" onclick="clearAll()">Xóa tất cả (${words.length} từ)</button>`:''}</div></div>
 </div>
