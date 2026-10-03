@@ -180,6 +180,13 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.ph h2{margin:0 0 10px}.ps{font-weight:700;color:var(--mute);font-size:14px}
 .gres.good{border-color:var(--ok)}
 .btnrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.qwrap.gw{max-width:none}
+.gl{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:stretch}
+@media(min-width:1000px){.gl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.gl .pq{margin-bottom:0}.gl .rv{margin-bottom:0}
+.gl .opts{grid-template-columns:minmax(0,1fr)}
+.gw>.bar,.gw>.gtitle,.gw>.pri,.gw>.msg{max-width:none}
+.gw>.pri{margin-top:16px}
 </style>
 </head>
 <body>
@@ -740,7 +747,7 @@ function gcard(i){
 }
 function gpaper(){
   const n=G.list.length,a=G.list.filter((_,i)=>gDone(i)).length;
-  return`<div class="qwrap"><div class="gtitle"><small>Đang làm</small><h2>${esc(G.title)}</h2></div><div class="bar sticky"><button class="ghost" onclick="gquit()">✕ Thoát</button><div class="prog"><i id="gpb" style="width:${a/n*100}%"></i></div><b id="gpc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="gSubmit()">Nộp bài</button></div>${G.list.map((_,i)=>gcard(i)).join('')}<div id="gwm" class="msg" hidden role="status"></div><button class="pri" onclick="gSubmit()">Nộp bài</button></div>`;
+  return`<div class="qwrap gw"><div class="gtitle"><small>Đang làm</small><h2>${esc(G.title)}</h2></div><div class="bar sticky"><button class="ghost" onclick="gquit()">✕ Thoát</button><div class="prog"><i id="gpb" style="width:${a/n*100}%"></i></div><b id="gpc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="gSubmit()">Nộp bài</button></div><div class="gl">${G.list.map((_,i)=>gcard(i)).join('')}</div><div id="gwm" class="msg" hidden role="status"></div><button class="pri" onclick="gSubmit()">Nộp bài</button></div>`;
 }
 function gOK(q,a){
   if(q.t==='mc'||q.t==='lmc'||q.t==='tf')return a===q.a;
@@ -781,9 +788,9 @@ function gresult(){
     const key=gKey(q),audio=q.say||((q.t==='fill'||q.t==='order')?key:'');
     return`<div class="rv ${o?'ok':'no'}"><b>${i+1}. ${SK[q.s]} · Bài ${q.l}.${q.g} ${o?'✓ Đúng':'✗ Sai'}</b>${q.c?`<div class="jp" style="white-space:pre-line">${esc(q.c)}</div>`:''}<div>${esc(q.q)}</div>${q.say?`<div>♪ ${spk(q.say)} <span class="jp">${esc(q.say)}</span></div>`:''}<div>Bạn trả lời: <span class="jp">${esc(gYou(q,a))}</span></div><div>Đáp án: <b class="jp">${esc(key)}</b> ${q.say?'':spk(audio)}</div><div class="hint" style="margin-top:4px">${esc(q.x)}</div></div>`}).join('');
   const cur=G.key?gSetBy(G.key):null,nx=cur?gSets(cur.l).find(s=>s.no===cur.no+1):null;
-  return`<div class="qwrap"><div class="q gres ${pct>=80?'good':''}"><small>${esc(G.title)}</small><div class="stat">${ok}/${n}</div><p>${pct}% đúng · điểm ${(ok/n*10).toFixed(1)}/10</p>${G.key?'<p class="st ok" style="display:inline-block">✓ Đã đánh dấu hoàn thành bài luyện tập này</p>':''}<div class="chips" style="justify-content:center">${bySk}</div><div class="chips" style="justify-content:center;margin-top:8px">${byPt}</div></div>
+  return`<div class="qwrap gw"><div class="q gres ${pct>=80?'good':''}"><small>${esc(G.title)}</small><div class="stat">${ok}/${n}</div><p>${pct}% đúng · điểm ${(ok/n*10).toFixed(1)}/10</p>${G.key?'<p class="st ok" style="display:inline-block">✓ Đã đánh dấu hoàn thành bài luyện tập này</p>':''}<div class="chips" style="justify-content:center">${bySk}</div><div class="chips" style="justify-content:center;margin-top:8px">${byPt}</div></div>
 <div class="btnrow">${ok<n?`<button class="pri" onclick="gStart(G.log.filter(x=>!x.ok).map(x=>x.q),null,G.title+' (câu sai)')">Làm lại ${n-ok} câu sai</button>`:''}${nx?`<button class="${ok<n?'btn':'pri'}" onclick="gStartSet('${nx.key}')">Bài luyện tập tiếp theo →</button>`:''}${G.key?`<button class="btn" onclick="gStartSet('${G.key}')">Làm lại bài này</button>`:''}<button class="btn" onclick="gquit()">Về trang ngữ pháp</button></div>
-<div class="panel"><h2>Xem lại bài (${n} câu)</h2>${review}</div></div>`;
+<div class="panel"><h2>Xem lại bài (${n} câu)</h2><div class="gl">${review}</div></div></div>`;
 }
 const gui=()=>G.fin?gresult():gpaper();
 function render(){
