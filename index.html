@@ -187,6 +187,11 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .gl .opts{grid-template-columns:minmax(0,1fr)}
 .gw>.bar,.gw>.gtitle,.gw>.pri,.gw>.msg{max-width:none}
 .gw>.pri{margin-top:16px}
+.opt{display:flex;align-items:center;gap:12px}
+.q .qpill{display:inline-block;background:color-mix(in srgb,var(--pri) 12%,var(--card));border:1.5px solid color-mix(in srgb,var(--pri) 45%,var(--line));border-radius:999px;padding:3px 14px;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:12px}
+.q .bigs{display:inline-flex;align-items:center;gap:8px;width:auto;height:52px;border-radius:999px;padding:0 24px;font-size:20px;font-weight:700;margin:2px 0 8px;background:color-mix(in srgb,var(--pri) 12%,var(--card));border-color:var(--pri)}
+.q .bigs span{font-size:15px}
+.askrow{display:flex;align-items:center;gap:12px;margin:4px 0 14px}.askrow .big{font-size:clamp(28px,4vw,40px)}
 </style>
 </head>
 <body>
@@ -504,7 +509,7 @@ ${Q.done?`<div class="fb ok" style="margin-top:16px"><b>Đã ghép xong vòng ${
 ${Q.got.length?`<div class="panel got" style="margin-top:16px"><h2>Đã ghép đúng</h2>${Q.got.map(ansb).join('')}</div>`:''}</div>`;
 }
 const answered=()=>Object.values(Q.ans).filter(v=>v===true||v===false||String(v).trim()!=='').length;
-function updProg(){const a=answered(),n=Q.list.length;$('#pc').textContent=a+'/'+n;$('#pb').style.width=a/n*100+'%';$('#pn').textContent=a}
+function updProg(){Q.list.forEach((_,i)=>{const e=$('#q'+i);if(e){const v=Q.ans[i];e.classList.toggle('done',v===true||v===false||String(v??'').trim()!=='')}});const a=answered(),n=Q.list.length;$('#pc').textContent=a+'/'+n;$('#pb').style.width=a/n*100+'%';$('#pn').textContent=a}
 function pickP(i,j){Q.ans[i]=Q.list[i].opts[j];document.querySelectorAll('#q'+i+' .opt').forEach((b,k)=>b.classList.toggle('sel',k===j));updProg()}
 function tfP(i,v){Q.ans[i]=v;document.querySelectorAll('#q'+i+' .tfb').forEach((b,k)=>b.classList.toggle('sel',(k===0)===v));updProg()}
 function typeP(i,v){Q.ans[i]=v;updProg()}
@@ -528,13 +533,14 @@ function paper(){
   const n=Q.list.length,a=answered();
   const items=Q.list.map((q,i)=>{
     const md=q.type,v=Q.ans[i];let body;
-    if(md==='mc')body=`<div class="opts">${q.opts.map((o,j)=>`<button class="opt jp ${v===o?'sel':''}" onclick="pickP(${i},${j})">${esc(o)}</button>`).join('')}</div>`;
-    else if(md==='tf')body=`<div class="tfans jp" style="margin:0;border:0;padding:0;text-align:center">${esc(q.shown)}</div><div class="two" style="margin-top:12px"><button class="btn tfb ${v===true?'sel':''}" onclick="tfP(${i},true)">Đúng</button><button class="btn tfb ${v===false?'sel':''}" onclick="tfP(${i},false)">Sai</button></div>`;
+    if(md==='mc')body=`<div class="opts">${q.opts.map((o,j)=>`<button class="opt jp ${v===o?'sel':''}" onclick="pickP(${i},${j})"><b class="lt">${'ABCD'[j]||j+1}</b><span>${esc(o)}</span></button>`).join('')}</div>`;
+    else if(md==='tf')body=`<div class="gq">Đáp án này có đúng không?</div><div class="gst jp">${esc(q.shown)}</div><div class="two"><button class="btn tfb ${v===true?'sel':''}" onclick="tfP(${i},true)">✓ Đúng</button><button class="btn tfb ${v===false?'sel':''}" onclick="tfP(${i},false)">✗ Sai</button></div>`;
     else body=`<input class="ty jp" autocomplete="off" value="${esc(v||'')}" placeholder="Gõ ${F[q.t]}" aria-label="Câu ${i+1}" oninput="typeP(${i},this.value)" style="margin:0">`;
-    const ask=q.f==='a'?`<button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊</button>`:`<div class="big jp" style="font-size:clamp(28px,5vw,44px)">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}`;
-    return`<section class="q pq" id="q${i}"><small>Câu ${i+1} · ${TL[md]} · ${q.f==='a'?'Nghe':F[q.f]} → ${F[q.t]}</small>${ask}<div class="pbody">${body}</div></section>`;
+    const ask=q.f==='a'?`<button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:`<div class="askrow"><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}</div>`;
+    const dn=v===true||v===false||String(v??'').trim()!=='';
+    return`<section class="q pq ${dn?'done':''}" id="q${i}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${({mc:'nghe',tf:'doc',ty:'viet',ls:'hieu'})[md]}">${TL[md]}</span><span class="qp">${q.f==='a'?'Nghe':F[q.f]} → ${F[q.t]}</span></div>${ask}<div class="pbody">${body}</div></section>`;
   }).join('');
-  return`<div class="qwrap"><div class="bar sticky"><button class="ghost" onclick="quit()">✕ Thoát</button><div class="prog"><i id="pb" style="width:${a/n*100}%"></i></div><b id="pc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="submitTest()">Nộp bài</button></div>${items}
+  return`<div class="qwrap gw"><div class="gtitle"><small>Đang làm</small><h2>Bài kiểm tra từ vựng</h2></div><div class="bar sticky"><button class="ghost" onclick="quit()">✕ Thoát</button><div class="prog"><i id="pb" style="width:${a/n*100}%"></i></div><b id="pc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="submitTest()">Nộp bài</button></div><div class="gl">${items}</div>
 <div id="wm" class="msg" hidden role="status"></div><p class="hint" style="text-align:center">Đã làm <span id="pn">${a}</span>/${n} câu. Đáp án và giải thích sẽ hiện sau khi nộp bài.</p><button class="pri" onclick="submitTest()">Nộp bài</button></div>`;
 }
 function quit(){Q=null;render()}
@@ -590,11 +596,11 @@ function quiz(){
   if(Q.i>=Q.list.length)return result();
   const q=Q.list[Q.i],n=Q.list.length,st=Q.state,ans=q.w[q.t],md=q.type||Q.mode;
   const head=`<div class="bar"><button class="ghost" onclick="quit()">✕ Thoát</button><div class="prog"><i style="width:${Q.i/n*100}%"></i></div><b>${Q.i+1}/${n}</b>${Q.mode!=='fc'?`<span class="pts">${Q.score} đ${Q.streak>1?' · x'+Q.streak:''}</span>`:''}</div>`;
-  const prompt=q.f==='a'?`<div class="q"><small>${Q.mode==='test'?TL[md]+' · ':''}Nghe → viết ${F[q.t]}</small><button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe lại">🔊</button><div class="hint">Bấm để nghe lại</div>`:`<div class="q"><small>${Q.mode==='test'?TL[md]+' · ':''}${F[q.f]} → ${F[q.t]}</small><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}`;
+  const prompt=q.f==='a'?`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}Nghe → viết ${F[q.t]}</small><button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe lại">🔊 <span>Nghe lại</span></button><div class="hint">Bấm để nghe lại</div>`:`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}${F[q.f]} → ${F[q.t]}</small><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}`;
   const fb=st?`<div class="fb ${st.ok?'ok':'no'}"><b>${st.ok?'Chính xác!':'Chưa đúng.'}</b> ${ansb(q.w)}</div><button class="pri" onclick="next()">Tiếp tục (Enter)</button>`:'';
   let b='';
   if(md==='mc'){
-    b=`${prompt}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt jp ${st?(o===ans?'right':o===st.pick?'bad':''):''}" ${st?'disabled':''} onclick="pick(${i})">${esc(o)}</button>`).join('')}</div><div style="margin-top:14px">${fb}</div>`;
+    b=`${prompt}</div><div class="opts">${q.opts.map((o,i)=>`<button class="opt jp ${st?(o===ans?'right':o===st.pick?'bad':''):''}" ${st?'disabled':''} onclick="pick(${i})"><b class="lt">${'ABCD'[i]||i+1}</b><span>${esc(o)}</span></button>`).join('')}</div><div style="margin-top:14px">${fb}</div>`;
   }else if(md==='tf'){
     b=`${prompt}<div class="tfans jp">${esc(q.shown)}</div></div>${st?fb:`<div class="two"><button class="pri ok-b" onclick="tf(true)">Đúng</button><button class="pri no-b" onclick="tf(false)">Sai</button></div>`}`;
   }else{
@@ -606,15 +612,15 @@ function breakdown(){
   return`<div class="chips" style="justify-content:center;margin-top:10px">${Object.keys(TL).map(t=>{const l=Q.log.filter(x=>x.q.type===t);return l.length?`<span class="chip">${TL[t]}<i>${l.filter(x=>x.ok).length}/${l.length}</i></span>`:''}).join('')}</div>`;
 }
 function review(){
-  return`<div class="panel"><h2>Xem lại bài (${Q.log.length} câu)</h2>${Q.log.map(({q,ok,pick},i)=>{
+  return`<div class="panel"><h2>Xem lại bài (${Q.log.length} câu)</h2><div class="gl">${Q.log.map(({q,ok,pick},i)=>{
     const ask=q.f==='a'?`Nghe → viết ${F[q.t]}`:`<span class="jp">${esc(q.w[q.f])}</span> (${F[q.f]} → ${F[q.t]})`;
     const you=q.type==='tf'?(pick===undefined?'(chưa trả lời)':`${pick?'Đúng':'Sai'} (đáp án được đưa ra: ${esc(q.shown)})`):(esc(pick)||'(bỏ trống)');
-    return`<div class="rv ${ok?'ok':'no'}"><b>${i+1}. ${TL[q.type]} ${ok?'✓ Đúng':'✗ Sai'}</b><div>${ask}</div><div>Bạn trả lời: <span class="jp">${you}</span></div>${ansb(q.w)}</div>`}).join('')}</div>`;
+    return`<div class="rv ${ok?'ok':'no'}"><b>${i+1}. ${TL[q.type]} ${ok?'✓ Đúng':'✗ Sai'}</b><div>${ask}</div><div>Bạn trả lời: <span class="jp">${you}</span></div>${ansb(q.w)}</div>`}).join('')}</div></div>`;
 }
 function result(){
   const n=Q.list.length,pct=Math.round(Q.ok/n*100);
-  return`<div class="qwrap"><div class="q"><small>Hoàn thành</small><div class="stat">${Q.ok}/${n}</div><p>${Q.mode==='fc'?`từ ghép đúng ngay lần đầu · ${Q.moves} lượt · ${Q.secs} giây`:`${pct}% đúng · ${Q.mode==='test'?'điểm '+(Q.ok/n*10).toFixed(1)+'/10':Q.score+' điểm'}`}</p>${Q.mode==='test'?breakdown():''}</div>
-<div class="two" style="margin-bottom:16px">${Q.wrong.length?`<button class="pri" onclick="retry()">Ôn lại ${Q.wrong.length} từ sai</button>`:'<button class="pri" onclick="start()">Chơi lại</button>'}<button class="btn" onclick="quit()">Về thư viện</button></div>
+  return`<div class="qwrap gw"><div class="q gres ${pct>=80?'good':''}"><small class="qpill">Hoàn thành</small><div class="stat">${Q.ok}/${n}</div><p>${Q.mode==='fc'?`từ ghép đúng ngay lần đầu · ${Q.moves} lượt · ${Q.secs} giây`:`${pct}% đúng · ${Q.mode==='test'?'điểm '+(Q.ok/n*10).toFixed(1)+'/10':Q.score+' điểm'}`}</p>${Q.mode==='test'?breakdown():''}</div>
+<div class="btnrow">${Q.wrong.length?`<button class="pri" onclick="retry()">Ôn lại ${Q.wrong.length} từ sai</button>`:'<button class="pri" onclick="start()">Chơi lại</button>'}<button class="btn" onclick="quit()">Về thư viện</button></div>
 ${Q.wrong.length&&Q.mode!=='test'?`<div class="panel"><h2>Từ cần ôn thêm</h2><table>${Q.wrong.map(q=>`<tr><td>${full(q.w)}</td></tr>`).join('')}</table></div>`:''}${Q.mode==='test'?review():''}</div>`;
 }
 /* ---------- NGỮ PHÁP ---------- */
