@@ -150,6 +150,36 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .no-b{background:var(--bad);color:#fff}.ok-b{background:var(--ok);color:#fff}
 .stat{font-size:52px;font-weight:900;text-align:center}
+.pq{text-align:left;padding:20px 22px;border-radius:16px}
+.pq.done{border-color:color-mix(in srgb,var(--pri) 50%,var(--line))}
+.qh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.qn{width:30px;height:30px;border-radius:50%;background:var(--pri);color:var(--pri-ink);display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.pq.done .qn{background:var(--ok);color:#fff}
+.qp{color:var(--mute);font-size:13px}
+.sk{display:inline-block;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--ink)}
+.sk-nghe{--c:var(--o1)}.sk-doc{--c:var(--o2)}.sk-viet{--c:var(--o3)}.sk-hieu{--c:var(--o4)}
+.pq .opt{display:flex;align-items:center;gap:12px;font-size:19px;min-height:58px;padding:12px 16px}
+.lt{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:color-mix(in srgb,var(--c) 22%,var(--card));border:2px solid var(--c)}
+.pq .bigs{display:inline-flex;align-items:center;gap:8px;width:auto;height:52px;border-radius:999px;padding:0 24px;font-size:20px;font-weight:700;margin:2px 0 12px;background:color-mix(in srgb,var(--pri) 12%,var(--card));border-color:var(--pri)}
+.pq .bigs span{font-size:15px}
+.pq .tfb{padding:12px;font-size:18px;font-weight:700}
+.gin{background:color-mix(in srgb,var(--pri) 6%,var(--card));border-radius:10px}
+.pq .ty{border-radius:12px;font-size:22px}
+.gtitle{margin:0 0 10px}.gtitle small{color:var(--mute)}.gtitle h2{font-size:21px;margin:2px 0 0}
+.setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.setc{border:2px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--card)}
+.setc.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--card))}
+.sh{display:flex;gap:12px;align-items:center}
+.sno{width:38px;height:38px;border-radius:50%;background:var(--pri);color:var(--pri-ink);display:grid;place-items:center;font-weight:800;font-size:17px;flex:none}
+.setc.done .sno{background:var(--ok);color:#fff}
+.sks{display:flex;gap:6px;flex-wrap:wrap}
+.sf{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-height:26px}
+.st{border-radius:999px;padding:2px 12px;font-size:12px;font-weight:700;background:var(--line);color:var(--mute)}
+.st.ok{background:color-mix(in srgb,var(--ok) 22%,var(--card));color:var(--ink)}
+.sb{margin-top:auto;width:100%;padding:10px 14px;font-size:15px}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.ph h2{margin:0 0 10px}.ps{font-weight:700;color:var(--mute);font-size:14px}
+.gres.good{border-color:var(--ok)}
+.btnrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
 </style>
 </head>
 <body>
@@ -617,7 +647,7 @@ async function gFile(fl){
       const r=gAdd(d);n+=r.n;bad+=r.bad;r.lessons.forEach(l=>ls.add(l));files++;
     }catch(e){gmsg=`Không đọc được file ${f.name}. Hãy chọn đúng file bài tập ngữ pháp (.json).`;return render()}
   }
-  ls.forEach(l=>gcfg.ls.add(l));gSaveX();
+  ls.forEach(l=>gcfg.ls.add(l));gSaveX();if(ls.size)gcfg.cur=Math.min(...ls);
   gmsg=n?`Đã thêm ${n} câu${ls.size?` (Bài ${[...ls].sort((a,b)=>a-b).join(', ')})`:''}${bad?`. Bỏ qua ${bad} câu lỗi`:''}.`:`Không có câu mới${bad?` (${bad} câu lỗi)`:' (các câu này đã có sẵn)'}.`;
   render();
 }
@@ -636,32 +666,50 @@ function gTog(kind,v){
   if(kind==='ls')[...gcfg.pt].forEach(p=>{if(!gcfg.ls.has(+p.split('.')[0]))gcfg.pt.delete(p)});
   render();
 }
+const GPK='kotoba-gprog';let GP={};try{GP=JSON.parse(localStorage.getItem(GPK)||'{}')||{}}catch(e){}
+const gSaveP=()=>{try{localStorage.setItem(GPK,JSON.stringify(GP))}catch(e){}};
+function gSets(l){
+  const by={};GD.filter(q=>q.l===l).forEach(q=>(by[q.g]=by[q.g]||[]).push(q));
+  const out=[];
+  Object.keys(by).map(Number).sort((a,b)=>a-b).forEach(g=>{
+    const a=by[g],k=Math.max(1,Math.round(a.length/20));
+    for(let p=0;p<k;p++)out.push({key:l+'.'+g+'.'+p,l,g,part:p,parts:k,qs:a.slice(Math.floor(a.length*p/k),Math.floor(a.length*(p+1)/k))});
+  });
+  out.forEach((s,i)=>s.no=i+1);return out;
+}
+const gSetBy=key=>gSets(+key.split('.')[0]).find(s=>s.key===key);
+const gSetTitle=s=>`Bài ${s.l} · Luyện tập ${s.no}: ${(GPT[s.l]||{})[s.g]||'Mẫu '+s.g}`;
+function gStartSet(key){const s=gSetBy(key);if(s)gStart(shuf(s.qs),key,gSetTitle(s))}
+function gMix(l){gStart(shuf(GD.filter(q=>q.l===l)).slice(0,20),null,`Bài ${l} · Ôn tổng hợp`)}
+function gResetP(l){if(!confirm(`Đặt lại tiến độ các bài luyện tập của Bài ${l}?`))return;Object.keys(GP).forEach(k=>{if(k.split('.')[0]==l)delete GP[k]});gSaveP();render()}
 function ghome(){
-  const L=gLessons(),pool=gPool(),cnt=l=>GD.filter(q=>q.l===l).length;
-  const pts=[];[...gcfg.ls].sort((a,b)=>a-b).forEach(l=>Object.entries(GPT[l]||{}).forEach(([k,n])=>pts.push([l+'.'+k,l,k,n])));
+  const L=gLessons();if(!L.includes(gcfg.cur))gcfg.cur=L[0];
+  const l=gcfg.cur,sets=gSets(l),nd=sets.filter(s=>GP[s.key]).length;
+  const ld=x=>{const ss=gSets(x);return ss.filter(s=>GP[s.key]).length+'/'+ss.length};
+  const card=s=>{
+    const p=GP[s.key],nm=(GPT[l]||{})[s.g]||('Mẫu '+s.g);
+    const sk=Object.keys(SK).map(k=>{const c=s.qs.filter(q=>q.s===k).length;return c?`<span class="sk sk-${k}">${SK[k]} ${c}</span>`:''}).join('');
+    return`<div class="setc ${p?'done':''}"><div class="sh"><span class="sno">${p?'✓':s.no}</span><div><b>Luyện tập ${s.no}${s.parts>1?` (phần ${s.part+1})`:''}</b><div class="hint" style="margin:0">Mẫu ${l}.${s.g} · ${esc(nm)}</div></div></div><div class="sks">${sk}</div><div class="sf">${p?`<span class="st ok">✓ Đã làm</span><span class="hint" style="margin:0">Cao nhất ${p.best}/${p.n} · ${p.tries} lần</span>`:`<span class="st">Chưa làm</span><span class="hint" style="margin:0">${s.qs.length} câu</span>`}</div><button class="${p?'btn':'pri'} sb" onclick="gStartSet('${s.key}')">${p?'Làm lại':'Bắt đầu'}</button></div>`;
+  };
   return`${tabs('gram')}
 <div class="grid"><div>
-<div class="panel"><h2>1. Chọn bài ngữ pháp</h2><div class="chips">${L.map(l=>`<button class="chip ${gcfg.ls.has(l)?'on':''}" onclick="gTog('ls',${l})">Bài ${l}<i>${cnt(l)}</i></button>`).join('')}</div>
-<p class="hint">Từ vựng trong bài tập chỉ lấy từ Ngày 1 đến ngày tương ứng (ví dụ Bài 2 dùng từ vựng Ngày 1 và Ngày 2). Hiện có: ${L.map(l=>'Bài '+l).join(', ')}. Muốn thêm bài mới, nhập file bài tập ở mục 4.</p></div>
-<div class="panel"><h2>2. Mẫu ngữ pháp <small style="font-weight:500;color:var(--mute)">(không chọn = tất cả)</small></h2>${pts.length?`<div class="chips">${pts.map(([key,l,k,n])=>`<button class="chip ${gcfg.pt.has(key)?'on':''}" onclick="gTog('pt','${key}')">${l}.${k} ${esc(n)}</button>`).join('')}</div>`:'<div class="empty">Hãy chọn ít nhất một bài.</div>'}</div>
-<div class="panel"><h2>4. Thêm bài tập từ file</h2>
+<div class="panel"><h2>Chọn bài ngữ pháp</h2><div class="chips">${L.map(x=>`<button class="chip ${x===l?'on':''}" onclick="gcfg.cur=${x};render()">Bài ${x}<i>${ld(x)}</i></button>`).join('')}</div>
+<p class="hint">Số nhỏ trên mỗi bài là số bài luyện tập đã làm. Từ vựng trong bài tập chỉ lấy từ Ngày 1 đến ngày tương ứng.</p></div>
+<div class="panel"><div class="ph"><h2>Bài ${l} · ${sets.length} bài luyện tập</h2><span class="ps">${nd}/${sets.length} đã làm</span></div>
+<div class="prog" style="margin-bottom:14px"><i style="width:${sets.length?nd/sets.length*100:0}%"></i></div>
+<div class="setgrid">${sets.map(card).join('')}</div>
+<div class="row" style="margin-top:14px"><button class="btn" onclick="gMix(${l})">Ôn tổng hợp 20 câu ngẫu nhiên</button>${nd?`<button class="ghost" onclick="gResetP(${l})">Đặt lại tiến độ Bài ${l}</button>`:''}</div></div>
+</div>
+<div class="aside"><div class="panel"><h2>Thêm bài tập từ file</h2>
 ${gmsg?`<div class="msg">${esc(gmsg)}</div>`:''}
 <label class="drop" ondragover="event.preventDefault()" ondrop="event.preventDefault();gFile(event.dataTransfer.files)"><input type="file" accept=".json,.txt,application/json" multiple onchange="gFile(this.files)"><b>Chọn file bài tập (.json)</b> hoặc kéo thả vào đây</label>
 <p class="hint">Có thể chọn nhiều file cùng lúc. Câu trùng sẽ không bị thêm lại. Bài tập nhập thêm được lưu trong trình duyệt này.</p>
-${GX.questions.length?`<button class="btn" style="margin-top:8px" onclick="gClearX()">Xóa ${GX.questions.length} câu đã nhập thêm</button>`:''}</div>
-</div>
-<div class="panel aside"><h2>3. Thiết lập bài tập</h2>
-<div class="tcfg"><b>Kỹ năng</b>${Object.entries(SK).map(([k,v])=>`<label class="chk"><input type="checkbox" ${gcfg.sk.has(k)?'checked':''} onchange="gTog('sk','${k}')"> ${v}</label>`).join('')}
-<label for="gn"><b>Số câu</b></label><select id="gn" onchange="gcfg.n=this.value;render()">${['10','20','30','50','all'].map(v=>`<option value="${v}" ${gcfg.n===v?'selected':''}>${v==='all'?'Tất cả':v+' câu'}</option>`).join('')}</select></div>
-<p class="hint" style="margin:0 0 12px">Có ${pool.length} câu phù hợp. Tất cả câu hiện trên một trang, làm xong bấm Nộp bài để xem đáp án và giải thích.</p>
-<button class="pri" ${pool.length?'':'disabled'} onclick="gStart()">Bắt đầu</button></div></div>`;
+${GX.questions.length?`<button class="btn" style="margin-top:8px" onclick="gClearX()">Xóa ${GX.questions.length} câu đã nhập thêm</button>`:''}</div></div></div>`;
 }
-function gStart(list){
-  let L=list||shuf(gPool());
-  if(!list&&gcfg.n!=='all')L=L.slice(0,+gcfg.n);
-  L=L.map(q=>({...q}));
+function gStart(list,key,title){
+  const L=(list||shuf(GD)).map(q=>({...q}));
   L.forEach(q=>{if(q.t==='order'){let sh;let g=0;do{sh=shuf(q.tk.map((_,i)=>i))}while(g++<20&&q.tk.length>1&&sh.every((v,i)=>v===i));q.sh=sh}});
-  G={list:L,ans:{},fin:false,warned:false,log:[]};scrollTo(0,0);render();
+  G={list:L,ans:{},fin:false,warned:false,log:[],key:key||null,title:title||'Luyện tập ngữ pháp'};scrollTo(0,0);render();
 }
 const gquit=()=>{G=null;render()};
 const gn=s=>String(s||'').replace(/[\s\u3000。、．，.,!！?？]/g,'');
@@ -672,7 +720,7 @@ function gDone(i){
   if(q.t==='dict')return String(a||'').trim()!=='';
   return a!==undefined;
 }
-function gProg(){const n=G.list.length,a=G.list.filter((_,i)=>gDone(i)).length;$('#gpc').textContent=a+'/'+n;$('#gpb').style.width=a/n*100+'%'}
+function gProg(){const n=G.list.length,a=G.list.filter((_,i)=>gDone(i)).length;G.list.forEach((_,i)=>{const e=$('#g'+i);if(e)e.classList.toggle('done',gDone(i))});$('#gpc').textContent=a+'/'+n;$('#gpb').style.width=a/n*100+'%'}
 function gRedraw(i){const el=$('#g'+i);if(el)el.outerHTML=gcard(i)}
 const gSet=(i,v)=>{G.ans[i]=v;gRedraw(i);gProg()};
 const gFill=(i,k,v)=>{const a=G.ans[i]=G.ans[i]||[];a[k]=v;gProg()};
@@ -681,18 +729,18 @@ const gPush=(i,j)=>{(G.ans[i]=G.ans[i]||[]).push(j);gRedraw(i);gProg()};
 const gUndo=(i,n)=>{G.ans[i].splice(n,1);gRedraw(i);gProg()};
 function gcard(i){
   const q=G.list[i],a=G.ans[i];let body='';
-  const sk=`${SK[q.s]} · Bài ${q.l}.${q.g} ${(GPT[q.l]||{})[q.g]||''}`;
-  if(q.t==='mc'||q.t==='lmc')body=`<div class="opts">${q.o.map((o,j)=>`<button class="opt jp ${a===j?'sel':''}" onclick="gSet(${i},${j})">${esc(o)}</button>`).join('')}</div>`;
-  else if(q.t==='tf')body=`<div class="two"><button class="btn tfb ${a===true?'sel':''}" onclick="gSet(${i},true)">Đúng</button><button class="btn tfb ${a===false?'sel':''}" onclick="gSet(${i},false)">Sai</button></div>`;
+  const pn=(GPT[q.l]||{})[q.g]||'',LT='ABCD';
+  if(q.t==='mc'||q.t==='lmc')body=`<div class="opts">${q.o.map((o,j)=>`<button class="opt jp ${a===j?'sel':''}" onclick="gSet(${i},${j})"><b class="lt">${LT[j]||j+1}</b><span>${esc(o)}</span></button>`).join('')}</div>`;
+  else if(q.t==='tf')body=`<div class="two"><button class="btn tfb ${a===true?'sel':''}" onclick="gSet(${i},true)">✓ Đúng</button><button class="btn tfb ${a===false?'sel':''}" onclick="gSet(${i},false)">✗ Sai</button></div>`;
   else if(q.t==='fill')body=`<div class="fillrow jp">${q.p.map(p=>typeof p==='string'?`<span>${esc(p)}</span>`:`<input class="gin jp" autocomplete="off" aria-label="Chỗ trống ${p+1}" style="width:${Math.max(4,Math.max(...q.a[p].map(x=>x.length))*1.7+2)}ch" value="${esc((a||[])[p]||'')}" oninput="gFill(${i},${p},this.value)">`).join('')}</div>`;
   else if(q.t==='order'){const u=a||[];body=`<div class="ordans jp">${u.length?u.map((j,n)=>`<button class="tok on" onclick="gUndo(${i},${n})">${esc(q.tk[j])}</button>`).join(''):'<span class="hint">Bấm các từ bên dưới theo thứ tự đúng</span>'}</div><div class="ordpool jp">${q.sh.map(j=>`<button class="tok" ${u.includes(j)?'disabled':''} onclick="gPush(${i},${j})">${esc(q.tk[j])}</button>`).join('')}</div>`}
   else body=`<input class="ty jp" autocomplete="off" placeholder="Gõ câu bạn nghe được" aria-label="Câu ${i+1}" value="${esc(a||'')}" oninput="gDict(${i},this.value)" style="margin:0">`;
   const ask=q.t==='tf'?`<div class="gq">Theo đoạn trên, câu sau đúng hay sai?</div><div class="gst jp">${esc(q.q)}</div>`:`<div class="gq">${esc(q.q)}</div>`;
-  return`<section class="q pq" id="g${i}"><small>Câu ${i+1} · ${esc(sk)}</small>${q.c?`<div class="ctxb jp">${esc(q.c)}</div>`:''}${q.say?`<button class="spk bigs" type="button" data-t="${esc(q.say)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊</button>`:''}${ask}<div class="pbody">${body}</div></section>`;
+  return`<section class="q pq ${gDone(i)?'done':''}" id="g${i}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${q.s}">${SK[q.s]}</span><span class="qp">Mẫu ${q.l}.${q.g}${pn?' · '+esc(pn):''}</span></div>${q.c?`<div class="ctxb jp">${esc(q.c)}</div>`:''}${q.say?`<button class="spk bigs" type="button" data-t="${esc(q.say)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:''}${ask}<div class="pbody">${body}</div></section>`;
 }
 function gpaper(){
   const n=G.list.length,a=G.list.filter((_,i)=>gDone(i)).length;
-  return`<div class="qwrap"><div class="bar sticky"><button class="ghost" onclick="gquit()">✕ Thoát</button><div class="prog"><i id="gpb" style="width:${a/n*100}%"></i></div><b id="gpc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="gSubmit()">Nộp bài</button></div>${G.list.map((_,i)=>gcard(i)).join('')}<div id="gwm" class="msg" hidden role="status"></div><button class="pri" onclick="gSubmit()">Nộp bài</button></div>`;
+  return`<div class="qwrap"><div class="gtitle"><small>Đang làm</small><h2>${esc(G.title)}</h2></div><div class="bar sticky"><button class="ghost" onclick="gquit()">✕ Thoát</button><div class="prog"><i id="gpb" style="width:${a/n*100}%"></i></div><b id="gpc">${a}/${n}</b><button class="pri" style="width:auto;padding:6px 18px" onclick="gSubmit()">Nộp bài</button></div>${G.list.map((_,i)=>gcard(i)).join('')}<div id="gwm" class="msg" hidden role="status"></div><button class="pri" onclick="gSubmit()">Nộp bài</button></div>`;
 }
 function gOK(q,a){
   if(q.t==='mc'||q.t==='lmc'||q.t==='tf')return a===q.a;
@@ -706,7 +754,7 @@ function gSubmit(){
     G.warned=true;const w=$('#gwm');w.hidden=false;w.textContent=`Còn ${un.length} câu chưa làm (câu ${un.slice(0,8).map(i=>i+1).join(', ')}${un.length>8?'…':''}). Bấm Nộp bài lần nữa để nộp luôn.`;
     $('#g'+un[0])?.scrollIntoView({behavior:'smooth',block:'center'});return;
   }
-  G.log=G.list.map((q,i)=>({q,a:G.ans[i],ok:!!gOK(q,G.ans[i])}));G.fin=true;scrollTo(0,0);render();
+  G.log=G.list.map((q,i)=>({q,a:G.ans[i],ok:!!gOK(q,G.ans[i])}));G.fin=true;if(G.key){const ok=G.log.filter(x=>x.ok).length,n=G.log.length,p=GP[G.key]||{};GP[G.key]={n,best:Math.max(p.best||0,ok),last:ok,tries:(p.tries||0)+1,at:Date.now()};gSaveP()}scrollTo(0,0);render();
 }
 function gYou(q,a){
   if(a===undefined||a===null)return'(chưa trả lời)';
@@ -732,8 +780,9 @@ function gresult(){
   const review=L.map(({q,a,ok:o},i)=>{
     const key=gKey(q),audio=q.say||((q.t==='fill'||q.t==='order')?key:'');
     return`<div class="rv ${o?'ok':'no'}"><b>${i+1}. ${SK[q.s]} · Bài ${q.l}.${q.g} ${o?'✓ Đúng':'✗ Sai'}</b>${q.c?`<div class="jp" style="white-space:pre-line">${esc(q.c)}</div>`:''}<div>${esc(q.q)}</div>${q.say?`<div>♪ ${spk(q.say)} <span class="jp">${esc(q.say)}</span></div>`:''}<div>Bạn trả lời: <span class="jp">${esc(gYou(q,a))}</span></div><div>Đáp án: <b class="jp">${esc(key)}</b> ${q.say?'':spk(audio)}</div><div class="hint" style="margin-top:4px">${esc(q.x)}</div></div>`}).join('');
-  return`<div class="qwrap"><div class="q"><small>Hoàn thành</small><div class="stat">${ok}/${n}</div><p>${pct}% đúng · điểm ${(ok/n*10).toFixed(1)}/10</p><div class="chips" style="justify-content:center">${bySk}</div><div class="chips" style="justify-content:center;margin-top:8px">${byPt}</div></div>
-<div class="two" style="margin-bottom:16px">${ok<n?`<button class="pri" onclick="gStart(G.log.filter(x=>!x.ok).map(x=>x.q))">Làm lại ${n-ok} câu sai</button>`:`<button class="pri" onclick="gStart()">Làm bộ mới</button>`}<button class="btn" onclick="gquit()">Về trang ngữ pháp</button></div>
+  const cur=G.key?gSetBy(G.key):null,nx=cur?gSets(cur.l).find(s=>s.no===cur.no+1):null;
+  return`<div class="qwrap"><div class="q gres ${pct>=80?'good':''}"><small>${esc(G.title)}</small><div class="stat">${ok}/${n}</div><p>${pct}% đúng · điểm ${(ok/n*10).toFixed(1)}/10</p>${G.key?'<p class="st ok" style="display:inline-block">✓ Đã đánh dấu hoàn thành bài luyện tập này</p>':''}<div class="chips" style="justify-content:center">${bySk}</div><div class="chips" style="justify-content:center;margin-top:8px">${byPt}</div></div>
+<div class="btnrow">${ok<n?`<button class="pri" onclick="gStart(G.log.filter(x=>!x.ok).map(x=>x.q),null,G.title+' (câu sai)')">Làm lại ${n-ok} câu sai</button>`:''}${nx?`<button class="${ok<n?'btn':'pri'}" onclick="gStartSet('${nx.key}')">Bài luyện tập tiếp theo →</button>`:''}${G.key?`<button class="btn" onclick="gStartSet('${G.key}')">Làm lại bài này</button>`:''}<button class="btn" onclick="gquit()">Về trang ngữ pháp</button></div>
 <div class="panel"><h2>Xem lại bài (${n} câu)</h2>${review}</div></div>`;
 }
 const gui=()=>G.fin?gresult():gpaper();
