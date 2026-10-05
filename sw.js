@@ -1,4 +1,4 @@
-const BUILD='202610040919';
+const BUILD='202610051349';
 const SHELL='kotoba-shell-'+BUILD, AUDIO='kotoba-audio';
 const FILES=['./','index.html','manifest.json','icons/icon-192.png','icons/icon-512.png','icons/icon-180.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(SHELL).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))});
@@ -23,7 +23,7 @@ self.addEventListener('fetch',e=>{
   if(u.pathname.endsWith('/audio/index.json')){
     e.respondWith(fetch(req).then(r=>{if(r.ok){const cp=r.clone();caches.open(AUDIO).then(c=>c.put(u.pathname,cp))}return r}).catch(()=>caches.open(AUDIO).then(c=>c.match(u.pathname)).then(r=>r||new Response('{}',{headers:{'Content-Type':'application/json'}}))));return;
   }
-  if(/\/audio\/[^/]+\.mp3$/.test(u.pathname)){e.respondWith(audioReq(req));return}
+  if(/\/audio\/[^/]+\.(mp3|bin)$/.test(u.pathname)){e.respondWith(audioReq(req));return}
   e.respondWith(caches.open(SHELL).then(async c=>{
     const hit=await c.match(req,{ignoreSearch:true})||(req.mode==='navigate'?await c.match('index.html'):null);
     const net=fetch(req).then(r=>{if(r.ok)c.put(req,r.clone());return r}).catch(()=>null);

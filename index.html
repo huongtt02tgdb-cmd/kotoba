@@ -192,6 +192,22 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .q .bigs{display:inline-flex;align-items:center;gap:8px;width:auto;height:52px;border-radius:999px;padding:0 24px;font-size:20px;font-weight:700;margin:2px 0 8px;background:color-mix(in srgb,var(--pri) 12%,var(--card));border-color:var(--pri)}
 .q .bigs span{font-size:15px}
 .askrow{display:flex;align-items:center;gap:12px;margin:4px 0 14px}.askrow .big{font-size:clamp(28px,4vw,40px)}
+.stk{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:transparent;border-radius:999px;padding:5px 12px;font-weight:700;color:var(--ink)}
+.stk b{font-size:1.05em}.stk i{font-style:normal;font-size:.8em;color:var(--mute);font-weight:600}.stk.ok{border-color:var(--ok)}.stk.ok i{color:var(--ok)}
+.stgrid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:1000px){.stgrid{grid-template-columns:1fr 1fr}.stwide{grid-column:1/-1}}
+.stcard h2{margin:0 0 10px}
+.stflame{display:flex;align-items:baseline;gap:10px}.stflame span{font-size:2rem}.stflame b{font-size:2.8rem;line-height:1;color:var(--pri)}.stflame small{color:var(--mute);font-weight:600}
+.stbig{font-size:1.9rem;font-weight:800;margin-bottom:8px}
+.stbar{height:12px;border-radius:999px;background:var(--line);overflow:hidden}.stbar i{display:block;height:100%;background:var(--ok);border-radius:999px;transition:width .4s}
+.stnums{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stnums div{background:var(--bg);border-radius:12px;padding:10px 12px}.stnums small{display:block;color:var(--mute);font-weight:600}.stnums b{font-size:1.05rem}
+.stchart{position:relative;height:140px;display:flex;align-items:flex-end;gap:6px;border-bottom:2px solid var(--line)}
+.stb{flex:1;height:100%;display:flex;align-items:flex-end}.stb i{display:block;width:100%;border-radius:6px 6px 0 0;background:var(--mute);opacity:.45}.stb.ok i{background:var(--ok);opacity:1}.stb.today i{outline:2px solid var(--pri);outline-offset:1px}
+.stgl{position:absolute;left:0;right:0;border-top:2px dashed var(--acc);pointer-events:none}.stgl span{position:absolute;right:0;top:-18px;font-size:.72rem;color:var(--mute);background:var(--card);padding:0 4px}
+.stlab{display:flex;gap:6px;margin-top:4px}.stlab small{flex:1;text-align:center;font-size:.68rem;color:var(--mute)}
+.stul{margin:10px 0 0;padding-left:20px;line-height:1.55}.stul li{margin-bottom:4px}
+.btn.sel{background:var(--pri);border-color:var(--pri);color:var(--pri-ink)}
+@media(max-width:560px){.stlab small{font-size:.6rem;min-width:0;overflow:hidden}.stlab small:nth-child(even){visibility:hidden}.stcard{min-width:0}.stgrid{min-width:0}}
 </style>
 </head>
 <body>
@@ -222,27 +238,41 @@ const jaVoices=()=>'speechSynthesis' in window?speechSynthesis.getVoices().filte
 const pickVoice=()=>{const v=jaVoices();VO=v.find(x=>x.name===VN)||v.find(x=>/Natural|Online/i.test(x.name))||v.find(x=>/Google/i.test(x.name))||v[0]||null;return VO};
 if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>{pickVoice();if(!Q&&document.activeElement===document.body)render()};pickVoice()}
 if('speechSynthesis' in window){let vt=0;const vp=setInterval(()=>{const had=VO;pickVoice();vt++;if(VO&&!had&&!Q&&!G&&document.activeElement===document.body)render();if(VO||vt>12)clearInterval(vp)},500)}
-let AUD={},AUDN=0,ACT=null;
+let AUD={},AUDN=0,ACT=null,PACK=null,PACKP=null;
 const akey=t=>String(t||'').trim();
-try{fetch('audio/index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AUD=j&&typeof j==='object'?j:{};AUDN=Object.keys(AUD).length;if(AUDN&&!Q&&!G&&document.activeElement===document.body)render()}).catch(()=>{})}catch(e){}
+function loadPack(){
+  if(PACK)return Promise.resolve(PACK);
+  if(!PACKP)PACKP=fetch('audio/pack.bin').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(b=>(PACK=b)).catch(()=>{PACKP=null;return null});
+  return PACKP;
+}
+try{fetch('audio/index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AUD=j&&typeof j==='object'?j:{};AUDN=Object.keys(AUD).length;if(AUDN){if(Object.values(AUD).some(v=>Array.isArray(v)))loadPack();if(!Q&&!G&&document.activeElement===document.body)render()}}).catch(()=>{})}catch(e){}
 function stopAud(){if(ACT){try{ACT.pause()}catch(e){}ACT=null}}
 function say(t){
   if(!t)return;t=String(t);
   const f=AUD[akey(t)];
-  if(f){
+  let src=null;
+  if(Array.isArray(f)){if(PACK)src=URL.createObjectURL(new Blob([PACK.slice(f[0],f[0]+f[1])],{type:'audio/mpeg'}));else loadPack()}
+  else if(f)src='audio/'+f;
+  if(src){
     stopAud();if('speechSynthesis' in window)speechSynthesis.cancel();
-    const a=new Audio('audio/'+f);try{a.playbackRate=Math.max(.5,Math.min(1.5,RT/.9));a.preservesPitch=true}catch(e){}
+    const a=new Audio(src);try{a.playbackRate=Math.max(.5,Math.min(1.5,RT/.9));a.preservesPitch=true}catch(e){}
     ACT=a;const fb=()=>{if(ACT===a){ACT=null;sayTTS(t)}};
-    a.onerror=fb;const p=a.play();if(p&&p.catch)p.catch(fb);return;
+    a.onerror=fb;a.onended=()=>{if(Array.isArray(f))URL.revokeObjectURL(src)};
+    const p=a.play();if(p&&p.catch)p.catch(fb);return;
   }
   stopAud();sayTTS(t);
 }
 async function prefetchAudio(){
-  const fs=[...new Set(Object.values(AUD))],tot=fs.length;let n=0,bad=0;const st=()=>document.getElementById('aud-st');
-  const run=async()=>{while(fs.length){const f=fs.pop();try{const r=await fetch('audio/'+f);if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}n++;if(st())st().textContent=`Đã tải ${n}/${tot}…`}};
+  const st=()=>document.getElementById('aud-st');
   if(st())st().textContent='Đang tải…';
+  if(Object.values(AUD).some(v=>Array.isArray(v))){
+    const b=await loadPack();
+    if(st())st().textContent=b?`Xong. Đã lưu ${AUDN} câu/từ (${Math.round(b.byteLength/1048576*10)/10} MB), dùng được khi không có mạng.`:'Chưa tải được (kiểm tra mạng rồi bấm lại).';return;
+  }
+  const fs=[...new Set(Object.values(AUD))],tot=fs.length;let n=0,bad=0;
+  const run=async()=>{while(fs.length){const f=fs.pop();try{const r=await fetch('audio/'+f);if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}n++;if(st())st().textContent=`Đã tải ${n}/${tot}…`}};
   await Promise.all([run(),run(),run(),run()]);
-  if(st())st().textContent=bad?`Xong, ${bad} file chưa tải được (kiểm tra mạng rồi bấm lại).`:`Xong. Đã lưu ${tot} file, dùng được khi không có mạng.`;
+  if(st())st().textContent=bad?`Xong, ${bad} file chưa tải được.`:`Xong. Đã lưu ${tot} file.`;
 }
 const audBox=()=>AUDN?`<p class="hint" style="margin:8px 0 0">✓ Có <b>${AUDN}</b> câu/từ phát bằng giọng Nanami (file âm thanh). Những chỗ chưa có file sẽ dùng giọng hệ thống.</p><div class="row" style="margin-top:6px"><button class="btn" onclick="prefetchAudio()">⬇ Tải sẵn âm thanh để dùng offline</button><span id="aud-st" class="hint" style="margin:0"></span></div>`:'';
 function sayTTS(t){
@@ -304,7 +334,7 @@ async function unzip(b64){
   return new TextDecoder().decode(await new Response(ds.readable).arrayBuffer());
 }
 async function bkCode(){
-  const json=JSON.stringify({kotoba:1,words});
+  const json=JSON.stringify({kotoba:1,words,study:{days:(stFlush(),ST.days),goal:ST.goal}});
   try{if(window.CompressionStream)return'K1:'+await zip(json)}catch(e){}
   return json;
 }
@@ -349,7 +379,8 @@ async function restoreText(t){
     else{mp.set(wk(w),w);words.push(w);add++}
   });
   if(!sel.size)days().forEach(x=>sel.add(x[0]));
-  msg=`Đã khôi phục ${add} từ mới${upd?`, bổ sung thông tin cho ${upd} từ`:''}.`;save();render();
+  let sd=0;if(data.study&&data.study.days){stFlush();Object.entries(data.study.days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&+v>(ST.days[k]||0)){ST.days[k]=+v;sd++}});stSave()}
+  msg=`Đã khôi phục ${add} từ mới${upd?`, bổ sung thông tin cho ${upd} từ`:''}${typeof sd!=='undefined'&&sd?`, gộp thời gian học của ${sd} ngày`:''}.`;save();render();
 }
 const bkRestore=()=>restoreText($('#bk').value);
 async function bkFile(fl){const f=fl&&fl[0];if(!f)return;let t;try{t=await f.text()}catch(e){return $('#bkm').textContent='Không đọc được file.'}restoreText(t)}
@@ -697,7 +728,7 @@ function gClearX(){if(!GX.questions.length||!confirm('Xóa các bài tập đã 
   gcfg.ls=new Set([...gcfg.ls].filter(l=>GD.some(q=>q.l===l)));gcfg.pt.clear();gmsg='Đã xóa các bài tập nhập thêm.';render();
 }
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
-const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs"><button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button></div></div>`;
+const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button></div></div>`;
 const setTab=t=>{tab=t;render()};
 const gLessons=()=>[...new Set(GD.map(q=>q.l))].sort((a,b)=>a-b);
 const gPool=()=>GD.filter(q=>gcfg.ls.has(q.l)&&(!gcfg.pt.size||gcfg.pt.has(q.l+'.'+q.g))&&gcfg.sk.has(q.s));
@@ -828,7 +859,7 @@ function gresult(){
 const gui=()=>G.fin?gresult():gpaper();
 function render(){
   const tw=$('.tw'),st=tw?tw.scrollTop:0;
-  $('#app').innerHTML=G?gui():Q?quiz():tab==='gram'?ghome():home();
+  $('#app').innerHTML=G?gui():Q?quiz():tab==='gram'?ghome():tab==='stat'?shome():home();
   if(!Q){const t2=$('.tw');if(t2)t2.scrollTop=st}
   if(Q&&Q.mode!=='test'&&(cm()==='ty'||cm()==='ls')&&!Q.state&&Q.i<Q.list.length){
     setTimeout(()=>$('#ans')?.focus());
@@ -843,6 +874,175 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){e.preventDefault();if(Q.state)next();else if(cm()==='ty'||cm()==='ls')check()}
   else if(cm()==='mc'&&!Q.state&&/^[1-4]$/.test(e.key)&&Q.list[Q.i].opts[e.key-1]!==undefined)pick(e.key-1);
 });
+/* ---------- chuỗi học & thời gian học ---------- */
+const STK='kotoba-study',IDLE_MS=60000;
+let ST={days:{},goal:15},stPend=0,stPendDay='',stLastFlush=Date.now(),stLastAct=Date.now(),stLastTick=Date.now();
+try{const s=JSON.parse(localStorage.getItem(STK)||'null');if(s){ST.days=s.days||{};ST.goal=Math.max(1,Math.min(600,Math.round(+s.goal||15)))}}catch(e){}
+const stKey=d=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const stAt=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d,12)};
+const stAdd=(k,n)=>{const d=stAt(k);d.setDate(d.getDate()+n);return stKey(d)};
+const stSec=k=>(ST.days[k]||0)+((typeof RM!=='undefined'&&RM[k])||0)+(k===stPendDay?stPend:0);
+const stGoal=()=>ST.goal*60;
+function stSave(){try{localStorage.setItem(STK,JSON.stringify({days:ST.days,goal:ST.goal}))}catch(e){}}
+function stFlush(){
+  if(stPend<=0||!stPendDay)return;
+  let days=ST.days;try{const s=JSON.parse(localStorage.getItem(STK)||'null');if(s&&s.days)days=s.days}catch(e){}
+  days[stPendDay]=Math.round(((days[stPendDay]||0)+stPend)*10)/10;ST.days=days;stPend=0;stSave();
+}
+function stStats(){
+  const g=stGoal(),today=stKey(),tod=stSec(today),met=tod>=g;
+  let cur=0,k=met?today:stAdd(today,-1);
+  while(stSec(k)>=g&&cur<20000){cur++;k=stAdd(k,-1)}
+  const ks=[...new Set(stKeys().concat(stPendDay?[stPendDay]:[]))].filter(x=>stSec(x)>=g).sort();
+  let best=0,run=0,prev=null;for(const x of ks){run=(prev&&stAdd(prev,1)===x)?run+1:1;if(run>best)best=run;prev=x}
+  let wk=0,mo=0,tot=0,nd=0;for(let i=0;i<30;i++){const v=stSec(stAdd(today,-i));mo+=v;if(i<7)wk+=v}
+  stKeys().forEach(x=>{const v=stSec(x);tot+=v;if(v>=60)nd++});
+  return{cur,best,met,tod,wk,mo,tot,avg:nd?tot/nd:0,nd}
+}
+const stFmt=s=>{s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h} giờ ${String(m).padStart(2,'0')} phút`:m?`${m} phút ${String(x).padStart(2,'0')} giây`:`${x} giây`};
+const stMin=s=>{const m=Math.floor(s/60);return m>=60?`${Math.floor(m/60)} giờ ${String(m%60).padStart(2,'0')} phút`:`${m} phút`};
+const stLeft=s=>s.met?'✅ Hôm nay đã đạt mục tiêu — chuỗi được tính!':`Còn <b>${stMin(Math.max(0,stGoal()-s.tod)+59)}</b> nữa để ${s.cur?'giữ chuỗi':'bắt đầu chuỗi'} hôm nay.`;
+const stChip=()=>{const s=stStats();return`<button class="stk${s.met?' ok':''}" onclick="setTab('stat')" aria-label="Chuỗi học và thời gian học" title="Chuỗi học · thời gian hôm nay / mục tiêu"><span>🔥</span><b id="stk-n">${s.cur}</b><i id="stk-t">${Math.floor(s.tod/60)}/${ST.goal}′</i></button>`};
+function stPaint(){
+  const chip=document.getElementById('stk-n'),big=document.getElementById('st-today');
+  if(!chip&&!big)return;
+  const s=stStats(),g=stGoal(),$i=id=>document.getElementById(id);
+  if(chip){chip.textContent=s.cur;const t=$i('stk-t');if(t)t.textContent=`${Math.floor(s.tod/60)}/${ST.goal}′`;const b=chip.closest('.stk');if(b)b.classList.toggle('ok',s.met)}
+  if(big){
+    big.textContent=stFmt(s.tod);
+    const bar=$i('st-bar');if(bar)bar.style.width=Math.min(100,s.tod/g*100)+'%';
+    const l=$i('st-left');if(l)l.innerHTML=stLeft(s);
+    const set=(id,v)=>{const e=$i(id);if(e)e.textContent=v};
+    set('st-streak',s.cur);set('st-best',s.best);set('st-wk',stMin(s.wk));set('st-mo',stMin(s.mo));set('st-tot',stMin(s.tot));set('st-avg',stMin(s.avg));
+  }
+}
+function stSetGoal(v){const n=Math.max(1,Math.min(600,Math.round(+v||0)));if(!n)return;stFlush();ST.goal=n;if(SY.on){SY.goalT=Date.now();sySave()}stSave();render();if(SY.on)syNow(true)}
+function stReset(){if(confirm('Xóa toàn bộ dữ liệu thời gian học và chuỗi trên thiết bị này?')){ST.days={};stPend=0;stSave();render();if(SY.on)syNow(true)}}
+['pointerdown','keydown','touchstart','wheel','scroll','input','click'].forEach(ev=>addEventListener(ev,()=>{stLastAct=Date.now()},{capture:true,passive:true}));
+addEventListener('pointermove',()=>{const n=Date.now();if(n-stLastAct>2000)stLastAct=n},{passive:true});
+const stPlaying=()=>{try{return(typeof ACT!=='undefined'&&ACT&&!ACT.paused)||('speechSynthesis' in window&&speechSynthesis.speaking)}catch(e){return false}};
+function stTick(){
+  const n=Date.now(),dt=Math.min(n-stLastTick,2500);stLastTick=n;
+  const vis=document.visibilityState==='visible'&&(typeof document.hasFocus!=='function'||document.hasFocus());
+  if(vis&&(n-stLastAct<=IDLE_MS||stPlaying())){
+    const k=stKey();if(stPendDay&&stPendDay!==k)stFlush();stPendDay=k;stPend+=dt/1000;
+    if(n-stLastFlush>10000){stFlush();stLastFlush=n}
+  }
+  stPaint();
+}
+setInterval(stTick,1000);
+addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')stFlush()});addEventListener('pagehide',stFlush);addEventListener('blur',stFlush);
+function shome(){
+  const s=stStats(),g=stGoal(),today=stKey(),days=[];for(let i=13;i>=0;i--)days.push(stAdd(today,-i));
+  const mx=Math.max(g,...days.map(stSec),1);
+  const bars=days.map(k=>{const v=stSec(k);return`<div class="stb ${v>=g?'ok':''} ${k===today?'today':''}" title="${stFmt(v)}"><i style="height:${v>0?Math.max(3,Math.round(v/mx*100)):0}%"></i></div>`}).join('');
+  const labs=days.map(k=>{const d=stAt(k);return`<small>${d.getDate()}/${d.getMonth()+1}</small>`}).join('');
+  const presets=[15,30,45,60,90,120].map(m=>`<button class="btn ${ST.goal===m?'sel':''}" onclick="stSetGoal(${m})">${m>=60?(m/60)+' giờ':m+' phút'}</button>`).join('');
+  return`${tabs('stat')}
+<div class="stgrid">
+<div class="panel stcard"><h2>Chuỗi học</h2>
+<div class="stflame"><span>🔥</span><b id="st-streak">${s.cur}</b><small>ngày liên tiếp</small></div>
+<p class="hint" style="margin:6px 0 0">Kỷ lục: <b id="st-best">${s.best}</b> ngày. Một ngày được tính vào chuỗi khi bạn học đủ <b>${stMin(g)}</b> (mục tiêu bên dưới).</p></div>
+<div class="panel stcard"><h2>Hôm nay</h2>
+<div class="stbig" id="st-today">${stFmt(s.tod)}</div>
+<div class="stbar"><i id="st-bar" style="width:${Math.min(100,s.tod/g*100)}%"></i></div>
+<p class="hint" id="st-left" style="margin:8px 0 0">${stLeft(s)}</p></div>
+<div class="panel stcard"><h2>Mục tiêu mỗi ngày</h2>
+<div class="row" style="flex-wrap:wrap;gap:8px">${presets}</div>
+<div class="row" style="margin-top:10px;align-items:center;gap:8px"><input type="number" id="st-goal" min="1" max="600" value="${ST.goal}" style="width:90px;margin:0" aria-label="Mục tiêu (phút)" onchange="stSetGoal(this.value)"> <span>phút / ngày</span><span class="hint" style="margin:0">(= ${stMin(g)})</span></div>
+<p class="hint" style="margin:8px 0 0">Chuỗi được tính lại theo mục tiêu hiện tại: đổi mục tiêu thì những ngày trước đó cũng được xét lại theo mục tiêu mới.</p></div>
+<div class="panel stcard"><h2>Tổng kết</h2>
+<div class="stnums"><div><small>7 ngày qua</small><b id="st-wk">${stMin(s.wk)}</b></div><div><small>30 ngày qua</small><b id="st-mo">${stMin(s.mo)}</b></div><div><small>Tổng cộng</small><b id="st-tot">${stMin(s.tot)}</b></div><div><small>Trung bình / ngày có học</small><b id="st-avg">${stMin(s.avg)}</b></div></div></div>
+<div class="panel stcard stwide"><h2>14 ngày gần nhất</h2>
+<div class="stchart"><div class="stgl" style="bottom:${g/mx*100}%"><span>mục tiêu ${ST.goal}′</span></div>${bars}</div><div class="stlab">${labs}</div>
+<p class="hint" style="margin:8px 0 0">Cột xanh = đạt mục tiêu. Đưa chuột vào (hoặc giữ ngón tay) lên cột để xem thời gian chính xác.</p></div>
+${syPanel()}
+<div class="panel stcard stwide"><details open><summary><b>Thời gian học được tính như thế nào?</b></summary>
+<ul class="stul">
+<li>Chỉ tính khi app đang <b>hiện trên màn hình</b> và là cửa sổ/tab bạn đang dùng. Chuyển sang app hoặc tab khác, thu nhỏ, khóa màn hình thì dừng.</li>
+<li>Chỉ tính khi bạn <b>có thao tác</b> (bấm, chạm, gõ, cuộn, di chuột) trong vòng <b>60 giây</b> gần nhất. Để máy đó mà không động vào quá 60 giây thì ngừng tính, nên treo máy không được cộng.</li>
+<li>Khi app đang phát âm thanh, thời gian vẫn được tính (để bạn nghe mà không cần chạm liên tục).</li>
+<li>Máy ngủ hoặc tạm dừng không được bù thời gian.</li>
+<li>Mọi chỗ trong app đều tính: làm bài, xem từ, nhập file, xem thống kê. Một ngày tính theo giờ trên máy bạn và đổi ngày lúc 0 giờ.</li>
+<li>Dữ liệu lưu riêng trên từng thiết bị/trình duyệt. File sao lưu có kèm dữ liệu này, khi khôi phục sẽ gộp lại (lấy số lớn hơn của mỗi ngày). Muốn cộng dồn giữa nhiều thiết bị thì bật <b>Đồng bộ</b> ở trên.</li>
+</ul>
+<div class="row" style="margin-top:8px"><button class="btn" onclick="stReset()">Xóa dữ liệu thời gian học</button></div></details></div>
+</div>`;
+}
+setTimeout(stPaint,0);
+/* ---------- đồng bộ chuỗi học giữa các thiết bị (Firebase Realtime Database, REST) ---------- */
+const SYK=STK.replace('study','sync'),SYDB='';
+var SY={url:SYDB,code:'',dev:'',on:false,last:0,err:'',n:1,goalT:0},RM={},syBusy=false,syLastPut='';
+try{const s=JSON.parse(localStorage.getItem(SYK)||'null');if(s){SY.url=s.url||SYDB;SY.code=s.code||'';SY.dev=s.dev||'';SY.on=!!(s.on&&s.url&&s.code&&s.dev);SY.last=s.last||0;SY.goalT=s.goalT||0;RM=s.rm||{}}}catch(e){}
+const sySave=()=>{try{localStorage.setItem(SYK,JSON.stringify({url:SY.url,code:SY.code,dev:SY.dev,on:SY.on,last:SY.last,goalT:SY.goalT,rm:RM}))}catch(e){}};
+const syRand=n=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(n));for(const x of b)s+=a[x%a.length];return s};
+const syBase=()=>SY.url.replace(/\/+$/,'')+'/s/'+encodeURIComponent(SY.code);
+const syName=()=>{const u=navigator.userAgent;return/iPad/.test(u)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows':/Mac/.test(u)?'Mac':'Thiết bị'};
+function stKeys(){return[...new Set(Object.keys(ST.days).concat(Object.keys(RM)))]}
+async function syFetch(path,opt){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);
+  try{const r=await fetch(syBase()+path+'.json',{...opt,signal:c.signal,cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}
+}
+const syBody=()=>JSON.stringify({days:ST.days,t:Date.now(),n:syName()});
+async function syNow(manual){
+  if(!SY.on||syBusy)return;
+  if(navigator.onLine===false){SY.err='Không có mạng';syPaint();return}
+  syBusy=true;SY.err='';
+  try{
+    stFlush();
+    const mine=JSON.stringify(ST.days);
+    if(mine!==syLastPut||manual){await syFetch('/dev/'+SY.dev,{method:'PUT',headers:{'Content-Type':'text/plain'},body:syBody()});syLastPut=mine}
+    const all=(await syFetch('',{method:'GET'}))||{};
+    const dv=all.dev||{},rm={};let cnt=0;
+    for(const id in dv){cnt++;if(id===SY.dev)continue;const d=(dv[id]&&dv[id].days)||{};for(const k in d){const v=+d[k];if(v>0)rm[k]=Math.round(((rm[k]||0)+v)*10)/10}}
+    RM=rm;SY.n=Math.max(cnt,1);
+    const g=all.goal;
+    if(g&&g.t>SY.goalT&&g.v>=1&&g.v<=600){ST.goal=Math.round(g.v);SY.goalT=g.t;stSave()}
+    else if(SY.goalT>0&&(!g||g.t<SY.goalT))await syFetch('/goal',{method:'PUT',headers:{'Content-Type':'text/plain'},body:JSON.stringify({v:ST.goal,t:SY.goalT})});
+    SY.last=Date.now();sySave();
+  }catch(e){SY.err=e&&e.name==='AbortError'?'Quá thời gian chờ':String((e&&e.message)||e)}
+  syBusy=false;stPaint();syPaint();
+  if(manual&&document.getElementById('st-goal')){const gi=document.getElementById('st-goal');if(gi&&document.activeElement!==gi)gi.value=ST.goal}
+}
+function syPush(){
+  if(!SY.on)return;stFlush();
+  const mine=JSON.stringify(ST.days);if(mine===syLastPut)return;
+  try{fetch(syBase()+'/dev/'+SY.dev+'.json',{method:'PUT',headers:{'Content-Type':'text/plain'},body:syBody(),keepalive:true});syLastPut=mine}catch(e){}
+}
+function syEnable(u,c){
+  u=String(u||'').trim().replace(/\/+$/,'');c=String(c||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+  const m=document.getElementById('sy-msg'),bad=t=>{if(m)m.textContent=t;return false};
+  if(!/^(https:\/\/[^\s/]+\.[^\s/]+|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)/.test(u))return bad('Địa chỉ phải bắt đầu bằng https:// (lấy ở Firebase > Realtime Database).');
+  if(c.length<8)return bad('Mã đồng bộ cần ít nhất 8 ký tự (bấm "Tạo mã" cho tiện).');
+  SY.url=u;SY.code=c;SY.dev=SY.dev||syRand(10);SY.on=true;SY.err='';syLastPut='';sySave();render();syNow(true);return true;
+}
+function syConnect(){syEnable(document.getElementById('sy-url').value,document.getElementById('sy-code').value)}
+function syGen(){const e=document.getElementById('sy-code');if(e)e.value=syRand(16)}
+function syOff(){if(!confirm('Tắt đồng bộ trên thiết bị này? Số liệu của các thiết bị khác sẽ không còn được cộng vào đây.'))return;SY.on=false;RM={};sySave();render()}
+function syLink(){return location.origin+location.pathname+'#sync='+btoa(unescape(encodeURIComponent(JSON.stringify({u:SY.url,c:SY.code})))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+async function syCopyLink(){
+  const l=syLink(),m=document.getElementById('sy-st');
+  try{await navigator.clipboard.writeText(l);if(m)m.innerHTML='✓ Đã sao chép liên kết. Mở liên kết này trên thiết bị khác để kết nối.'}catch(e){prompt('Sao chép liên kết này rồi mở trên thiết bị khác:',l)}
+}
+function syStatus(){
+  if(SY.err)return'⚠ Chưa đồng bộ được ('+esc(SY.err)+'). App sẽ tự thử lại.';
+  return SY.last?`✓ Đã đồng bộ lúc ${new Date(SY.last).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})} · ${SY.n} thiết bị.`:'Đang kết nối…';
+}
+function syPaint(){const e=document.getElementById('sy-st');if(e)e.innerHTML=syStatus()}
+function syPanel(){
+  if(SY.on)return`<div class="panel stcard stwide"><h2>Đồng bộ giữa các thiết bị</h2><p class="hint" id="sy-st" style="margin:0 0 8px">${syStatus()}</p><div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn" onclick="syNow(true)">⟳ Đồng bộ ngay</button><button class="btn" onclick="syCopyLink()">🔗 Sao chép liên kết kết nối</button><button class="btn" onclick="syOff()">Tắt đồng bộ</button></div><p class="hint" style="margin:8px 0 0">Mã đồng bộ: <b>${esc(SY.code)}</b>. Giữ bí mật: ai có mã đều đọc và ghi được số liệu học. Mở liên kết kết nối trên thiết bị khác để dùng chung chuỗi.</p></div>`;
+  return`<div class="panel stcard stwide"><h2>Đồng bộ giữa các thiết bị</h2><p class="hint" style="margin:0 0 8px">Cộng dồn thời gian học và chuỗi từ nhiều thiết bị. Cần một cơ sở dữ liệu Firebase miễn phí (xem file HUONG_DAN_DONG_BO.md).</p><input id="sy-url" placeholder="Địa chỉ Firebase, vd: https://ten-du-an-default-rtdb.firebaseio.com" value="${esc(SY.url)}" style="margin:0 0 8px"><div class="row" style="gap:8px;align-items:center"><input id="sy-code" placeholder="Mã đồng bộ (từ 8 ký tự)" style="margin:0"><button class="btn" onclick="syGen()">Tạo mã</button></div><div class="row" style="margin-top:8px"><button class="btn sel" onclick="syConnect()">Bật đồng bộ</button></div><p class="hint" id="sy-msg" style="margin:8px 0 0">Thiết bị thứ hai: dùng cùng địa chỉ và cùng mã, hoặc mở liên kết kết nối.</p></div>`;
+}
+setTimeout(()=>syNow(),1500);
+setInterval(()=>{if(document.visibilityState==='visible')syNow()},60000);
+addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')syPush();else syNow()});
+addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
+setTimeout(()=>{try{const m=/[#&]sync=([^&]+)/.exec(location.hash);if(!m)return;
+  const o=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,'+').replace(/_/g,'/')))));
+  history.replaceState(null,'',location.pathname+location.search);
+  if(o&&o.u&&o.c&&!(SY.on&&SY.code===String(o.c).toLowerCase())&&confirm('Kết nối thiết bị này với mã đồng bộ "'+o.c+'"?\nChuỗi học và thời gian học sẽ được cộng dồn giữa các thiết bị.')){setTab('stat');syEnable(o.u,o.c)}
+}catch(e){}},800);
+
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 render();
 </script>
