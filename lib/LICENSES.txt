@@ -1,0 +1,1 @@
+pdf.js (Apache-2.0, Mozilla) và mammoth.js (BSD-2-Clause) dùng để xem PDF và Word ngay trên trang.
