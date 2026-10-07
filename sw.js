@@ -1,4 +1,4 @@
-const BUILD='202610061426';
+const BUILD='202610071313';
 const SHELL='kotoba-shell-'+BUILD, AUDIO='kotoba-audio', DOCS='kotoba-docs';
 const FILES=['./','index.html','manifest.json','icons/icon-192.png','icons/icon-512.png','icons/icon-180.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(SHELL).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))});
@@ -38,6 +38,7 @@ self.addEventListener('fetch',e=>{
   if(u.pathname.endsWith('/docs/index.json')){
     e.respondWith(fetch(req).then(r=>{if(r.ok){const cp=r.clone();caches.open(DOCS).then(c=>c.put(u.pathname,cp))}return r}).catch(()=>caches.open(DOCS).then(c=>c.match(u.pathname)).then(r=>r||new Response('[]',{headers:{'Content-Type':'application/json'}}))));return;
   }
+  if(/firebase-config\.js$/.test(u.pathname)){e.respondWith(caches.open(SHELL).then(c=>fetch(req,{cache:'no-store'}).then(r=>{if(r.ok)c.put(req,r.clone());return r}).catch(()=>c.match(req).then(r=>r||new Response('',{status:504})))));return}
   if(/\/(docs|lib)\/[^/]/.test(u.pathname)){e.respondWith(docReq(req));return}
   if(/\/audio\/[^/]+\.(mp3|bin)$/.test(u.pathname)){e.respondWith(audioReq(req));return}
   e.respondWith(caches.open(SHELL).then(async c=>{
