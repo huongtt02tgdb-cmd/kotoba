@@ -148,7 +148,9 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .gin{background:color-mix(in srgb,var(--pri) 6%,var(--card));border-radius:10px}
 .pq .ty{border-radius:12px;font-size:22px}
 .gtitle{margin:0 0 10px}.gtitle small{color:var(--mute)}.gtitle h2{font-size:21px;margin:2px 0 0}
-.setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.setgrid{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.setgrid .setc{flex:0 0 290px;scroll-snap-align:start}
+@media(max-width:600px){.setgrid .setc{flex-basis:260px}}
 .setc{border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:0 3px 12px rgba(27,33,64,.08);transition:all .2s ease}
 .setc:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(27,33,64,.13);border-color:color-mix(in srgb,var(--pri) 40%,var(--line))}
 .setc.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--card))}
@@ -570,12 +572,16 @@ let rLesson=1,RP=null;
 function rLessons(){return[...new Set(RD.map(r=>r.l))].sort((a,b)=>a-b)}
 function rhome(){
   const L=rLessons();if(!L.length)return`${tabs('read')}<div class="panel"><h2>Đọc hiểu</h2><p class="hint">Chưa có bài đọc nào.</p></div>`;
-  if(!L.includes(rLesson))rLesson=L[0];
+  const card=l=>{
+    const ps=RD.filter(r=>r.l===l),nq=ps.reduce((t,r)=>t+r.questions.length,0);
+    const titles=ps.map(p=>`<span class="sk">${esc(p.title)}</span>`).join('');
+    return`<div class="setc"><div class="sh"><span class="sno">📖</span><div><b>Bài ${l}</b><div class="hint" style="margin:0">${ps.length} bài đọc · ${nq} câu hỏi</div></div></div><div class="sks">${titles}</div><button class="pri sb" onclick="rPlay(${l})">Làm bài</button></div>`;
+  };
   return`${tabs('read')}
 <div class="grid"><div>
-<div class="panel"><h2>Đọc hiểu</h2><div class="chips">${L.map(x=>{const n=RD.filter(r=>r.l===x).reduce((t,r)=>t+r.questions.length,0);return`<button class="chip ${x===rLesson?'on':''}" onclick="rLesson=${x};render()">Bài ${x}<i>${n} câu</i></button>`}).join('')}</div>
-<p class="hint">Ấn vào bài để làm. Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), mỗi bài đọc 10 câu hỏi. Bài đọc hiện bên trái, câu hỏi bên phải.</p>
-<div class="row"><button class="pri" onclick="rPlay(rLesson)">Vào Bài ${rLesson} →</button></div></div>
+<div class="panel"><h2>Đọc hiểu</h2>
+<p class="hint" style="margin:-4px 0 12px">Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), mỗi bài đọc 10 câu hỏi. Bài đọc hiện bên trái, câu hỏi bên phải.</p>
+<div class="setgrid">${L.map(card).join('')}</div></div>
 </div>
 </div>`;
 }
@@ -1003,7 +1009,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101141';
+const APP_BUILD='202610101155';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
