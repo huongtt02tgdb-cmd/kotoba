@@ -991,4 +991,50 @@ async function dPrefetch(){
   if(st)st.textContent=bad?`Xong, ${bad} file chưa tải được.`:'Xong. Đã lưu để đọc khi không có mạng.';
 }
 
+
+/* ---------- CHATBOT AI ---------- */
+let CB={open:false,msgs:[],ctx:null,busy:false};
+function cbRender(){
+  let w=document.getElementById('cb-wrap');
+  if(!w){w=document.createElement('div');w.id='cb-wrap';document.body.appendChild(w)}
+  if(!CB.open){w.innerHTML='<button class="cb-fab" onclick="cbToggle()" aria-label="Chat với AI">\u{1F4AC}</button>';return}
+  const m=CB.msgs.map(x=>'<div class="cb-msg '+x.r+'"><div class="cb-bub">'+esc(x.t).replace(/\n/g,'<br>')+'</div></div>').join('');
+  const typing=CB.busy?'<div class="cb-msg ai"><div class="cb-bub typing"><span></span><span></span><span></span></div></div>':'';
+  const ctx=CB.ctx?'<div class="cb-ctx">Đang hỏi về: "'+esc(CB.ctx.q.slice(0,60))+'..." <button onclick="CB.ctx=null;cbRender()">\u2715</button></div>':'';
+  w.innerHTML='<button class="cb-fab" onclick="cbToggle()" aria-label="Đóng chat">\u2715</button>'
+    +'<div class="cb-panel"><div class="cb-head"><span>\u{1F916} Trợ lý AI</span><button class="ghost" onclick="cbToggle(false)">\u2715</button></div>'
+    +ctx+'<div class="cb-msgs" id="cb-msgs">'+m+typing+'</div>'
+    +'<div class="cb-input"><input id="cb-in" placeholder="Hỏi gì đó..." onkeydown="cbKey(event)" autocomplete="off"><button class="pri" onclick="cbSend()">Gửi</button></div></div>';
+  cbScroll();
+}
+function cbToggle(force){
+  CB.open=force!==undefined?force:!CB.open;
+  cbRender();
+  if(CB.open)setTimeout(()=>{const i=document.getElementById('cb-in');if(i)i.focus()},100);
+}
+function cbOpenWithCtx(q){
+  CB.ctx={q};
+  if(!CB.open)CB.open=true;
+  CB.msgs.push({r:'ai',t:'Chào bạn! Mình thấy bạn đang hỏi về câu này:\n\n"'+q.slice(0,200)+'\"\n\nBạn thắc mắc gì cứ hỏi nhé.'});
+  cbRender();
+  setTimeout(()=>{const i=document.getElementById('cb-in');if(i)i.focus()},100);
+}
+function cbScroll(){const e=document.getElementById('cb-msgs');if(e)e.scrollTop=e.scrollHeight}
+function cbSend(){
+  const i=document.getElementById('cb-in');
+  const t=(i.value||'').trim();
+  if(!t||CB.busy)return;
+  CB.msgs.push({r:'u',t});
+  i.value='';
+  CB.busy=true;cbRender();
+  setTimeout(()=>{
+    CB.busy=false;
+    CB.msgs.push({r:'ai',t:'AI chưa được kết nối. Bạn cần:\n1. Tạo API key tại Google AI Studio (miễn phí)\n2. Deploy Cloud Function\n\nXong là mình trả lời được ngay!'});
+    cbRender();
+  },800);
+}
+function cbKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();cbSend()}}
+// khởi tạo nút chat khi tải trang
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cbRender);else cbRender();
+
 render();
