@@ -783,7 +783,7 @@ function updSafeReload(){
   try{if(typeof G!=='undefined'&&(G||Q||RP)){setTimeout(updSafeReload,60000);return}}catch(e){}
   location.reload();
 }
-setTimeout(updCheck,8000);setInterval(updCheck,20*60*1000);
+updCheck();setInterval(updCheck,20*60*1000);
 /* ---------- tài liệu: xem PDF, Word, Excel... ngay trên trang ---------- */
 const DLK=STK.replace('study','docs');
 let D={list:null,err:'',loading:false,q:'',view:null,zoom:1,pg:1,np:0,sheet:0,pdf:null,obs:null,tok:0};
