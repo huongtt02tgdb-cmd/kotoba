@@ -198,3 +198,5 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .setc.done .sb:hover{border-color:var(--ok);color:var(--ok);box-shadow:0 4px 12px rgba(30,158,106,.18)}
 /* nút trong thẻ bài tập luôn dính đáy để các thẻ thẳng hàng */
 .setc .sb{margin-top:auto}
+/* .grid chỉ có 1 cột nội dung thì cho full chiều rộng (không chừa cột sidebar trống) */
+.grid>div:only-child{grid-column:1/-1}
