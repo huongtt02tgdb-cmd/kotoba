@@ -1101,7 +1101,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101542';
+const APP_BUILD='202610101549';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
@@ -1293,7 +1293,7 @@ function cbSend(){
   CB.msgs.push({r:'u',t});
   i.value='';
   CB.busy=true;cbRender();
-  const url=(window.CB_API||localStorage.getItem('kotoba-cb-url')||'https://kotoba-chatbot.myan1-kotoba.workers.dev').trim();
+  const url=(window.CB_API||localStorage.getItem('kotoba-cb-url')||'https://kotoba-chatbot.myanl-kotoba.workers.dev').trim();
   if(!url){
     setTimeout(()=>{
       CB.busy=false;
