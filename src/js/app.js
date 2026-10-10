@@ -286,7 +286,7 @@ Object.assign(GPT,{"10": {"1": "N に N が あります／います", "2": "N �
 /* ---------- nhập thêm bài tập ngữ pháp từ file ---------- */
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
 const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='read'?'on':''}" onclick="setTab('read')">Đọc hiểu</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
-const setTab=t=>{tab=t;render()};
+const setTab=t=>{tab=t;RP=null;render()};
 const gLessons=()=>[...new Set(GD.map(q=>q.l))].sort((a,b)=>a-b);
 const gPool=()=>GD.filter(q=>gcfg.ls.has(q.l)&&(!gcfg.pt.size||gcfg.pt.has(q.l+'.'+q.g))&&gcfg.sk.has(q.s));
 function gTog(kind,v){
