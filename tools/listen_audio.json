@@ -4,35 +4,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はじめまして。わたしはアンです。ベトナム人です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はじめまして。わたしはヤマダです。日本人です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ヤマダさんは会社員ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、わたしはさくら会社の会社員です。アンさんは？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしも会社員です。ふじ会社の会社員です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。アンさんはエンジニアですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、エンジニアです。ヤマダさんは？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしは銀行員です。"
    }
   ],
@@ -132,35 +132,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "こちらは田中さんです。日本人です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "田中さんは銀行員ですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、銀行員です。さくら銀行の銀行員です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。こちらはどなたですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "こちらはリンさんです。ベトナム人です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "リンさんはナースですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、ナースです。ふじ病院のナースです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。"
    }
   ],
@@ -172,43 +172,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "これは何ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "これは本です。日本語の本です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "それは何ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "それは辞書です。英語の辞書です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あれは何ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あれは時計です。とてもいい時計です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "この時計はだれのですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "この時計は田中さんの時計です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。この本は田中さんの本ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、この本はわたしの本です。"
    }
   ],
@@ -304,35 +304,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、わたしのかぎはどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あなたのかぎですか。このかぎですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、このかぎじゃありません。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そのかぎですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、そのかぎじゃありません。あのかぎですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、あのかぎです。あなたのかぎです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ああ、どうもありがとうございます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "どういたしまして。"
    }
   ],
@@ -344,39 +344,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません、トイレはどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "トイレはあそこです。エレベーターのとなりです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "受付はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "受付はここです。ロビーのとなりです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "会議室はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "会議室はそこです。事務所のとなりです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "食堂はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "食堂はあちらです。会議室のとなりです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "どうもありがとうございます。"
    }
   ],
@@ -476,35 +476,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません、その電話を見せてください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、どうぞ。この電話は新しい電話です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "この電話はいくらですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "この電話は三万円です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "高いですね。あの電話はいくらですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あの電話は二万円です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "じゃあ、あの電話をください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、ありがとうございます。"
    }
   ],
@@ -516,35 +516,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "田中さんは毎朝何時に起きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしは毎朝六時に起きます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何時に会社へ行きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "八時に会社へ行きます。電車で行きます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何時に晩ご飯を食べますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "七時に晩ご飯を食べます。うちで食べます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何時に寝ますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "十一時に寝ます。毎日十一時に寝ます。"
    }
   ],
@@ -564,39 +564,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません、銀行は何時から何時までですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "銀行は九時から三時までです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "土曜日も九時からですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、土曜日は休みです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "郵便局は何時までですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "郵便局は五時までです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "郵便局は何時からですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "九時からです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "どうもありがとうございます。"
    }
   ],
@@ -648,35 +648,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きのうは何をしましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "きのうはデパートへ行きました。友達と行きました。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何時に行きましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "十時に行きました。三時に帰りました。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何を買いましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "かばんを買いました。とてもいいかばんです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "おとといは何をしましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "おとといはうちで休みました。テレビを見ました。"
    }
   ],
@@ -688,35 +688,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません、学校へどうやって行きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしは電車で行きます。あなたはどうやって行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしはバスで行きます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "学校は何時に始まりますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "九時に始まります。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしは八時半に学校へ来ます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしも八時半に来ます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "じゃあ、八時半に学校で会いましょう。"
    }
   ],
@@ -816,35 +816,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "今週の金曜日に映画を見に行きませんか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。何時に行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "夜の七時に行きましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "どうやって行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "地下鉄で行きましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わかりました。金曜日の夜七時に駅で会いましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、楽しみにしています。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしも楽しみにしています。"
    }
   ],
@@ -856,31 +856,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "昼ご飯は何を食べますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "魚とご飯を食べます。あなたは何を食べますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "私は肉とパンを食べます。飲み物は何を飲みますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "お茶を飲みます。あなたは何を飲みますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "私はビールを飲みます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。私もビールを飲みましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。じゃ、食堂へ行きましょう。"
    }
   ],
@@ -976,47 +976,47 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "来週、友達に会います。お土産を買います。一緒にデパートへ行きませんか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。いつ行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "土曜日の午後3時に行きましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わかりました。何を買いますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "チョコレートとコーヒーを買います。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。私も友達にお土産を買います。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何を買いますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "本と雑誌を買います。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "昼ご飯もデパートで食べましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。何を食べますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "パンを食べます。ジュースを飲みます。"
    }
   ],
@@ -1028,35 +1028,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きょうは田中さんの誕生日ですね。これ、プレゼントです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "どうもありがとうございます。見てもいいですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、どうぞ。ベトナムのコーヒーです。デパートで買いました。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "もう飲みましたか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、まだです。今から一緒に飲みましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。じゃ、今飲みましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きょうは休みですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、休みです。うちで一緒に飲みましょう。"
    }
   ],
@@ -1168,43 +1168,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "Ｂさんの町はきれいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、きれいな町です。海があります。とても静かです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。夏はにぎやかですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、夏はにぎやかです。冬は寒いです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "食べ物はおいしいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、魚がとてもおいしいです。そして、人は親切です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "便利ですか。デパートはありますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、大きいデパートがあります。安い店もあります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "電車で行きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。２時間ぐらいです。あまり遠くないです。"
    }
   ],
@@ -1264,43 +1264,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "このレストランは有名ですよ。魚がおいしいです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。私は魚が好きです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "昼はにぎやかです。晩は静かです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。何がおいしいですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "魚がとてもおいしいですよ。そして、安いです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "魚をください。飲み物はビールがいいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ビールはあまり冷たくないですよ。水はいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "水をください。いくらですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "肉もおいしいですよ。２０００円です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "安いですね。"
    }
   ],
@@ -1320,51 +1320,51 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "Ｂさんの家はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "駅から歩いて１０分です。とても便利です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "家は大きいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、あまり大きくないです。きれいな家です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "部屋に何がありますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "テレビとパソコンがあります。そして、本があります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。あした、お花見に行きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。桜はきれいですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "とてもきれいですよ。人はにぎやかです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あした行きます。何時に会いますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "１０時に駅で会います。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わかりました。いいですね。"
    }
   ],
@@ -1376,39 +1376,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あなたは音楽が好きですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、とても好きです。でも、歌は下手です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。私は歌が上手です。よく歌います。一緒にカラオケに行きませんか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。いつ行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "土曜日の午後3時はどうですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "3時はだめですか。3時半はどうですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですよ。駅のカラオケはとても安いですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。じゃ、土曜日の3時半に駅で会いましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、わかりました。"
    }
   ],
@@ -1504,39 +1504,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あなたは料理が好きですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、好きです。でも、下手です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "私も料理は下手です。どうして料理が好きですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "母の料理がおいしいからです。毎日、母と一緒に料理をします。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。映画は好きですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、とても好きです。よく映画を見ます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "私は映画があまり好きではありません。あまりわからないからです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。じゃ、日曜日に一緒に映画を見ませんか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。行きましょう。"
    }
   ],
@@ -1548,35 +1548,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません、会議室はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "会議室は受付の隣です。エレベーターの右にあります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。トイレはどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "トイレはロビーの近くです。喫茶店の前ですよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わかりました。どうも。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "こちらがあなたの事務所です。机やいすなどがあります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きれいな事務所ですね。私の机はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あなたの机は窓の近くにあります。"
    }
   ],
@@ -1688,43 +1688,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いらっしゃいませ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あのう、りんごはありますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、こちらです。新しいりんごですよ。大きくておいしいですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええと、りんごをみっつください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、りんごがみっつですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あのう、みかんもください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "みかんはひとつだけですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、みかんをいつつください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、りんごがみっつと、みかんがいつつですね。全部で八つですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、お願いします。どうも。"
    }
   ],
@@ -1840,39 +1840,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きのう、海へ行きました。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あ、そうですか。だれと行きましたか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "家族と行きました。父と母と兄と行きました。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "天気はよかったですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ええ、とてもよかったです。晴れでした。海はきれいでした。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。何を食べましたか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、魚を食べました。とてもおいしかったです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "写真をとりましたか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、たくさんとりました。"
    }
   ],
@@ -1988,39 +1988,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、すみません。このかばんを見せてください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、どうぞ。とてもいいかばんですよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ええと、ちょっと小さいですね。大きいのがほしいです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。こちらのかばんは大きいですよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ああ、いいですね。とてもきれいですね。いくらですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "8000円です。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "じゃ、これをください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、わかりました。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "どうもどうも。"
    }
   ],
@@ -2112,39 +2112,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません。この駅の近くにスーパーはありますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、ありますよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、スーパーはどこですか。教えてください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "まっすぐ行ってください。右に大きいスーパーがあります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ああ、そうですか。ありがとうございます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "あの、荷物が重いですね。手伝いますよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですか。お願いします。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "スーパーに行きます。それから、銀行にも行きます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうですか。じゃ、行きましょう。"
    }
   ],
@@ -2284,31 +2284,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、すみません。ここで写真をとってもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、いいですよ。どうぞ、たくさんとってください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとうございます。あのう、中でタバコをすってもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、すってはいけません。外ですってください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わかりました。あのう、もう聞いてもいいですか。美術館の中でご飯を食べてもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、食べてはいけません。レストランは2かいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。わかりました。ありがとうございました。"
    }
   ],
@@ -2360,31 +2360,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、すみません。あなたの携帯電話をかりてもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、いいですよ。どうぞ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとう。あのう、ここで電話をかけてもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、いいですよ。ゆっくり話してください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとう。あ、あのう、ここでタバコをすってもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "うーん、ちょっと。うちではタバコをすってはいけません。外ですってください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あ、そうですか。すみません。じゃ、外ですいます。"
    }
   ],
@@ -2404,31 +2404,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、すみません。寮でパーティーをしてもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "パーティーですか。昼はいいですよ。でも、夜はしてはいけません。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。あのう、友達の部屋でお酒を飲んでもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、いいですよ。でも、タバコをすってはいけませんよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わかりました。あのう、もう聞いてもいいですか。夜は何時まで起きてもいいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "12時までですよ。12時から朝まで静かにしてください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、わかりました。ありがとうございます。"
    }
   ],
@@ -2440,27 +2440,27 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "おはようございます。毎日電車で会社へ行きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。まず家から駅へ行って、それから電車に乗ります。つぎに新宿で電車を乗り換えます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "大変ですね。何分ぐらいかかりますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "40分ぐらいです。アンさんはどこで電車を降りますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしは渋谷で降ります。会社は駅の前です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。わたしは東京駅で降ります。会社は駅から5分です。"
    }
   ],
@@ -2524,35 +2524,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ミラーさんですか。アンです。おはようございます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "アンさん、おはようございます。何ですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "日曜日にジョギングをしませんか。朝7時に公園で会いましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。何時に終わりますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "9時に終わります。それから一緒に朝ごはんを食べましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わかりました。アンさんはジョギングが上手ですね。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、まだまだです。じゃ、日曜日に会いましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、日曜日に会いましょう。"
    }
   ],
@@ -2564,35 +2564,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "おはようございます。どうしましたか。かおが 赤いですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。今朝から 熱が あります。頭も 痛いです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。かぜですね。熱が ありますから、今日は 会社に 行かなくてもいいですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。でも 病院に 行きます。保険証を 持っていきます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか。薬を 飲みましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいえ、まだ 飲んでいません。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "病院で 薬を もらわなければなりませんね。お大事に。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。"
    }
   ],
@@ -2660,31 +2660,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あした 日本語の テストが あります。いっしょに 勉強しませんか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。でも わたしは いつも ことばを 忘れます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "大丈夫ですよ。いっしょに れんしゅうしましょう。まず、この カードを 見てください。辞書は 持ってこなくてもいいですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。「おぼえます」…「おぼえます」…覚えました。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。つぎは「わすれます」です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "「わすれます」…覚えました。でも テストの前に もう一度 れんしゅうしなければなりませんね。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ええ。いっしょに がんばりましょう。"
    }
   ],
@@ -2696,31 +2696,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "リンさん、しゅみはなんですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしのしゅみはピアノです。5さいからピアノをひくことができます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すごいですね。わたしはうたをうたうことがすきです。まいにちうたいます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしもカラオケがすきです。それから、切手をあつめています。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "切手ですか。おもしろいですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。いろいろな国の切手をあつめることができます。ぜひ見に来てください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、ぜひ見に行きます。"
    }
   ],
@@ -2804,31 +2804,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "マイさんはまいにち日記を書きますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、書きます。ばんごはんを食べてから、日記を書きます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。わたしは日記を書くことがなかなかできません。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "わたしもまえはできませんでしたが、まいにち少し書きます。書くことはたのしいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですね。わたしもはじめたいです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ぜひはじめてください。あしたから書きましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、ぜひ書きます。"
    }
   ],
@@ -2840,39 +2840,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "もうすぐ 週末ですね。高尾山に 登りませんか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。高尾山は どこに ありますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "うちの 近くです。電車で 1時間です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "朝、何時に 起きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "6時に 起きます。7時の 電車に 乗ります。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "山で 何を しますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "登ったり、写真を 撮ったりします。昼ごはんも 食べます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "夜は どうしますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ホテルに 泊まります。おいしい ものを いっしょに 食べましょう。"
    }
   ],
@@ -2944,39 +2944,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "おかげさまで、仕事が 終わりました。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "よかったですね。ビールで 乾杯しましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "乾杯！"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "おいしい ものを 食べたり、飲んだりしましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "この 食べ物は 私が 作りました。どうぞ、たくさん 食べて ください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。とても おいしいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "そうですか、よかったです。こんどは お茶を 飲みましょう。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "明日も 仕事ですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、明日は 休みです。ゆっくり します。"
    }
   ],
@@ -2988,43 +2988,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "来月、アメリカへ旅行に行くんだけど、ビザが要るんだよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "え？わたしはビザが要らないと聞いたけど。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ううん、要るんだよ。きのうインターネットで調べたんだ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "そうか。じゃあ、どうするの？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "来週、ビザの書類を書くよ。書類がたくさんあるけど、手伝ってくれない？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいよ。いつ会うの？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "火曜日の午後と水曜日の午後と、どっちがいい？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "火曜日がいいよ。何時に会うの？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "午後2時にうちへ来て。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "うん、わかった。じゃあ、火曜日にね。"
    }
   ],
@@ -3124,43 +3124,43 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ねえ、明日の試験の宿題、もうした？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ううん、まだだよ。難しくて、よくわからないんだ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしもだよ。よかったら、みんなで一緒にしない？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいね！どこでするの？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "図書館はどう？静かだしいいよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいよ。何時にするの？"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "3時はどう？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいよ。じゃあ、3時に図書館の前でね。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "うん。わからない問題や言葉は、みんなで話さない？"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "うん、いいよ。じゃあ、明日3時にね。"
    }
   ],
@@ -3172,27 +3172,27 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "きのう、田中さんに会いました。久しぶりです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ああ、田中さん。あした、お祭りがあると言っていましたね。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい。「ごご三時から、駅の前でお祭りがあります。ぜひ来てください」と言いました。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "私も行きたいです。お祭りは楽しいと思いますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "田中さんは「食べ物がたくさんあって、本当に楽しいですよ」と言いました。たぶん音楽もあると思います。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "本当ですか。私はきっと行きます。いっしょに行きましょう。"
    }
   ],
@@ -3212,27 +3212,27 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あした、会社で試合がありますね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。部長は「あしたはきっと勝ちます」と言っていましたよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "本当ですか。私はたぶん負けると思います。去年も負けましたから。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "でも、課長は「最近、みんなで練習しましたから、きっと勝つと思います」と言いましたよ。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "本当ですか。もちろん、私も試合を見ます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "試合はごご二時からです。公園でありますよ。"
    }
   ],
@@ -3252,31 +3252,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あ、鈴木さんですか。久しぶりですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ああ、山本さん。久しぶりです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "去年、鈴木さんは「来年、留学します」と言いましたね。留学は楽しかったですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、とても楽しかったです。毎日、新しい友達と話しました。でも、はじめは難しかったです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "本当ですか。今は何をしていますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "今は会社員です。デザインがしたいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "デザインですか。きっとできますよ。"
    }
   ],
@@ -3288,51 +3288,51 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いらっしゃいませ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "このセーターを買いたいです。見せてください。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、どうぞ。赤いセーターですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "着てもいいですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、どうぞ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いくらですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "三千五百円です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ちょっと高いですね。小さいセーターはありますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、こちらです。黒いセーターです。二千八百円です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "よく似合いますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、とてもよく似合いますよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "じゃあ、黒いのをください。"
    }
   ],
@@ -3352,39 +3352,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "土曜日は田中さんの誕生日です。ケーキを買いたいですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。パーティーをしませんか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。土曜日の夜はどうですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "土曜日の夜は都合が悪いです。日曜日はどうですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "日曜日は大丈夫です。都合がいいです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "じゃあ、日曜日の三時にうちでパーティーをしましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "わたしはケーキを買います。母が作ったケーキはおいしいですから。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "お弁当も作りたいです。十個作ります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "楽しみですね。"
    }
   ],
@@ -3404,35 +3404,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "母の誕生日に何をあげたいですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "帽子をあげたいです。母はよく帽子をかぶりますから。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "この青い帽子はどうですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。でも、母はめがねをかけています。帽子よりめがねがいいですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "じゃあ、このめがねはどうですか。母がかけているめがねとよく似ていますよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ほんとうですね。いくらですか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "二千円です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "安いですね。じゃあ、これにします。"
    }
   ],
@@ -3444,39 +3444,39 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すみません。駅はどこですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "駅ですか。ここをまっすぐ行きます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "次の信号を右へ曲がります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "信号を右ですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ。それから小さい橋を渡ります。橋を渡って、交差点で左へ曲がります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "交差点で左ですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。左へ曲がって、まっすぐ行きます。右に大きい建物があります。駅はその建物の隣です。歩いて10分ぐらいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとうございます。"
    }
   ],
@@ -3584,27 +3584,27 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "こんにちは。今日は元気がないですね。どうしましたか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "きのうの晩から頭が痛いんです。熱もあります。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "それは大変ですね。病院へ行きましょう。わたしが連れて行ってあげます。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "本当ですか。ありがとうございます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "薬も買ってきてあげますから、心配しないでください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "すみません。いつも親切にしてくれて、ありがとうございます。"
    }
   ],
@@ -3624,35 +3624,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "山田さん、田中さんを紹介します。田中さんはベトナム語が上手ですよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はじめまして、山田です。よろしくお願いします。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "田中さんは親切ですから、いろいろ説明してくれますよ。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。今日、会社の案内をしてもらえますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ええ、田中さんが案内してくれます。午後3時からです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "3時に会議室ですね。行きます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "あのう、会社の地図を書いてあげましょうか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、お願いします。"
    }
   ],
@@ -3672,31 +3672,31 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "お母さん、あしたから出張です。準備を手伝ってください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですよ。何を持って行きますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "まず、パソコンと本です。他に、薬もいります。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "全部カバンに入れてあげます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとう。あしたは朝7時の電車です。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "じゃあ、駅まで送ってあげます。一緒に行きましょう。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、お願いします。よかったです。お母さん、いつもありがとう。"
    }
   ],
@@ -3708,35 +3708,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "もし一億円あったら、何をしますか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "うーん、まず世界旅行をします。Aさんは。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "私は新しい家を買います。そして、両親に車をプレゼントします。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "いいですね。お金がたくさんあったら、仕事をやめますか。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいえ、やめません。でも、時間がもっとあったら、大学で勉強したいです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "私もです。チャンスがあったら、日本語の先生になりたいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "すてきですね。がんばってください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。Aさんも、夢が叶うといいですね。"
    }
   ],
@@ -3756,35 +3756,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "田中さん、来月から大阪に転勤ですね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい。三年間、色々お世話になりました。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "こちらこそ。新しい仕事も、がんばってください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ありがとうございます。山田さんはどうぞお元気で。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "ありがとうございます。時間があったら、遊びに来てください。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ、ぜひ。おいしい店があったら、教えますね。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "はい、待っています。電車に乗ったら、連絡してくださいね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、分かりました。では、さようなら。"
    }
   ],
@@ -3804,35 +3804,35 @@
   "kind": "dialogue",
   "turns": [
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "さくらさん、最近よく考えますか、将来のこと。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、よく考えます。会社をやめて、田舎に帰りたいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "どうしてですか。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "田舎の生活は静かで、意味があると思います。チャンスがあったら、田舎で小さい店を開きたいです。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "いいですね。私も時々考えます。でも、東京の仕事も好きです。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "ええ。よく考えて、決めます。"
    },
    {
-    "voice": "ja-JP-NanamiNeural",
+    "voice": "ja-JP-KeitaNeural",
     "text": "何か決めたら、教えてくださいね。"
    },
    {
-    "voice": "ja-JP-KeitaNeural",
+    "voice": "ja-JP-NanamiNeural",
     "text": "はい、ありがとうございます。"
    }
   ],
