@@ -226,6 +226,32 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .rd-pass h3{margin:0 0 10px;font-size:1.05rem}
 .rd-right .q{margin-bottom:12px}
 @media(max-width:820px){.rd-wrap{grid-template-columns:1fr}.rd-left{position:static;max-height:none}}
+
+/* ---------- CHATBOT AI ---------- */
+.cb-fab{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:24px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:9999;transition:transform .2s}
+.cb-fab:hover{transform:scale(1.08)}
+.cb-panel{position:fixed;right:20px;bottom:88px;width:360px;max-width:calc(100vw - 40px);height:480px;max-height:calc(100vh - 120px);background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden;z-index:9998}
+.cb-head{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.cb-head .ghost{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:4px 8px}
+.cb-ctx{background:#f0f4ff;padding:8px 12px;font-size:12px;color:#555;border-bottom:1px solid #e0e0e0;display:flex;justify-content:space-between;align-items:center}
+.cb-ctx button{background:none;border:none;cursor:pointer;color:#999}
+.cb-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.cb-msg{display:flex}
+.cb-msg.u{justify-content:flex-end}
+.cb-msg.ai{justify-content:flex-start}
+.cb-bub{max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;word-break:break-word}
+.cb-msg.u .cb-bub{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-bottom-right-radius:4px}
+.cb-msg.ai .cb-bub{background:#f1f3f5;color:#333;border-bottom-left-radius:4px}
+.cb-bub.typing{display:flex;gap:4px;padding:14px 16px}
+.cb-bub.typing span{width:8px;height:8px;border-radius:50%;background:#999;animation:cbblink 1.2s infinite}
+.cb-bub.typing span:nth-child(2){animation-delay:.2s}
+.cb-bub.typing span:nth-child(3){animation-delay:.4s}
+@keyframes cbblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.cb-input{display:flex;gap:8px;padding:12px;border-top:1px solid #e0e0e0}
+.cb-input input{flex:1;border:1px solid #ddd;border-radius:20px;padding:10px 16px;font-size:14px;outline:none}
+.cb-input input:focus{border-color:#667eea}
+.cb-input .pri{border-radius:20px;padding:10px 20px}
+@media(max-width:480px){.cb-panel{right:10px;bottom:78px;width:calc(100vw - 20px)}}
 </style>
 </head>
 <body>
@@ -1074,7 +1100,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101416';
+const APP_BUILD='202610101434';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
@@ -1222,6 +1248,59 @@ async function dPrefetch(){
   for(const x of L){try{const r=await fetch(dUrl(x.f));if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}n++;if(st)st.textContent=`Đã tải ${n}/${L.length}…`}
   if(st)st.textContent=bad?`Xong, ${bad} file chưa tải được.`:'Xong. Đã lưu để đọc khi không có mạng.';
 }
+
+
+
+// nút Hỏi AI trong phần chấm bài
+function askAI(q){
+  const safe=String(q||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');
+  return `<button class="btn askai" onclick="cbOpenWithCtx('${safe}')">\u{1F916} Hỏi AI</button>`;
+}
+
+/* ---------- CHATBOT AI ---------- */
+let CB={open:false,msgs:[],ctx:null,busy:false};
+function cbRender(){
+  let w=document.getElementById('cb-wrap');
+  if(!w){w=document.createElement('div');w.id='cb-wrap';document.body.appendChild(w)}
+  if(!CB.open){w.innerHTML='<button class="cb-fab" onclick="cbToggle()" aria-label="Chat với AI">\u{1F4AC}</button>';return}
+  const m=CB.msgs.map(x=>'<div class="cb-msg '+x.r+'"><div class="cb-bub">'+esc(x.t).replace(/\n/g,'<br>')+'</div></div>').join('');
+  const typing=CB.busy?'<div class="cb-msg ai"><div class="cb-bub typing"><span></span><span></span><span></span></div></div>':'';
+  const ctx=CB.ctx?'<div class="cb-ctx">Đang hỏi về: "'+esc(CB.ctx.q.slice(0,60))+'..." <button onclick="CB.ctx=null;cbRender()">\u2715</button></div>':'';
+  w.innerHTML='<button class="cb-fab" onclick="cbToggle()" aria-label="Đóng chat">\u2715</button>'
+    +'<div class="cb-panel"><div class="cb-head"><span>\u{1F916} Trợ lý AI</span><button class="ghost" onclick="cbToggle(false)">\u2715</button></div>'
+    +ctx+'<div class="cb-msgs" id="cb-msgs">'+m+typing+'</div>'
+    +'<div class="cb-input"><input id="cb-in" placeholder="Hỏi gì đó..." onkeydown="cbKey(event)" autocomplete="off"><button class="pri" onclick="cbSend()">Gửi</button></div></div>';
+  cbScroll();
+}
+function cbToggle(force){
+  CB.open=force!==undefined?force:!CB.open;
+  cbRender();
+  if(CB.open)setTimeout(()=>{const i=document.getElementById('cb-in');if(i)i.focus()},100);
+}
+function cbOpenWithCtx(q){
+  CB.ctx={q};
+  if(!CB.open)CB.open=true;
+  CB.msgs.push({r:'ai',t:'Chào bạn! Mình thấy bạn đang hỏi về câu này:\n\n"'+q.slice(0,200)+'\"\n\nBạn thắc mắc gì cứ hỏi nhé.'});
+  cbRender();
+  setTimeout(()=>{const i=document.getElementById('cb-in');if(i)i.focus()},100);
+}
+function cbScroll(){const e=document.getElementById('cb-msgs');if(e)e.scrollTop=e.scrollHeight}
+function cbSend(){
+  const i=document.getElementById('cb-in');
+  const t=(i.value||'').trim();
+  if(!t||CB.busy)return;
+  CB.msgs.push({r:'u',t});
+  i.value='';
+  CB.busy=true;cbRender();
+  setTimeout(()=>{
+    CB.busy=false;
+    CB.msgs.push({r:'ai',t:'AI chưa được kết nối. Bạn cần:\n1. Tạo API key tại Google AI Studio (miễn phí)\n2. Deploy Cloud Function\n\nXong là mình trả lời được ngay!'});
+    cbRender();
+  },800);
+}
+function cbKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();cbSend()}}
+// khởi tạo nút chat khi tải trang
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cbRender);else cbRender();
 
 render();
 </script>
