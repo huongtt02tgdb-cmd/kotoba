@@ -29,9 +29,11 @@ RATE = "-10%"
 def build_ssml(turns):
     """Tạo SSML với voice xen kẽ cho hội thoại."""
     parts = ['<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ja-JP">']
-    for t in turns:
+    for i, t in enumerate(turns):
         text = sax.escape(t["text"])
         parts.append(f'<voice name="{t["voice"]}"><prosody rate="{RATE}">{text}</prosody></voice>')
+        if i < len(turns) - 1:
+            parts.append('<break time="600ms"/>')
     parts.append('</speak>')
     return ''.join(parts)
 
