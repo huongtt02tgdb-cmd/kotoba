@@ -572,12 +572,16 @@ let rLesson=1,RP=null;
 function rLessons(){return[...new Set(RD.map(r=>r.l))].sort((a,b)=>a-b)}
 function rhome(){
   const L=rLessons();if(!L.length)return`${tabs('read')}<div class="panel"><h2>Đọc hiểu</h2><p class="hint">Chưa có bài đọc nào.</p></div>`;
-  if(!L.includes(rLesson))rLesson=L[0];
+  const card=l=>{
+    const ps=RD.filter(r=>r.l===l),nq=ps.reduce((t,r)=>t+r.questions.length,0);
+    const titles=ps.map(p=>`<span class="sk">${esc(p.title)}</span>`).join('');
+    return`<div class="setc"><div class="sh"><span class="sno">📖</span><div><b>Bài ${l}</b><div class="hint" style="margin:0">${ps.length} bài đọc · ${nq} câu hỏi</div></div></div><div class="sks">${titles}</div><button class="pri sb" onclick="rPlay(${l})">Làm bài</button></div>`;
+  };
   return`${tabs('read')}
 <div class="grid"><div>
-<div class="panel"><h2>Đọc hiểu</h2><div class="chips">${L.map(x=>{const n=RD.filter(r=>r.l===x).reduce((t,r)=>t+r.questions.length,0);return`<button class="chip ${x===rLesson?'on':''}" onclick="rLesson=${x};render()">Bài ${x}<i>${n} câu</i></button>`}).join('')}</div>
-<p class="hint">Ấn vào bài để làm. Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), mỗi bài đọc 10 câu hỏi. Bài đọc hiện bên trái, câu hỏi bên phải.</p>
-<div class="row"><button class="pri" onclick="rPlay(rLesson)">Vào Bài ${rLesson} →</button></div></div>
+<div class="panel"><h2>Đọc hiểu</h2>
+<p class="hint" style="margin:-4px 0 12px">Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), mỗi bài đọc 10 câu hỏi. Bài đọc hiện bên trái, câu hỏi bên phải.</p>
+<div class="setgrid">${L.map(card).join('')}</div></div>
 </div>
 </div>`;
 }
@@ -1005,7 +1009,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101149';
+const APP_BUILD='202610101151';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
