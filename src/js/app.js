@@ -286,7 +286,7 @@ Object.assign(GPT,{"10": {"1": "N に N が あります／います", "2": "N �
 /* ---------- nhập thêm bài tập ngữ pháp từ file ---------- */
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
 const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='read'?'on':''}" onclick="setTab('read')">Đọc hiểu</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
-const setTab=t=>{tab=t;RP=null;render()};
+const setTab=t=>{tab=t;render()};
 const gLessons=()=>[...new Set(GD.map(q=>q.l))].sort((a,b)=>a-b);
 const gPool=()=>GD.filter(q=>gcfg.ls.has(q.l)&&(!gcfg.pt.size||gcfg.pt.has(q.l+'.'+q.g))&&gcfg.sk.has(q.s));
 function gTog(kind,v){
@@ -335,54 +335,41 @@ function gStart(list,key,title){
   L.forEach(q=>{if(q.t==='order'){let sh;let g=0;do{sh=shuf(q.tk.map((_,i)=>i))}while(g++<20&&q.tk.length>1&&sh.every((v,i)=>v===i));q.sh=sh}});
   G={list:L,ans:{},fin:false,warned:false,log:[],key:key||null,title:title||'Luyện tập ngữ pháp'};scrollTo(0,0);render();
 }
-/* ---------- đọc hiểu: bài đọc trái, câu hỏi phải ---------- */
-let rLesson=1,RP=null;
+/* ---------- đọc hiểu ---------- */
+let rLesson=1;
 function rLessons(){return[...new Set(RD.map(r=>r.l))].sort((a,b)=>a-b)}
 function rhome(){
   const L=rLessons();if(!L.length)return`${tabs('read')}<div class="panel"><h2>Đọc hiểu</h2><p class="hint">Chưa có bài đọc nào.</p></div>`;
   if(!L.includes(rLesson))rLesson=L[0];
+  const ps=RD.filter(r=>r.l===rLesson);
+  const card=p=>`<div class="setc"><div class="sh"><span class="sno">📖</span><div><b>${esc(p.title)}</b><div class="hint" style="margin:0">${p.questions.length} câu hỏi · ${p.text.length} ký tự</div></div></div><div class="sf"><button class="btn" onclick="rView(${p.l},${p.id})">Đọc</button> <button class="pri" onclick="rStart(${p.l},${p.id})">Làm bài</button></div></div>`;
   return`${tabs('read')}
 <div class="grid"><div>
-<div class="panel"><h2>Đọc hiểu</h2><div class="chips">${L.map(x=>{const n=RD.filter(r=>r.l===x).reduce((t,r)=>t+r.questions.length,0);return`<button class="chip ${x===rLesson?'on':''}" onclick="rLesson=${x};render()">Bài ${x}<i>${n} câu</i></button>`}).join('')}</div>
-<p class="hint">Ấn vào bài để làm. Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), mỗi bài đọc 10 câu hỏi. Bài đọc hiện bên trái, câu hỏi bên phải.</p>
-<div class="row"><button class="pri" onclick="rPlay(rLesson)">Vào Bài ${rLesson} →</button></div></div>
+<div class="panel"><h2>Chọn bài đọc hiểu</h2><div class="chips">${L.map(x=>`<button class="chip ${x===rLesson?'on':''}" onclick="rLesson=${x};render()">Bài ${x}</button>`).join('')}</div>
+<p class="hint">Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), dùng từ vựng và ngữ pháp từ Bài 1 đến bài hiện tại. Mỗi bài đọc có câu hỏi trắc nghiệm / điền từ.</p></div>
+<div class="panel"><div class="ph"><h2>Bài ${rLesson} · ${ps.length} bài đọc</h2></div>
+<div class="setgrid">${ps.map(card).join('')}</div>
+<div class="row" style="margin-top:14px"><button class="btn" onclick="rStartAll(${rLesson})">Làm cả ${ps.reduce((n,p)=>n+p.questions.length,0)} câu Bài ${rLesson}</button></div></div>
+<div id="rdv"></div>
 </div>
 </div>`;
 }
-function rPlay(l){
-  const ps=RD.filter(r=>r.l===l);if(!ps.length)return;
-  RP={l:l,pi:0,ans:{},fin:false};scrollTo(0,0);render();
+function rView(l,id){
+  const p=RD.find(x=>x.l===l&&x.id===id);if(!p)return;
+  const e=document.getElementById('rdv');if(!e)return;
+  e.innerHTML=`<div class="panel"><div class="ph"><h2>📖 ${esc(p.title)}</h2><button class="ghost" onclick="document.getElementById('rdv').innerHTML=''">Đóng</button></div><div class="jp" style="white-space:pre-line;line-height:2">${esc(p.text)}</div><div class="row" style="margin-top:12px"><button class="pri" onclick="rStart(${l},${id})">Làm ${p.questions.length} câu hỏi</button></div></div>`;
+  e.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function rSetPi(i){RP.pi=i;RP.ans={};RP.fin=false;render();const e=document.getElementById('rdq');if(e)e.scrollTop=0}
-function rMc(qi,j){if(RP.fin)return;RP.ans[qi]=j;render()}
-function rFill(qi,v){RP.ans[qi]=v}
-function rOK(q,a){
-  if(q.t==='mc')return a===q.a;
-  if(q.t==='fill')return q.a.some(x=>gn(x)===gn(a||''));
-  return false;
+function rStart(l,id){
+  const p=RD.find(x=>x.l===l&&x.id===id);if(!p)return;
+  const qs=p.questions.map(q=>({...q,l,g:0,rd:1,c:p.text,s:q.t}));
+  gStart(qs,'rd'+l+'-'+id,'Đọc hiểu Bài '+l+': '+p.title);
 }
-function rSubmit(){RP.fin=true;render();setTimeout(()=>{const e=document.getElementById('rdr');if(e)e.scrollIntoView({behavior:'smooth'})},50)}
-function rQuit(){RP=null;render()}
-function rPlayUI(){
-  const ps=RD.filter(r=>r.l===RP.l),p=ps[RP.pi],qs=p.questions,n=qs.length;
-  const done=Object.keys(RP.ans).length;
-  const score=RP.fin?qs.filter((q,i)=>rOK(q,RP.ans[i])).length:0;
-  const qcard=(q,i)=>{
-    const a=RP.ans[i],ok=RP.fin?rOK(q,a):null;
-    let body='';
-    if(q.t==='mc')body=`<div class="opts">${q.o.map((o,j)=>`<button class="opt jp ${a===j?'sel':''} ${RP.fin?(j===q.a?'ok':(a===j?'no':'')):''}" ${RP.fin?'disabled':''} onclick="rMc(${i},${j})"><b class="lt">${'ABCD'[j]||j+1}</b><span>${esc(o)}</span></button>`).join('')}</div>`;
-    else body=`<div class="fillrow jp"><span>${esc(q.q.split('___')[0]||'')}</span><input class="gin jp" autocomplete="off" ${RP.fin?'disabled':''} style="width:${Math.max(6,(q.a[0]||'').length*1.6+2)}ch" value="${esc(a||'')}" oninput="rFill(${i},this.value)"><span>${esc(q.q.split('___')[1]||'')}</span></div>`;
-    return`<section class="q pq ${ok===true?'ok':ok===false?'no':''}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${q.t}">${q.t==='mc'?'Trắc nghiệm':'Điền từ'}</span></div><div class="pbody">${body}</div>${RP.fin?`<div class="hint" style="margin-top:6px">${ok?'✓ Đúng':'✗ Sai — Đáp án: <b class="jp">'+esc(q.t==='mc'?q.o[q.a]:q.a[0])+'</b>'}<br>${esc(q.x||'')}</div>`:''}</section>`;
-  };
-  return`${tabs('read')}
-<div class="panel" id="rdr"><div class="ph"><h2>📖 Bài ${RP.l} · ${esc(p.title)}</h2><button class="ghost" onclick="rQuit()">✕ Thoát</button></div>
-<div class="chips" style="margin-bottom:12px">${ps.map((x,i)=>`<button class="chip ${i===RP.pi?'on':''}" onclick="rSetPi(${i})">Bài đọc ${i+1}<i>${x.questions.length} câu</i></button>`).join('')}</div>
-${RP.fin?`<div class="panel stcard" style="margin:0 0 12px"><h2>Kết quả: ${score}/${n}</h2><div class="prog"><i style="width:${n?score/n*100:0}%"></i></div></div>`:''}
-<div class="rd-wrap">
-<div class="rd-left"><div class="rd-pass"><h3>📖 ${esc(p.title)}</h3><div class="jp" style="white-space:pre-line;line-height:2.1">${esc(p.text)}</div></div></div>
-<div class="rd-right" id="rdq">${qs.map(qcard).join('')}
-<div class="row" style="margin-top:12px">${RP.fin?`<button class="btn" onclick="rSetPi(${RP.pi})">Làm lại</button>`:`<button class="pri" onclick="rSubmit()">Nộp bài (${done}/${n})</button>`}</div></div>
-</div></div>`;
+function rStartAll(l){
+  const ps=RD.filter(r=>r.l===l),qs=[];
+  ps.forEach(p=>p.questions.forEach(q=>qs.push({...q,l,g:0,rd:1,c:p.text,s:q.t})));
+  if(!qs.length)return;
+  gStart(qs,'rd'+l+'-all','Đọc hiểu Bài '+l+' (tất cả)');
 }
 const gquit=()=>{G=null;render()};
 let KM=null,KRE=null,KN=-1;
@@ -488,7 +475,7 @@ const gui=()=>G.fin?gresult():gpaper();
 function render(){
   if(!auOn()){$('#app').innerHTML=auGate();return}
   const tw=$('.tw'),st=tw?tw.scrollTop:0;
-  $('#app').innerHTML=G?gui():Q?quiz():RP?rPlayUI():tab==='gram'?ghome():tab==='read'?rhome():tab==='stat'?shome():tab==='docs'?dhome():home();
+  $('#app').innerHTML=G?gui():Q?quiz():tab==='gram'?ghome():tab==='read'?rhome():tab==='stat'?shome():tab==='docs'?dhome():home();
   if(!Q){const t2=$('.tw');if(t2)t2.scrollTop=st}
   if(Q&&Q.mode!=='test'&&(cm()==='ty'||cm()==='ls')&&!Q.state&&Q.i<Q.list.length){
     setTimeout(()=>$('#ans')?.focus());
@@ -775,6 +762,28 @@ addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')
 addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+/* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
+const APP_BUILD='__APP_BUILD__';
+let _updDone=false,_reloading=false;
+function updCheck(){
+  if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
+  fetch('sw.js',{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+    const m=/BUILD='(\d+)'/.exec(t);
+    if(m&&m[1]!==APP_BUILD)updAuto();
+  }).catch(()=>{});
+}
+function updAuto(){
+  _updDone=true;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!_reloading){_reloading=true;updSafeReload()}});
+  navigator.serviceWorker.getRegistration().then(r=>{if(r)r.update()});
+  setTimeout(()=>{if(!_reloading){_reloading=true;updSafeReload()}},30000);
+}
+function updSafeReload(){
+  // đang làm bài dở thì đợi, tránh mất tiến trình
+  try{if(typeof G!=='undefined'&&(G||Q||RP)){setTimeout(updSafeReload,60000);return}}catch(e){}
+  location.reload();
+}
+updCheck();setInterval(updCheck,20*60*1000);
 /* ---------- tài liệu: xem PDF, Word, Excel... ngay trên trang ---------- */
 const DLK=STK.replace('study','docs');
 let D={list:null,err:'',loading:false,q:'',view:null,zoom:1,pg:1,np:0,sheet:0,pdf:null,obs:null,tok:0};
