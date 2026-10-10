@@ -29,6 +29,8 @@ def main() -> None:
     app_js = app_js.replace('__VDEF_JSON__', read('data/vocab.json'))
     app_js = app_js.replace('__GD_JSON__', read('data/grammar.json'))
     app_js = app_js.replace('__RD_JSON__', read('data/reading.json'))
+    app_build = datetime.datetime.now().strftime('%Y%m%d%H%M')
+    app_js = app_js.replace('__APP_BUILD__', app_build)
 
     blocks = {
         '<!--BUILD:BLOCK:CSS_MAIN-->': '<style>' + read('css/main.css') + '</style>',
