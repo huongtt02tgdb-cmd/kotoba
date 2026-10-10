@@ -277,6 +277,7 @@ ${Q.wrong.length&&Q.mode!=='test'?`<div class="panel"><h2>Từ cần ôn thêm</
 }
 /* ---------- NGỮ PHÁP ---------- */
 const GD=/*GD*/__GD_JSON__/*GD*/;
+const RD=/*RD*/__RD_JSON__/*RD*/;
 const SK={nghe:'Nghe',doc:'Đọc',viet:'Viết',hieu:'Hiểu'};
 const GPT={1:{1:"N1 は N2 です",2:"N1 は N2 じゃありません",3:"N1 は ～ですか (だれ・なんさい)",4:"N も ～です",5:"N1 の N2"},2:{1:"これ・それ・あれ",2:"A ですか、B ですか",3:"N1 の N2 です (だれの)",4:"この・その・あの + N",5:"N1 の N2 (なんの)"},3:{1:"ここ・そこ・あそこ",2:"N1 は N2 (vị trí)",3:"N1 は どこ/どちらですか",4:"この・その・あの + N",5:"～いくらですか"},4:{1:"～時・～分です",2:"N(thời gian) は ～曜日です",3:"V ます・V ません・V ました",4:"N(thời gian) に V",5:"N1 から N2 まで"},5:{1:"N(địa điểm) へ 行きます・来ます・帰ります",2:"N(phương tiện) で 行きます・来ます・帰ります",3:"N(người) と V",4:"いつ / N(thời gian) に V",5:"N1 から N2 まで (ngày tháng)"},6:{1:"N を V",2:"N(địa điểm) で N を V",3:"V ませんか (rủ rê)",4:"V ましょう"},7:{1:"N で V (dụng cụ/cách thức)",2:"「～」は ～語で 何ですか",3:"N(người) に あげます・かします・おしえます",4:"N(người) に/から もらいます・かります・ならいます",5:"もう V ましたか"},8:{1:"N は Aいです・Aなです",2:"Aい/Aな + N",3:"あまり + phủ định",4:"～。そして、～ / ～が、～"},9:{1:"S は N が すき/きらい/じょうず/へた です",2:"S は N が あります/分かります",3:"どうして～か、～から"},10:{1:"N に N が あります／います",2:"N は N に あります／います（どこ）",3:"N の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく／あいだ に",4:"N や N［など］／なにが ありますか"},11:{1:"N を [số lượng] V ます (ひとつ・まい・だい)",2:"Đếm người: ひとり・ふたり・～にん／なんにん",3:"Khoảng thời gian: ～じかん／にち／しゅうかん／かげつ／ねん・かかります・やすみます・どのぐらい",4:"～に ～かい／N だけ／ぜんぶで"},12:{1:"Quá khứ của danh từ / tính từ な (でした・では ありませんでした)",2:"Quá khứ của tính từ い (かったです・くなかったです)",3:"So sánh hơn: より・ほう・どちら・どちらも",4:"So sánh nhất: いちばん"},13:{1:"N が ほしいです／ほしくないです",2:"V-たいです／V-たくないです",3:"N へ V-stem に いきます (mục đích)",4:"Hội thoại và đọc hiểu (ほしい・たい・に いきます)",5:"Ôn trộn Bài 10–13"},14:{1:"Động từ thể て (nhóm 1/2/3)",2:"V ています (đang diễn ra)",3:"V ています (thói quen / trạng thái)"},15:{1:"V てもいいですか (xin phép)",2:"V てはいけません (cấm)",3:"V ないでください (đừng làm)"},16:{1:"V1 てから、V2 (sau khi)",2:"Aい→Aくて / Aな→Aで / N+で (nối câu)"},17:{1:"V なくてもいいです (không cần)",2:"V なければなりません (phải làm)"},18:{1:"Động từ thể từ điển (辞書形)",2:"V ること ができます (có thể)"},19:{1:"V たことがあります (đã từng)",2:"V1 たり、V2 たりします (liệt kê)",3:"A くなります / に なります (trở nên)"},20:{1:"Thể thường của động từ",2:"Thể thường của tính từ・danh từ"},21:{1:"「Câu」+ と言います (tường thuật)",2:"Thể thường + でしょう? (xác nhận)"},22:{1:"Mệnh đề bổ nghĩa + N (định ngữ)"},23:{1:"Aい/Aな/N + とき (khi)",2:"V ると、〜 (cứ...thì)"},24:{1:"V てくれます (làm cho tôi)",2:"V てあげます (làm cho người khác)",3:"V てもらいます (được làm cho)"},25:{1:"V1 たら、V2 (nếu / sau khi)",2:"V ても (dù...cũng)"}};
 Object.assign(GPT,{"3": {"1": "ここ・そこ・あそこ", "2": "N1 は N2 (vị trí) です", "3": "N1 は どこ/どちら ですか", "4": "N1 の N2 (どこの)", "5": "～いくらですか"}, "4": {"1": "～じ ～ふん です", "2": "N は ～ようび です", "3": "時間 は V (ます・ません・ました・ませんでした)", "4": "N (thời gian) に V", "5": "N1 から N2 まで"}, "5": {"1": "N (địa điểm) へ いきます・きます・かえります", "2": "N (phương tiện) で", "3": "N (người) と", "4": "N (thời gian) に", "5": "～月～日 (たんじょうびは いつですか)"}, "6": {"1": "(S は) N を V (なにを・なにも)", "2": "～は 地点 で N を V", "3": "(いっしょに) V ませんか", "4": "V ましょう"}, "7": {"1": "N で V (phương tiện)", "2": "「từ/câu」は ～ごで なんですか", "3": "N (người nhận) に ～ V (あげます)", "4": "N (người cho) に/から ～ V (もらいます)", "5": "もう V ましたか"}, "8": {"1": "N は A い/A な です (khẳng định, phủ định, どうですか)", "2": "N1 は A い/A な N2 です (どんな N2)", "3": "あまり ～ない", "4": "～。そして、～ / ～が、～"}, "9": {"1": "S は N が すき/きらい/じょうず/へた", "2": "S は N が あります/わかります (+ よく・だいたい・すこし・あまり・ぜんぜん)", "3": "どうして ～か。 ～から。"}});
@@ -284,7 +285,7 @@ Object.assign(GPT,{"10": {"1": "N に N が あります／います", "2": "N �
 
 /* ---------- nhập thêm bài tập ngữ pháp từ file ---------- */
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
-const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
+const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='read'?'on':''}" onclick="setTab('read')">Đọc hiểu</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
 const setTab=t=>{tab=t;render()};
 const gLessons=()=>[...new Set(GD.map(q=>q.l))].sort((a,b)=>a-b);
 const gPool=()=>GD.filter(q=>gcfg.ls.has(q.l)&&(!gcfg.pt.size||gcfg.pt.has(q.l+'.'+q.g))&&gcfg.sk.has(q.s));
@@ -333,6 +334,42 @@ function gStart(list,key,title){
   const L=(list||shuf(GD)).map(q=>({...q}));
   L.forEach(q=>{if(q.t==='order'){let sh;let g=0;do{sh=shuf(q.tk.map((_,i)=>i))}while(g++<20&&q.tk.length>1&&sh.every((v,i)=>v===i));q.sh=sh}});
   G={list:L,ans:{},fin:false,warned:false,log:[],key:key||null,title:title||'Luyện tập ngữ pháp'};scrollTo(0,0);render();
+}
+/* ---------- đọc hiểu ---------- */
+let rLesson=1;
+function rLessons(){return[...new Set(RD.map(r=>r.l))].sort((a,b)=>a-b)}
+function rhome(){
+  const L=rLessons();if(!L.length)return`${tabs('read')}<div class="panel"><h2>Đọc hiểu</h2><p class="hint">Chưa có bài đọc nào.</p></div>`;
+  if(!L.includes(rLesson))rLesson=L[0];
+  const ps=RD.filter(r=>r.l===rLesson);
+  const card=p=>`<div class="setc"><div class="sh"><span class="sno">📖</span><div><b>${esc(p.title)}</b><div class="hint" style="margin:0">${p.questions.length} câu hỏi · ${p.text.length} ký tự</div></div></div><div class="sf"><button class="btn" onclick="rView(${p.l},${p.id})">Đọc</button> <button class="pri" onclick="rStart(${p.l},${p.id})">Làm bài</button></div></div>`;
+  return`${tabs('read')}
+<div class="grid"><div>
+<div class="panel"><h2>Chọn bài đọc hiểu</h2><div class="chips">${L.map(x=>`<button class="chip ${x===rLesson?'on':''}" onclick="rLesson=${x};render()">Bài ${x}</button>`).join('')}</div>
+<p class="hint">Mỗi bài có 4 bài đọc (đoạn văn + hội thoại), dùng từ vựng và ngữ pháp từ Bài 1 đến bài hiện tại. Mỗi bài đọc có câu hỏi trắc nghiệm / điền từ.</p></div>
+<div class="panel"><div class="ph"><h2>Bài ${rLesson} · ${ps.length} bài đọc</h2></div>
+<div class="setgrid">${ps.map(card).join('')}</div>
+<div class="row" style="margin-top:14px"><button class="btn" onclick="rStartAll(${rLesson})">Làm cả ${ps.reduce((n,p)=>n+p.questions.length,0)} câu Bài ${rLesson}</button></div></div>
+<div id="rdv"></div>
+</div>
+</div>`;
+}
+function rView(l,id){
+  const p=RD.find(x=>x.l===l&&x.id===id);if(!p)return;
+  const e=document.getElementById('rdv');if(!e)return;
+  e.innerHTML=`<div class="panel"><div class="ph"><h2>📖 ${esc(p.title)}</h2><button class="ghost" onclick="document.getElementById('rdv').innerHTML=''">Đóng</button></div><div class="jp" style="white-space:pre-line;line-height:2">${esc(p.text)}</div><div class="row" style="margin-top:12px"><button class="pri" onclick="rStart(${l},${id})">Làm ${p.questions.length} câu hỏi</button></div></div>`;
+  e.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function rStart(l,id){
+  const p=RD.find(x=>x.l===l&&x.id===id);if(!p)return;
+  const qs=p.questions.map(q=>({...q,l,g:0,rd:1,c:p.text,s:q.t}));
+  gStart(qs,'rd'+l+'-'+id,'Đọc hiểu Bài '+l+': '+p.title);
+}
+function rStartAll(l){
+  const ps=RD.filter(r=>r.l===l),qs=[];
+  ps.forEach(p=>p.questions.forEach(q=>qs.push({...q,l,g:0,rd:1,c:p.text,s:q.t})));
+  if(!qs.length)return;
+  gStart(qs,'rd'+l+'-all','Đọc hiểu Bài '+l+' (tất cả)');
 }
 const gquit=()=>{G=null;render()};
 let KM=null,KRE=null,KN=-1;
@@ -385,7 +422,7 @@ function gcard(i){
   else if(q.t==='order'){const u=a||[];body=`<div class="ordans jp">${u.length?u.map((j,n)=>`<button class="tok on" onclick="gUndo(${i},${n})">${esc(q.tk[j])}</button>`).join(''):'<span class="hint">Bấm các từ bên dưới theo thứ tự đúng</span>'}</div><div class="ordpool jp">${q.sh.map(j=>`<button class="tok" ${u.includes(j)?'disabled':''} onclick="gPush(${i},${j})">${esc(q.tk[j])}</button>`).join('')}</div>`}
   else body=`<input class="ty jp" autocomplete="off" placeholder="Gõ câu bạn nghe được" aria-label="Câu ${i+1}" value="${esc(a||'')}" oninput="gDict(${i},this.value)" style="margin:0">`;
   const ask=q.t==='tf'?`<div class="gq">Theo đoạn trên, câu sau đúng hay sai?</div><div class="gst jp">${esc(q.q)}</div>`:`<div class="gq">${esc(q.q)}</div>`;
-  return`<section class="q pq ${gDone(i)?'done':''}" id="g${i}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${q.s}">${SK[q.s]}</span><span class="qp">Mẫu ${q.l}.${q.g}${pn?' · '+esc(pn):''}</span></div>${q.c?`<div class="ctxb jp">${esc(q.c)}</div>`:''}${q.say?`<button class="spk bigs" type="button" data-t="${esc(q.say)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:''}${ask}<div class="pbody">${body}</div></section>`;
+  return`<section class="q pq ${gDone(i)?'done':''}" id="g${i}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${q.s}">${SK[q.s]}</span><span class="qp">${q.rd?'Đọc hiểu · Bài '+q.l:'Mẫu '+q.l+'.'+q.g}${pn&&!q.rd?' · '+esc(pn):''}</span></div>${q.c?`<div class="ctxb jp">${esc(q.c)}</div>`:''}${q.say?`<button class="spk bigs" type="button" data-t="${esc(q.say)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:''}${ask}<div class="pbody">${body}</div></section>`;
 }
 function gpaper(){
   const n=G.list.length,a=G.list.filter((_,i)=>gDone(i)).length;
@@ -438,7 +475,7 @@ const gui=()=>G.fin?gresult():gpaper();
 function render(){
   if(!auOn()){$('#app').innerHTML=auGate();return}
   const tw=$('.tw'),st=tw?tw.scrollTop:0;
-  $('#app').innerHTML=G?gui():Q?quiz():tab==='gram'?ghome():tab==='stat'?shome():tab==='docs'?dhome():home();
+  $('#app').innerHTML=G?gui():Q?quiz():tab==='gram'?ghome():tab==='read'?rhome():tab==='stat'?shome():tab==='docs'?dhome():home();
   if(!Q){const t2=$('.tw');if(t2)t2.scrollTop=st}
   if(Q&&Q.mode!=='test'&&(cm()==='ty'||cm()==='ls')&&!Q.state&&Q.i<Q.list.length){
     setTimeout(()=>$('#ans')?.focus());
