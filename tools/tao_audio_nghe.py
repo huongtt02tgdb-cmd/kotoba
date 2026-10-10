@@ -23,7 +23,7 @@ try:
 except ImportError:
     sys.exit("Cần cài edge-tts: pip install edge-tts")
 
-AUDIO_JSON = "/tmp/listen_audio.json"
+AUDIO_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "listen_audio.json")
 OUT_DIR = "audio/listen"
 RATE = "-10%"
 
