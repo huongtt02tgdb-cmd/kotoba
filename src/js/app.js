@@ -32,9 +32,10 @@ function loadPack(){
 }
 try{fetch('audio/index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AUD=j&&typeof j==='object'?j:{};AUDN=Object.keys(AUD).length;if(AUDN){if(Object.values(AUD).some(v=>Array.isArray(v)))loadPack();if(!Q&&!G&&document.activeElement===document.body)render()}}).catch(()=>{})}catch(e){}
 function stopAud(){if(ACT){try{ACT.pause()}catch(e){}ACT=null}}
-function say(t){
+function say(t,fb2){
   if(!t)return;t=String(t);
-  const f=AUD[akey(t)];
+  let f=AUD[akey(t)];
+  if(!f&&fb2)f=AUD[akey(fb2)];
   let src=null;
   if(Array.isArray(f)){if(PACK)src=URL.createObjectURL(new Blob([PACK.slice(f[0],f[0]+f[1])],{type:'audio/mpeg'}));else loadPack()}
   else if(f)src='audio/'+f;
@@ -69,7 +70,7 @@ function sayTTS(t){
 }
 function setVoice(n){VN=n;try{localStorage.setItem('kotoba-voice',n)}catch(e){}pickVoice();say('日本語の勉強は楽しいですね。')}
 function setRate(r){RT=+r;try{localStorage.setItem('kotoba-rate',r)}catch(e){}say('日本語の勉強は楽しいですね。')}
-const spk=t=>t?`<button class="spk" type="button" data-t="${esc(t)}" onclick="event.stopPropagation();say(this.dataset.t)" aria-label="Nghe phát âm" title="Nghe phát âm">🔊</button>`:'';
+const spk=(t,fb)=>t?`<button class="spk" type="button" data-t="${esc(t)}" ${fb?`data-fb="${esc(fb)}"`:''} onclick="event.stopPropagation();say(this.dataset.t,this.dataset.fb)" aria-label="Nghe phát âm" title="Nghe phát âm">🔊</button>`:'';
 const wk=w=>[w.d,w.h,w.k,w.m].join('\u0001');
 const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const days=()=>{const m=new Map();words.forEach(w=>m.set(w.d,(m.get(w.d)||0)+1));return[...m].sort((a,b)=>String(a[0]).localeCompare(String(b[0]),'vi',{numeric:true}))};
@@ -205,7 +206,7 @@ function paper(){
     if(md==='mc')body=`<div class="opts">${q.opts.map((o,j)=>`<button class="opt jp ${v===o?'sel':''}" onclick="pickP(${i},${j})"><b class="lt">${'ABCD'[j]||j+1}</b><span>${esc(o)}</span></button>`).join('')}</div>`;
     else if(md==='tf')body=`<div class="gq">Đáp án này có đúng không?</div><div class="gst jp">${esc(q.shown)}</div><div class="two"><button class="btn tfb ${v===true?'sel':''}" onclick="tfP(${i},true)">✓ Đúng</button><button class="btn tfb ${v===false?'sel':''}" onclick="tfP(${i},false)">✗ Sai</button></div>`;
     else body=`<input class="ty jp" autocomplete="off" value="${esc(v||'')}" placeholder="Gõ ${F[q.t]}" aria-label="Câu ${i+1}" oninput="typeP(${i},this.value)" style="margin:0">`;
-    const ask=q.f==='a'?`<button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:`<div class="askrow"><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}</div>`;
+    const ask=q.f==='a'?`<button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe">🔊 <span>Nghe</span></button>`:`<div class="askrow"><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f],q.w.h):''}</div>`;
     const dn=v===true||v===false||String(v??'').trim()!=='';
     return`<section class="q pq ${dn?'done':''}" id="q${i}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${({mc:'nghe',tf:'doc',ty:'viet',ls:'hieu'})[md]}">${TL[md]}</span><span class="qp">${q.f==='a'?'Nghe':F[q.f]} → ${F[q.t]}</span></div>${ask}<div class="pbody">${body}</div></section>`;
   }).join('');
@@ -248,7 +249,7 @@ function quiz(){
   if(Q.i>=Q.list.length)return result();
   const q=Q.list[Q.i],n=Q.list.length,st=Q.state,ans=q.w[q.t],md=q.type||Q.mode;
   const head=`<div class="bar"><button class="ghost" onclick="quit()">✕ Thoát</button><div class="prog"><i style="width:${Q.i/n*100}%"></i></div><b>${Q.i+1}/${n}</b>${Q.mode!=='fc'?`<span class="pts">${Q.score} đ${Q.streak>1?' · x'+Q.streak:''}</span>`:''}</div>`;
-  const prompt=q.f==='a'?`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}Nghe → viết ${F[q.t]}</small><button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe lại">🔊 <span>Nghe lại</span></button><div class="hint">Bấm để nghe lại</div>`:`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}${F[q.f]} → ${F[q.t]}</small><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f]):''}`;
+  const prompt=q.f==='a'?`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}Nghe → viết ${F[q.t]}</small><button class="spk bigs" type="button" data-t="${esc(q.w.h||q.w.k)}" onclick="say(this.dataset.t)" aria-label="Nghe lại">🔊 <span>Nghe lại</span></button><div class="hint">Bấm để nghe lại</div>`:`<div class="q"><small class="qpill">${Q.mode==='test'?TL[md]+' · ':''}${F[q.f]} → ${F[q.t]}</small><div class="big jp">${esc(q.w[q.f])}</div>${q.f!=='m'?spk(q.w[q.f],q.w.h):''}`;
   const fb=st?`<div class="fb ${st.ok?'ok':'no'}"><b>${st.ok?'Chính xác!':'Chưa đúng.'}</b> ${ansb(q.w)}</div><button class="pri" onclick="next()">Tiếp tục (Enter)</button>`:'';
   let b='';
   if(md==='mc'){
