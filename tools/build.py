@@ -31,7 +31,6 @@ def main() -> None:
 
     blocks = {
         '<!--BUILD:BLOCK:CSS_MAIN-->': '<style>' + read('css/main.css') + '</style>',
-        '<!--BUILD:BLOCK:JS_XLSX-->': '<script>' + read('js/vendor/xlsx.min.js') + '</script>',
         '<!--BUILD:BLOCK:CSS_THEME-->': '<style>' + read('css/theme.css') + '</style>',
         '<!--BUILD:BLOCK:JS_APP-->': '<script>' + app_js + '</script>',
     }
