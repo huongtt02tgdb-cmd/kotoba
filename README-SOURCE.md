@@ -13,11 +13,13 @@ src/
     theme.css           # biến theme :root
   js/
     app.js              # logic app (chứa placeholder __VDEF_JSON__ / __GD_JSON__)
-    vendor/
-      xlsx.min.js       # SheetJS, giữ nguyên không sửa
   data/
     vocab.json          # 873 từ vựng (JSON thuần, sửa bằng editor thường)
-    grammar.json        # 900 mục ngữ pháp (JSON thuần)
+    grammar.json        # 1300 câu ngữ pháp (JSON thuần)
+  lib/
+    xlsx.min.js         # SheetJS — chỉ nạp khi xem file Excel trong tab Tài liệu
+tools/
+  build.py              # ráp src/ -> index.html, tự tăng BUILD trong sw.js
 tools/
   build.py              # ráp src/ -> index.html, tự tăng BUILD trong sw.js
 ```
@@ -41,4 +43,16 @@ Khi push lên `main`, **GitHub Actions tự chạy `tools/build.py`** rồi comm
 - Trong `src/js/app.js` giữ nguyên 2 placeholder `__VDEF_JSON__` và `__GD_JSON__`
   (build.py sẽ thay bằng nội dung 2 file JSON).
 - Không sửa `index.html` bằng tay — mọi thay đổi sẽ bị ghi đè khi build.
-- File build ra được verify byte-identical với bản gốc (so SHA256 từng khối).
+
+## Kho dữ liệu gốc (từ 2026-10-10)
+
+**Mọi dữ liệu từ vựng + bài tập chỉ nằm trong repo, không nhập/liưu trong app nữa:**
+
+- `src/data/vocab.json` — toàn bộ từ vựng. App luôn đọc từ đây (`VDEF`),
+  không đọc/ghi localStorage, không còn chức năng nhập Excel / thêm tay / sửa / xóa / sao lưu.
+- `src/data/grammar.json` — toàn bộ câu ngữ pháp (hiện 1300 câu, bài 1–13).
+  Không còn chức năng "Thêm bài tập từ file".
+- Muốn thêm/sửa từ hoặc câu hỏi: **sửa trực tiếp 2 file JSON trên** rồi push,
+  hoặc **gửi file Excel cho Pax trong chat** để convert rồi push (không cần SheetJS trong app).
+- Tên mẫu ngữ pháp (`patterns`) nằm trong `GPT` ở đầu `src/js/app.js`
+  (hiện có bài 1, 2, 10–13; bài 3–9 hiển thị "Mẫu N").

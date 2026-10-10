@@ -2,13 +2,12 @@
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const KEY='kotoba-v1';
-let words=[],sel=new Set(),cfg={mode:'mc',dir:'mix',shuffle:true,auto:true,ldir:'ah',tt:['mc','tf','ty','ls'],tn:'20',tfb:true},Q=null,msg='',DL=[];
-try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d){words=d.words||[];sel=new Set(d.sel||[])}}catch(e){}
+let sel=new Set(),cfg={mode:'mc',dir:'mix',shuffle:true,auto:true,ldir:'ah',tt:['mc','tf','ty','ls'],tn:'20',tfb:true},Q=null,msg='',DL=[];
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d){sel=new Set(d.sel||[])}}catch(e){}
 const VDEF=__VDEF_JSON__;
-const SMP=new Set(["1|がくせい|学生|học sinh", "1|せんせい|先生|giáo viên", "1|ともだち|友達|bạn bè", "1|ほん|本|sách", "1|みず|水|nước", "2|たべる|食べる|ăn", "2|のむ|飲む|uống", "2|いく|行く|đi", "2|くる|来る|đến", "2|みる|見る|xem, nhìn", "3|おおきい|大きい|to, lớn", "3|ちいさい|小さい|nhỏ", "3|あたらしい|新しい|mới", "3|ふるい|古い|cũ", "3|たかい|高い|cao, đắt"]);
-if(words.some(w=>SMP.has([w.d,w.h,w.k,w.m].join('|')))){words=words.filter(w=>!SMP.has([w.d,w.h,w.k,w.m].join('|')));sel=new Set([...sel].filter(d=>words.some(w=>w.d===d)));try{localStorage.setItem(KEY,JSON.stringify({words,sel:[...sel]}))}catch(e){}}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({words,sel:[...sel]}));localStorage.setItem(KEY+'-t',String(Date.now()))}catch(e){}};
-try{if(!localStorage.getItem(KEY)&&!words.length){words=VDEF.map(w=>({...w}));sel=new Set();localStorage.setItem(KEY,JSON.stringify({words,sel:[...sel]}))}}catch(e){}
+/* kho gốc: từ vựng luôn lấy từ VDEF, không lưu trên trình duyệt */
+const words=VDEF;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({sel:[...sel]}))}catch(e){}};
 const F={h:'Hiragana',k:'Kanji',m:'Nghĩa'};
 const DIRS={mix:'Trộn tất cả các chiều',kh:'Kanji → Hiragana',km:'Kanji → Nghĩa',hm:'Hiragana → Nghĩa',mh:'Nghĩa → Hiragana',mk:'Nghĩa → Kanji',hk:'Hiragana → Kanji'};
 const LD={ah:'Nghe → Hiragana',ak:'Nghe → Kanji',am:'Nghe → Nghĩa',mix:'Trộn (Hiragana, Kanji, Nghĩa)'};
@@ -75,182 +74,10 @@ const wk=w=>[w.d,w.h,w.k,w.m].join('\u0001');
 const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const days=()=>{const m=new Map();words.forEach(w=>m.set(w.d,(m.get(w.d)||0)+1));return[...m].sort((a,b)=>String(a[0]).localeCompare(String(b[0]),'vi',{numeric:true}))};
 
-/* ---------- import ---------- */
-function parse(wb){
-  const out=[];
-  wb.SheetNames.forEach(sn=>{
-    const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''}).filter(r=>r.some(c=>String(c).trim()));
-    if(!rows.length)return;
-    const hd=rows[0].map(c=>String(c).toLowerCase());
-    const f=re=>hd.findIndex(c=>re.test(c));
-    let ci={d:f(/ng[àa]y|day|b[àa]i|lesson/),h:f(/hira|kana|đọc|ひら/),k:f(/kanji|漢字|h[áa]n t[ựu]/),m:f(/ngh[ĩi]a|mean/),hv:f(/h[áa]n vi[ệe]t|hanviet/),cs:f(/c[ấa]u t[ạo]o|th[àa]nh ph[ầa]n|component/),gn:f(/g[ợo]i nh[ớo]|mnemonic|m[ôo] t[ảa]/),vd:f(/v[íi] d[ụu]|example/),gh:f(/gh[ée]p|compound/)},st=1;
-    if(ci.h<0&&ci.m<0){st=0;ci=rows[0].length>=4?{d:0,h:1,k:2,m:3}:{d:-1,h:0,k:1,m:2}}
-    rows.slice(st).forEach(r=>{
-      const g=i=>(i==null||i<0)?'':String(r[i]??'').trim();
-      const w={d:g(ci.d)||sn,h:g(ci.h),k:g(ci.k),m:g(ci.m)};['hv','cs','gh','gn','vd'].forEach(f=>{const x=g(ci[f]);if(x)w[f]=x});
-      if(w.m&&(w.h||w.k))out.push(w);
-    });
-  });
-  return out;
-}
-async function imp(fl){
-  if(typeof XLSX==='undefined'){msg='Chưa tải được thư viện đọc Excel. Kiểm tra kết nối mạng rồi tải lại trang.';return render()}
-  let add=0,upd=0;
-  for(const f of fl){
-    try{
-      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});
-      const mp=new Map(words.map(w=>[wk(w),w]));
-      parse(wb).forEach(w=>{const o=mp.get(wk(w));if(o){let c=0;['hv','cs','gh','gn','vd'].forEach(f=>{if(!o[f]&&w[f]){o[f]=w[f];c=1}});upd+=c}else{mp.set(wk(w),w);words.push(w);add++}});
-    }catch(e){msg='Không đọc được file '+f.name;return render()}
-  }
-  if(!sel.size)days().forEach(([d])=>sel.add(d));
-  msg=add||upd?`Đã thêm ${add} từ${upd?`, bổ sung thông tin cho ${upd} từ`:''}.`:'Không tìm thấy từ mới. Kiểm tra các cột Ngày | Hiragana | Kanji | Nghĩa.';
-  save();render();
-}
-async function zip(str){
-  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();
-  w.write(new TextEncoder().encode(str));w.close();
-  const u=new Uint8Array(await new Response(cs.readable).arrayBuffer());let b='';
-  for(let i=0;i<u.length;i+=8192)b+=String.fromCharCode.apply(null,u.subarray(i,i+8192));
-  return btoa(b);
-}
-async function unzip(b64){
-  const u=Uint8Array.from(atob(b64),c=>c.charCodeAt(0)),ds=new DecompressionStream('deflate-raw'),w=ds.writable.getWriter();
-  w.write(u);w.close();
-  return new TextDecoder().decode(await new Response(ds.readable).arrayBuffer());
-}
-async function bkCode(){
-  const json=JSON.stringify({kotoba:1,words,study:{days:(stFlush(),ST.days),goal:ST.goal}});
-  try{if(window.CompressionStream)return'K1:'+await zip(json)}catch(e){}
-  return json;
-}
-async function bkMake(){
-  const out=await bkCode();$('#bk').value=out;
-  $('#bkm').textContent=`Đã tạo mã cho ${words.length} từ, dài ${out.length.toLocaleString('vi-VN')} ký tự. Bấm "Copy mã" rồi dán sang trình duyệt khác.`;
-}
-async function bkDownload(){
-  const m=$('#bkm');
-  if(!words.length)return m.textContent='Chưa có từ nào để sao lưu.';
-  const code=await bkCode(),d=new Date().toISOString().slice(0,10),name=`kotoba-sao-luu-${d}.txt`;
-  const text=`KOTOBA - FILE SAO LƯU DỮ LIỆU\nSố từ: ${words.length} | Ngày tạo: ${d}\nKhông sửa nội dung bên dưới. Trong app, chọn "Khôi phục từ file" và chọn file này.\n----------------------------------------\n${code}\n`;
-  let dl=null;try{dl=await window.claude?.use?.('downloads')}catch(e){}
-  try{
-    if(dl){await dl.save({filename:name,data:text});m.textContent=`Đã tạo file ${name} (${words.length} từ).`}
-    else{
-      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=name;
-      document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
-      m.textContent=`Đã tạo file ${name} (${words.length} từ). Nếu không thấy file tải về, hãy dùng mã văn bản bên dưới.`;
-    }
-  }catch(e){m.textContent=e&&e.code==='declined'?'Bạn đã hủy việc tải file.':'Không tải được file. Hãy dùng mã văn bản bên dưới.'}
-}
-async function bkCopy(){
-  const t=$('#bk');if(!t.value)await bkMake();t.select();let ok=false;
-  try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(e2){}}
-  $('#bkm').textContent=ok?'Đã copy. Mở app ở trình duyệt khác và dán vào ô này, rồi bấm "Khôi phục từ mã".':'Chưa tự copy được: mã đang được chọn, hãy nhấn Ctrl+C.';
-}
-async function restoreText(t){
-  const m=$('#bkm');let data;
-  try{
-    t=t.trim();const k=t.match(/K1:[A-Za-z0-9+\/=]+/);
-    if(k)t=await unzip(k[0].slice(3));
-    else{const i=t.indexOf('{"kotoba"');if(i>=0)t=t.slice(i)}
-    data=JSON.parse(t);
-  }catch(e){return m.textContent='Không đọc được dữ liệu. Hãy chọn đúng file sao lưu, hoặc dán đủ toàn bộ mã (không thiếu đầu hoặc đuôi).'}
-  if(!data||!Array.isArray(data.words))return m.textContent='Dữ liệu không hợp lệ.';
-  const mp=new Map(words.map(w=>[wk(w),w]));let add=0,upd=0;
-  data.words.forEach(w=>{
-    if(!w||!w.m||!(w.h||w.k))return;
-    const o=mp.get(wk(w));
-    if(o){let c=0;['hv','cs','gh','gn','vd'].forEach(f=>{if(!o[f]&&w[f]){o[f]=w[f];c=1}});if(w.ai&&!o.ai)o.ai=w.ai;upd+=c}
-    else{mp.set(wk(w),w);words.push(w);add++}
-  });
-  if(!sel.size)days().forEach(x=>sel.add(x[0]));
-  let sd=0;if(data.study&&data.study.days){stFlush();Object.entries(data.study.days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&+v>(ST.days[k]||0)){ST.days[k]=+v;sd++}});stSave()}
-  msg=`Đã khôi phục ${add} từ mới${upd?`, bổ sung thông tin cho ${upd} từ`:''}${typeof sd!=='undefined'&&sd?`, gộp thời gian học của ${sd} ngày`:''}.`;save();render();
-}
-const bkRestore=()=>restoreText($('#bk').value);
-async function bkFile(fl){const f=fl&&fl[0];if(!f)return;let t;try{t=await f.text()}catch(e){return $('#bkm').textContent='Không đọc được file.'}restoreText(t)}
-function clearAll(){if(confirm('Xóa toàn bộ từ vựng đã nhập?')){words=[];sel=new Set();save();msg='';render()}}
+
 function tog(i){const d=DL[i];sel.has(d)?sel.delete(d):sel.add(d);save();render()}
 function selAll(){const all=DL.length&&DL.every(d=>sel.has(d));sel=new Set(all?[]:DL);save();render()}
 
-/* ---------- AI: tạo gợi nhớ ---------- */
-let gen=null;
-const stopGen=()=>{gen&&gen.ac.abort()};
-const genPrompt=b=>`Bạn là giáo viên tiếng Nhật giỏi giải thích chữ Hán cho người Việt. Với mỗi từ dưới đây, hãy giải thích để người học HIỂU vì sao chữ có hình dạng và nghĩa như vậy, rồi mới gợi nhớ. Trả về DUY NHẤT một mảng JSON, mỗi phần tử có dạng {"id":số,"hv":"","cs":"","gh":"","gn":"","vd":""}.
-- hv: âm Hán Việt của từng chữ kanji trong từ, viết hoa, cách nhau bằng dấu cách (ví dụ "HỌC SINH"). Để rỗng nếu từ không có kanji hoặc bạn không chắc.
-- cs: với TỪNG chữ kanji trong từ, nêu rõ chữ đó được ghép từ những bộ/kanji nào (ghi kèm nghĩa từng phần), ví dụ "私 = 禾 (cây lúa) + ム (riêng tư, khép về mình)". Nhiều chữ thì mỗi chữ một mục, ngăn bằng " ; ". Để rỗng nếu không có kanji.
-- gh: nếu từ có từ 2 chữ kanji trở lên (hoặc kanji + hiragana), giải thích vì sao các chữ ghép lại ra nghĩa của từ, ví dụ "学 (học) + 生 (sinh, sống) → người sống bằng việc học = học sinh". Để rỗng nếu từ chỉ có 1 chữ kanji hoặc không có kanji.
-- gn: giải thích và gợi nhớ, 2-4 câu ngắn bằng tiếng Việt: lý do hợp lý của cấu tạo (nguồn gốc chữ nếu biết), và nếu chữ trông giống một vật hay hình ảnh cụ thể thì nói rõ giống gì (ví dụ "水 giống dòng nước chảy"). Nếu không có hình ảnh liên tưởng thật sự thì bỏ qua, đừng gượng ép. Từ không có kanji thì gợi nhớ theo nghĩa hoặc liên tưởng âm đọc. Luôn phải có.
-- vd: một câu ví dụ tiếng Nhật đơn giản kèm bản dịch tiếng Việt trong ngoặc, ví dụ "日曜日は休みます。(Chủ nhật tôi nghỉ.)".
-Nguyên tắc: chỉ nêu điều bạn chắc chắn. Nếu nguồn gốc chữ còn tranh cãi hoặc bạn không chắc, hãy viết là "cách nhớ" thay vì khẳng định là nguồn gốc thật. Không bịa.
-Danh sách: ${JSON.stringify(b.map((w,i)=>({id:i,hiragana:w.h,kanji:w.k,nghia:w.m})))}`;
-const nNew=()=>words.filter(w=>!w.gn).length,nUp=()=>words.filter(w=>w.gn&&w.ai!==2&&w.ai!==9).length;
-let upAsk=false;
-function upGen(){if(!upAsk){upAsk=true;return render()}upAsk=false;genAI('up')}
-async function genAI(mode){
-  const sample=await window.claude?.use?.('sample');
-  if(!sample){msg='Tính năng AI chỉ dùng được khi mở app từ claude.ai.';return render()}
-  const todo=mode==='up'?words.filter(w=>w.gn&&w.ai!==2&&w.ai!==9):words.filter(w=>!w.gn);
-  if(!todo.length)return;
-  const my=gen={done:0,total:todo.length,ac:new AbortController()};upAsk=false;render();
-  try{
-    for(let p=0;p<todo.length;p+=6){
-      const b=todo.slice(p,p+6);
-      const res=await sample.json(genPrompt(b),{signal:my.ac.signal,cache:false});
-      (Array.isArray(res)?res:(res&&res.items)||[]).forEach(r=>{
-        const w=b[r.id];if(!w||!r.gn)return;
-        ['hv','cs','gh','gn','vd'].forEach(f=>{const x=r[f]?String(r[f]).trim():'';if(mode==='up'){if(x)w[f]=x;else if(f!=='hv')delete w[f]}else if(x&&!w[f])w[f]=x});
-        w.ai=2;
-      });
-      my.done=Math.min(p+6,todo.length);save();
-      const el=$('#gp');if(el)el.textContent=`Đang tạo… ${my.done}/${my.total}`;
-    }
-    msg=`Đã tạo nội dung cho ${todo.filter(w=>w.ai===2).length}/${todo.length} từ.`;
-  }catch(e){
-    const c=e&&e.code;
-    msg=c==='cancelled'?'Đã dừng. Phần đã tạo vẫn được lưu.':c==='not_granted'?'Bạn cần cho phép app gọi Claude để dùng tính năng này.':c==='rate_limited'?'Đang gọi quá nhiều hoặc hết hạn mức, hãy thử lại sau. Phần đã tạo vẫn được lưu.':'Không tạo được: '+((e&&e.message)||'lỗi không rõ')+'. Phần đã tạo vẫn được lưu.';
-  }
-  gen=null;save();render();
-}
-
-/* ---------- manual add ---------- */
-let md='';
-function addWords(list){
-  const seen=new Set(words.map(wk));let n=0;
-  list.forEach(w=>{if(w.m&&(w.h||w.k)&&!seen.has(wk(w))){seen.add(wk(w));words.push(w);sel.add(w.d);n++}});
-  if(n){msg=`Đã thêm ${n} từ.`;save();render()}
-  return n;
-}
-function add1(){
-  const v=id=>$('#'+id).value.trim(),d=v('m-d'),w={d,h:v('m-h'),k:v('m-k'),m:v('m-m')},e=$('#mmsg');md=d;
-  if(!d)return e.textContent='Hãy nhập ngày (ví dụ: 4).';
-  if(!w.m||!(w.h||w.k))return e.textContent='Cần có Nghĩa và ít nhất Hiragana hoặc Kanji.';
-  if(!addWords([w]))return e.textContent='Từ này đã có trong ngày đó.';
-  setTimeout(()=>$('#m-h')?.focus());
-}
-function addBulk(){
-  const d=$('#m-d').value.trim(),e=$('#mmsg');md=d;
-  const list=$('#m-bulk').value.split('\n').map(l=>l.split(/\t|\|/).map(x=>x.trim())).filter(p=>p.some(Boolean))
-    .map(p=>p.length>=4?{d:p[0]||d,h:p[1],k:p[2],m:p[3]}:p.length===3?{d,h:p[0],k:p[1],m:p[2]}:{d,h:p[0],k:'',m:p[1]||''});
-  if(!list.length)return e.textContent='Hãy nhập ít nhất một dòng.';
-  if(list.some(w=>!w.d))return e.textContent='Hãy nhập ngày ở ô Ngày phía trên.';
-  if(!addWords(list))e.textContent='Không thêm được: mỗi dòng cần có Nghĩa và Hiragana/Kanji, hoặc từ đã tồn tại.';
-}
-const mkey=e=>{if(e.key==='Enter'){e.preventDefault();add1()}};
-let ed=-1;
-const edit=i=>{ed=i;render();setTimeout(()=>$('#e-h')?.focus())};
-const cancelEdit=()=>{ed=-1;render()};
-const ekey=e=>{if(e.key==='Enter'){e.preventDefault();saveEdit()}else if(e.key==='Escape')cancelEdit()};
-function saveEdit(){
-  const v=id=>$('#'+id).value.trim(),w={d:v('e-d'),h:v('e-h'),k:v('e-k'),m:v('e-m'),hv:v('e-hv'),cs:v('e-cs'),gh:v('e-gh'),gn:v('e-gn'),vd:v('e-vd')},e=$('#emsg');
-  if(!w.d||!w.m||!(w.h||w.k))return e.textContent='Cần có Ngày, Nghĩa và ít nhất Hiragana hoặc Kanji.';
-  if(words.some((x,j)=>j!==ed&&wk(x)===wk(w)))return e.textContent='Từ này đã có trong ngày đó.';
-  const o=words[ed],old=o.d;w.ai=['hv','cs','gh','gn','vd'].some(f=>(o[f]||'')!==w[f])?9:o.ai;words[ed]=w;sel.add(w.d);
-  if(!words.some(x=>x.d===old))sel.delete(old);
-  ed=-1;msg='Đã lưu thay đổi.';save();render();
-}
-const erow=(w,multi)=>`<tr><td colspan="${multi?6:5}"><div class="ef"><input id="e-d" list="dl-list" value="${esc(w.d)}" placeholder="Ngày" aria-label="Ngày" onkeydown="ekey(event)" style="flex:0 1 90px"><input id="e-h" value="${esc(w.h)}" placeholder="Hiragana" aria-label="Hiragana" onkeydown="ekey(event)"><input id="e-k" value="${esc(w.k)}" placeholder="Kanji (nếu có)" aria-label="Kanji" onkeydown="ekey(event)"><input id="e-m" value="${esc(w.m)}" placeholder="Nghĩa" aria-label="Nghĩa" onkeydown="ekey(event)"><button class="btn" onclick="saveEdit()">Lưu</button><button class="btn" onclick="cancelEdit()">Hủy</button></div><div class="ef"><input id="e-hv" value="${esc(w.hv)}" placeholder="Hán Việt" aria-label="Hán Việt" onkeydown="ekey(event)"><input id="e-cs" value="${esc(w.cs)}" placeholder="Cấu tạo" aria-label="Cấu tạo" onkeydown="ekey(event)"><input id="e-gh" value="${esc(w.gh)}" placeholder="Ghép từ" aria-label="Ghép từ" onkeydown="ekey(event)"><input id="e-gn" value="${esc(w.gn)}" placeholder="Gợi nhớ" aria-label="Gợi nhớ" onkeydown="ekey(event)"><input id="e-vd" value="${esc(w.vd)}" placeholder="Ví dụ" aria-label="Ví dụ" onkeydown="ekey(event)"></div><div id="emsg" class="hint" role="status"></div></td></tr>`;
 const open=new Set();
 function tgl(i){
   const tr=document.getElementById('w'+i);if(!tr)return;
@@ -258,7 +85,6 @@ function tgl(i){
   if(open.has(i)){open.delete(i);if(nx&&nx.classList.contains('det'))nx.remove()}
   else{open.add(i);tr.insertAdjacentHTML('afterend',`<tr class="det"><td colspan="${tr.cells.length}">${ansb(words[i])}</td></tr>`)}
 }
-function del(i){open.clear();ed=-1;words.splice(i,1);sel=new Set([...sel].filter(d=>words.some(w=>w.d===d)));save();render()}
 
 /* ---------- quiz engine ---------- */
 function startTest(){
@@ -397,25 +223,8 @@ function home(){
   return`${tabs('vocab')}
 <div class="grid"><div>
 <div class="panel"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 style="margin:0">1. Chọn ngày</h2>${DL.length?`<button class="btn" onclick="selAll()">${DL.every(d=>sel.has(d))?'Bỏ chọn hết':'Chọn tất cả'}</button>`:''}</div>
-${DL.length?`<div class="chips hs">${days().map(([d,n],i)=>`<button class="chip ${sel.has(d)?'on':''}" onclick="tog(${i})">${esc(dl(d))}<i>${n}</i></button>`).join('')}</div>`:'<div class="empty">Chưa có từ vựng. Hãy nhập file Excel hoặc thêm từ ở mục "2. Nhập từ vựng" bên dưới.</div>'}</div>
-${chosen.length?`<div class="panel"><h2>Các từ đã chọn (${chosen.length})</h2><p class="hint" style="margin:-4px 0 10px">Bấm vào một từ để xem đầy đủ thông tin (Kanji, Hiragana, Nghĩa, Hán Việt, cấu tạo, gợi nhớ, ví dụ).</p><div class="tw"><table class="wt"><colgroup>${multi?'<col style="width:8%">':''}<col style="width:12%"><col style="width:9%"><col style="width:15%"><col><col style="width:132px"></colgroup><thead><tr>${multi?'<th>Ngày</th>':''}<th>Hiragana</th><th>Kanji</th><th>Nghĩa</th><th>Cấu tạo</th><th></th></tr></thead><tbody>${words.map((w,i)=>!sel.has(w.d)?'':i===ed?erow(w,multi):`<tr id="w${i}" class="clk" tabindex="0" onclick="tgl(${i})" onkeydown="if(event.key==='Enter')tgl(${i})" title="Bấm để xem đầy đủ thông tin">${multi?`<td>${esc(dl(w.d))}</td>`:''}<td class="jp">${esc(w.h)}</td><td class="jp">${esc(w.k)}</td><td class="mn">${esc(w.m)}</td><td class="mn gnc">${[w.hv&&`<b>${esc(w.hv)}</b>`,w.cs&&esc(w.cs)].filter(Boolean).map(x=>`<div>${x}</div>`).join('')}</td><td class="ac">${spk(w.h||w.k)}<button class="ghost" onclick="event.stopPropagation();edit(${i})" aria-label="Sửa từ" title="Sửa từ này">✎</button><button class="ghost" onclick="event.stopPropagation();del(${i})" aria-label="Xóa từ" title="Xóa từ này">✕</button></td></tr>${open.has(i)?`<tr class="det"><td colspan="${multi?6:5}">${ansb(w)}</td></tr>`:''}`).join('')}</tbody></table></div></div>`:''}
-<div class="panel"><h2>2. Nhập từ vựng</h2>
-<label class="drop" ondragover="event.preventDefault()" ondrop="event.preventDefault();imp(event.dataTransfer.files)"><input type="file" accept=".xlsx,.xls,.csv" multiple onchange="imp(this.files)"><b>Chọn file Excel</b> hoặc kéo thả vào đây</label>
-<p class="hint">Hàng đầu là tiêu đề, các cột: <b>Ngày | Hiragana | Kanji | Nghĩa</b>. Nếu không có cột Ngày, tên sheet sẽ được dùng làm ngày. Cột tùy chọn: <b>Hán Việt | Cấu tạo | Ghép từ | Gợi nhớ | Ví dụ</b>. Nhập nhiều lần sẽ cộng dồn.</p>
-<h3 class="sub">Hoặc thêm thủ công</h3>
-<div class="mf"><input id="m-d" list="dl-list" placeholder="Ngày (vd: 4)" value="${esc(md)}" oninput="md=this.value" onkeydown="mkey(event)"><input id="m-h" placeholder="Hiragana" onkeydown="mkey(event)"><input id="m-k" placeholder="Kanji (nếu có)" onkeydown="mkey(event)"><input id="m-m" placeholder="Nghĩa" onkeydown="mkey(event)"><button class="btn" onclick="add1()">Thêm</button></div>
-<datalist id="dl-list">${DL.map(d=>`<option value="${esc(d)}">`).join('')}</datalist>
-<details><summary>Thêm nhiều từ cùng lúc</summary><textarea id="m-bulk" rows="6" placeholder="がくせい | 学生 | học sinh&#10;ほん | 本 | sách&#10;ありがとう | | cảm ơn"></textarea><button class="btn" onclick="addBulk()">Thêm tất cả vào ngày trên</button>
-<p class="hint">Mỗi dòng một từ: <b>Hiragana | Kanji | Nghĩa</b> (từ không có Kanji thì để trống ở giữa). Dán thẳng từ Excel cũng được (các cột ngăn bằng Tab). Muốn mỗi dòng một ngày riêng, thêm ngày ở đầu dòng: <b>Ngày | Hiragana | Kanji | Nghĩa</b>.</p></details>
-<div id="mmsg" class="hint" role="status"></div>
-<details><summary>Sao lưu / chuyển dữ liệu sang trình duyệt hoặc máy khác</summary>
-<p class="hint">Dữ liệu chỉ lưu riêng trong từng trình duyệt, nên hãy tải file sao lưu định kỳ. Muốn chuyển sang trình duyệt hoặc máy khác: tải file ở đây, rồi mở app ở nơi mới và chọn "Khôi phục từ file".</p>
-<div class="row"><button class="btn" onclick="bkDownload()">⬇ Tải file sao lưu (.txt)</button><label class="btn" style="cursor:pointer">⬆ Khôi phục từ file…<input class="vh" type="file" accept=".txt,.json,text/plain" onchange="bkFile(this.files)"></label></div>
-<details style="margin-top:10px"><summary style="font-weight:500;color:var(--mute)">Không tải được file? Dùng mã văn bản</summary>
-<textarea id="bk" rows="4" aria-label="Mã sao lưu" placeholder="Mã sao lưu hiện ở đây. Hoặc dán mã sao lưu vào đây để khôi phục."></textarea>
-<div class="row"><button class="btn" onclick="bkMake()">Tạo mã sao lưu</button><button class="btn" onclick="bkCopy()">Copy mã</button><button class="btn" onclick="bkRestore()">Khôi phục từ mã</button></div></details>
-<div id="bkm" class="hint" role="status"></div></details>
-<div class="row" style="margin-top:10px">${words.length?`<button class="btn" onclick="clearAll()">Xóa tất cả (${words.length} từ)</button>`:''}</div></div>
+${DL.length?`<div class="chips hs">${days().map(([d,n],i)=>`<button class="chip ${sel.has(d)?'on':''}" onclick="tog(${i})">${esc(dl(d))}<i>${n}</i></button>`).join('')}</div>`:'<div class="empty">Chưa có từ vựng.</div>'}</div>
+${chosen.length?`<div class="panel"><h2>Các từ đã chọn (${chosen.length})</h2><p class="hint" style="margin:-4px 0 10px">Bấm vào một từ để xem đầy đủ thông tin (Kanji, Hiragana, Nghĩa, Hán Việt, cấu tạo, gợi nhớ, ví dụ).</p><div class="tw"><table class="wt"><colgroup>${multi?'<col style="width:8%">':''}<col style="width:12%"><col style="width:9%"><col style="width:15%"><col><col style="width:132px"></colgroup><thead><tr>${multi?'<th>Ngày</th>':''}<th>Hiragana</th><th>Kanji</th><th>Nghĩa</th><th>Cấu tạo</th><th></th></tr></thead><tbody>${words.map((w,i)=>!sel.has(w.d)?'':`<tr id="w${i}" class="clk" tabindex="0" onclick="tgl(${i})" onkeydown="if(event.key==='Enter')tgl(${i})" title="Bấm để xem đầy đủ thông tin">${multi?`<td>${esc(dl(w.d))}</td>`:''}<td class="jp">${esc(w.h)}</td><td class="jp">${esc(w.k)}</td><td class="mn">${esc(w.m)}</td><td class="mn gnc">${[w.hv&&`<b>${esc(w.hv)}</b>`,w.cs&&esc(w.cs)].filter(Boolean).map(x=>`<div>${x}</div>`).join('')}</td><td class="ac">${spk(w.h||w.k)}</td></tr>${open.has(i)?`<tr class="det"><td colspan="${multi?6:5}">${ansb(w)}</td></tr>`:''}`).join('')}</tbody></table></div></div>`:''}
 </div>
 <div class="panel aside"><h2>3. Chế độ ôn tập</h2>
 ${msg?`<div class="msg">${esc(msg)}</div>`:''}
@@ -469,50 +278,11 @@ ${Q.wrong.length&&Q.mode!=='test'?`<div class="panel"><h2>Từ cần ôn thêm</
 /* ---------- NGỮ PHÁP ---------- */
 const GD=/*GD*/__GD_JSON__/*GD*/;
 const SK={nghe:'Nghe',doc:'Đọc',viet:'Viết',hieu:'Hiểu'};
-const GPT={1:{1:'N1 は N2 です',2:'N1 は N2 じゃありません',3:'N1 は ～ですか (だれ・なんさい)',4:'N も ～です',5:'N1 の N2'},2:{1:'これ・それ・あれ',2:'A ですか、B ですか',3:'N1 の N2 です (だれの)',4:'この・その・あの + N',5:'N1 の N2 (なんの)'}};
+const GPT={1:{1:"N1 は N2 です",2:"N1 は N2 じゃありません",3:"N1 は ～ですか (だれ・なんさい)",4:"N も ～です",5:"N1 の N2"},2:{1:"これ・それ・あれ",2:"A ですか、B ですか",3:"N1 の N2 です (だれの)",4:"この・その・あの + N",5:"N1 の N2 (なんの)"},3:{1:"ここ・そこ・あそこ",2:"N1 は N2 (vị trí)",3:"N1 は どこ/どちらですか",4:"この・その・あの + N",5:"～いくらですか"},4:{1:"～時・～分です",2:"N(thời gian) は ～曜日です",3:"V ます・V ません・V ました",4:"N(thời gian) に V",5:"N1 から N2 まで"},5:{1:"N(địa điểm) へ 行きます・来ます・帰ります",2:"N(phương tiện) で 行きます・来ます・帰ります",3:"N(người) と V",4:"いつ / N(thời gian) に V",5:"N1 から N2 まで (ngày tháng)"},6:{1:"N を V",2:"N(địa điểm) で N を V",3:"V ませんか (rủ rê)",4:"V ましょう"},7:{1:"N で V (dụng cụ/cách thức)",2:"「～」は ～語で 何ですか",3:"N(người) に あげます・かします・おしえます",4:"N(người) に/から もらいます・かります・ならいます",5:"もう V ましたか"},8:{1:"N は Aいです・Aなです",2:"Aい/Aな + N",3:"あまり + phủ định",4:"～。そして、～ / ～が、～"},9:{1:"S は N が すき/きらい/じょうず/へた です",2:"S は N が あります/分かります",3:"どうして～か、～から"},10:{1:"N に N が あります／います",2:"N は N に あります／います（どこ）",3:"N の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく／あいだ に",4:"N や N［など］／なにが ありますか"},11:{1:"N を [số lượng] V ます (ひとつ・まい・だい)",2:"Đếm người: ひとり・ふたり・～にん／なんにん",3:"Khoảng thời gian: ～じかん／にち／しゅうかん／かげつ／ねん・かかります・やすみます・どのぐらい",4:"～に ～かい／N だけ／ぜんぶで"},12:{1:"Quá khứ của danh từ / tính từ な (でした・では ありませんでした)",2:"Quá khứ của tính từ い (かったです・くなかったです)",3:"So sánh hơn: より・ほう・どちら・どちらも",4:"So sánh nhất: いちばん"},13:{1:"N が ほしいです／ほしくないです",2:"V-たいです／V-たくないです",3:"N へ V-stem に いきます (mục đích)",4:"Hội thoại và đọc hiểu (ほしい・たい・に いきます)",5:"Ôn trộn Bài 10–13"},14:{1:"Động từ thể て (nhóm 1/2/3)",2:"V ています (đang diễn ra)",3:"V ています (thói quen / trạng thái)"},15:{1:"V てもいいですか (xin phép)",2:"V てはいけません (cấm)",3:"V ないでください (đừng làm)"},16:{1:"V1 てから、V2 (sau khi)",2:"Aい→Aくて / Aな→Aで / N+で (nối câu)"},17:{1:"V なくてもいいです (không cần)",2:"V なければなりません (phải làm)"},18:{1:"Động từ thể từ điển (辞書形)",2:"V ること ができます (có thể)"},19:{1:"V たことがあります (đã từng)",2:"V1 たり、V2 たりします (liệt kê)",3:"A くなります / に なります (trở nên)"},20:{1:"Thể thường của động từ",2:"Thể thường của tính từ・danh từ"},21:{1:"「Câu」+ と言います (tường thuật)",2:"Thể thường + でしょう? (xác nhận)"},22:{1:"Mệnh đề bổ nghĩa + N (định ngữ)"},23:{1:"Aい/Aな/N + とき (khi)",2:"V ると、〜 (cứ...thì)"},24:{1:"V てくれます (làm cho tôi)",2:"V てあげます (làm cho người khác)",3:"V てもらいます (được làm cho)"},25:{1:"V1 たら、V2 (nếu / sau khi)",2:"V ても (dù...cũng)"}};
 Object.assign(GPT,{"3": {"1": "ここ・そこ・あそこ", "2": "N1 は N2 (vị trí) です", "3": "N1 は どこ/どちら ですか", "4": "N1 の N2 (どこの)", "5": "～いくらですか"}, "4": {"1": "～じ ～ふん です", "2": "N は ～ようび です", "3": "時間 は V (ます・ません・ました・ませんでした)", "4": "N (thời gian) に V", "5": "N1 から N2 まで"}, "5": {"1": "N (địa điểm) へ いきます・きます・かえります", "2": "N (phương tiện) で", "3": "N (người) と", "4": "N (thời gian) に", "5": "～月～日 (たんじょうびは いつですか)"}, "6": {"1": "(S は) N を V (なにを・なにも)", "2": "～は 地点 で N を V", "3": "(いっしょに) V ませんか", "4": "V ましょう"}, "7": {"1": "N で V (phương tiện)", "2": "「từ/câu」は ～ごで なんですか", "3": "N (người nhận) に ～ V (あげます)", "4": "N (người cho) に/から ～ V (もらいます)", "5": "もう V ましたか"}, "8": {"1": "N は A い/A な です (khẳng định, phủ định, どうですか)", "2": "N1 は A い/A な N2 です (どんな N2)", "3": "あまり ～ない", "4": "～。そして、～ / ～が、～"}, "9": {"1": "S は N が すき/きらい/じょうず/へた", "2": "S は N が あります/わかります (+ よく・だいたい・すこし・あまり・ぜんぜん)", "3": "どうして ～か。 ～から。"}});
+Object.assign(GPT,{"10": {"1": "N に N が あります／います", "2": "N は N に あります／います（どこ）", "3": "N の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく／あいだ に", "4": "N や N［など］／なにが ありますか"}, "11": {"1": "N を [số lượng] V ます (ひとつ・まい・だい)", "2": "Đếm người: ひとり・ふたり・～にん／なんにん", "3": "Khoảng thời gian: ～じかん／にち／しゅうかん／かげつ／ねん・かかります・やすみます・どのぐらい", "4": "～に ～かい／N だけ／ぜんぶで"}, "12": {"1": "Quá khứ của danh từ / tính từ な (でした・では ありませんでした)", "2": "Quá khứ của tính từ い (かったです・くなかったです)", "3": "So sánh hơn: より・ほう・どちら・どちらも", "4": "So sánh nhất: いちばん"}, "13": {"1": "N が ほしいです／ほしくないです", "2": "V-たいです／V-たくないです", "3": "N へ V-stem に いきます (mục đích)", "4": "Hội thoại và đọc hiểu (ほしい・たい・に いきます)", "5": "Ôn trộn Bài 10–13"}});
 
 /* ---------- nhập thêm bài tập ngữ pháp từ file ---------- */
-const GK='kotoba-gram';
-let GX={patterns:{},questions:[]},gmsg='';
-const gKeyOf=q=>[q.l,q.g,q.t,q.q,q.c||'',q.say||'',JSON.stringify(q.o||q.tk||q.p||q.a)].join('|');
-function gValid(q){
-  if(!q||typeof q!=='object'||!q.q||!SK[q.s])return false;
-  q.l=+q.l;q.g=+q.g;if(!(q.l>0)||!(q.g>0))return false;
-  const t=q.t;
-  if(t==='mc'||t==='lmc')return Array.isArray(q.o)&&q.o.length>=2&&Number.isInteger(q.a)&&q.a>=0&&q.a<q.o.length&&new Set(q.o).size===q.o.length;
-  if(t==='tf')return typeof q.a==='boolean'&&!!q.c;
-  if(t==='fill')return Array.isArray(q.p)&&Array.isArray(q.a)&&q.a.every(a=>Array.isArray(a)&&a.length)&&q.p.every(p=>typeof p==='string'||(Number.isInteger(p)&&p>=0&&p<q.a.length));
-  if(t==='order')return Array.isArray(q.tk)&&q.tk.length>=2&&typeof q.a==='string'&&q.tk.join('')===q.a;
-  if(t==='dict')return !!q.say&&Array.isArray(q.a)&&q.a.length>0;
-  return false;
-}
-function gAdd(d){
-  let n=0,bad=0;const lessons=new Set(),seen=new Set(GD.map(gKeyOf));
-  Object.entries(d.patterns||{}).forEach(([l,o])=>{GPT[l]=Object.assign(GPT[l]||{},o);GX.patterns[l]=Object.assign(GX.patterns[l]||{},o)});
-  (d.questions||[]).forEach(q=>{if(!gValid(q)){bad++;return}const k=gKeyOf(q);if(seen.has(k))return;seen.add(k);delete q.id;GD.push(q);GX.questions.push(q);lessons.add(q.l);n++});
-  return{n,bad,lessons:[...lessons]};
-}
-const gSaveX=()=>{try{localStorage.setItem(GK,JSON.stringify(GX))}catch(e){}};
-try{const s=JSON.parse(localStorage.getItem(GK)||'null');if(s&&s.questions)gAdd(s)}catch(e){}
-async function gFile(fl){
-  let n=0,bad=0,files=0,ls=new Set();
-  for(const f of fl){
-    try{
-      let t=await f.text();const i=t.indexOf('{');if(i>0)t=t.slice(i);
-      const d=JSON.parse(t);if(!d||!Array.isArray(d.questions))throw 0;
-      const r=gAdd(d);n+=r.n;bad+=r.bad;r.lessons.forEach(l=>ls.add(l));files++;
-    }catch(e){gmsg=`Không đọc được file ${f.name}. Hãy chọn đúng file bài tập ngữ pháp (.json).`;return render()}
-  }
-  ls.forEach(l=>gcfg.ls.add(l));gSaveX();if(ls.size)gcfg.cur=Math.min(...ls);
-  gmsg=n?`Đã thêm ${n} câu${ls.size?` (Bài ${[...ls].sort((a,b)=>a-b).join(', ')})`:''}${bad?`. Bỏ qua ${bad} câu lỗi`:''}.`:`Không có câu mới${bad?` (${bad} câu lỗi)`:' (các câu này đã có sẵn)'}.`;
-  render();
-}
-function gClearX(){if(!GX.questions.length||!confirm('Xóa các bài tập đã nhập thêm từ file? Bộ bài tập có sẵn trong app vẫn được giữ.'))return;
-  const ks=new Set(GX.questions.map(gKeyOf));for(let i=GD.length-1;i>=0;i--)if(ks.has(gKeyOf(GD[i])))GD.splice(i,1);
-  GX={patterns:{},questions:[]};try{localStorage.removeItem(GK)}catch(e){}
-  gcfg.ls=new Set([...gcfg.ls].filter(l=>GD.some(q=>q.l===l)));gcfg.pt.clear();gmsg='Đã xóa các bài tập nhập thêm.';render();
-}
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
 const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
 const setTab=t=>{tab=t;render()};
@@ -557,11 +327,7 @@ function ghome(){
 <div class="setgrid">${sets.map(card).join('')}</div>
 <div class="row" style="margin-top:14px"><button class="btn" onclick="gMix(${l})">Ôn tổng hợp 20 câu ngẫu nhiên</button>${nd?`<button class="ghost" onclick="gResetP(${l})">Đặt lại tiến độ Bài ${l}</button>`:''}</div></div>
 </div>
-<div class="aside"><div class="panel"><h2>Thêm bài tập từ file</h2>
-${gmsg?`<div class="msg">${esc(gmsg)}</div>`:''}
-<label class="drop" ondragover="event.preventDefault()" ondrop="event.preventDefault();gFile(event.dataTransfer.files)"><input type="file" accept=".json,.txt,application/json" multiple onchange="gFile(this.files)"><b>Chọn file bài tập (.json)</b> hoặc kéo thả vào đây</label>
-<p class="hint">Có thể chọn nhiều file cùng lúc. Câu trùng sẽ không bị thêm lại. Bài tập nhập thêm được lưu trong trình duyệt này.</p>
-${GX.questions.length?`<button class="btn" style="margin-top:8px" onclick="gClearX()">Xóa ${GX.questions.length} câu đã nhập thêm</button>`:''}</div></div></div>`;
+</div>`;
 }
 function gStart(list,key,title){
   const L=(list||shuf(GD)).map(q=>({...q}));
@@ -574,7 +340,7 @@ const EXTK=[["学生","がくせい"],["研究者","けんきゅうしゃ"],["�
 function kbuild(){
   KM={};const cl=x=>String(x).replace(/[「（(][^」）)]*[」）)]/g,'').replace(/[～〜]/g,'').trim();
   const kj=/[一-鿿]/,add=(a,b)=>{if(a&&b&&kj.test(a)&&a!==b)KM[a]=b};
-  EXTK.map(x=>({k:x[0],h:x[1]})).concat(words).forEach(w=>{
+  EXTK.map(x=>({k:x[0],h:x[1]})).concat(VDEF).forEach(w=>{
     if(!w||!w.k||!w.h)return;
     const ks=cl(w.k).split(/[\/／]/).map(x=>x.trim()),hs=cl(w.h).split(/[\/／]/).map(x=>x.trim().split(/[、,]/)[0]);
     if(ks.length!==hs.length)return;
@@ -917,23 +683,9 @@ function auOut(){
 const auLT=k=>{try{return+localStorage.getItem(k+'-t')||0}catch(e){return 0}};
 const auSetT=(k,t)=>{try{localStorage.setItem(k+'-t',String(t))}catch(e){}};
 const auBusyUI=()=>!!Q||(typeof G!=='undefined'&&G&&G.list&&!G.fin);
-const auIsDef=()=>{try{return JSON.stringify(words)===JSON.stringify(VDEF.map(w=>({...w})))}catch(e){return true}};
 async function auData(){
   const get=p=>syFetch(p,{method:'GET'}),put=(p,o)=>syFetch(p,{method:'PUT',headers:{'Content-Type':'text/plain'},body:JSON.stringify(o)});
   const first=AU.mg!==AU.uid;let ch=false;
-  /* từ vựng: bản nào sửa sau thì thắng */
-  const cv=await get('/vocab');let lv=auLT(KEY);
-  if(first&&lv===0&&!auIsDef()){lv=Date.now();auSetT(KEY,lv)}
-  if(cv&&cv.j&&cv.t>lv){
-    if(!auBusyUI()){try{
-      const d=JSON.parse(cv.j);
-      if(Array.isArray(d.words)&&d.words.length){
-        if(!auIsDef()){try{localStorage.setItem(KEY+'-truoc',JSON.stringify({words,sel:[...sel]}))}catch(e){}}
-        words=d.words;sel=new Set(d.sel||[]);
-        localStorage.setItem(KEY,JSON.stringify({words,sel:[...sel]}));auSetT(KEY,cv.t);ch=true;
-      }
-    }catch(e){}}
-  }else if(lv>0&&(!cv||!cv.t||lv>cv.t))await put('/vocab',{t:lv,j:JSON.stringify({words,sel:[...sel]})});
   /* tiến độ ngữ pháp: lần đầu thì gộp (lấy điểm cao hơn), sau đó bản mới hơn thắng */
   const cg=await get('/gprog');let rg=null;
   if(cg&&cg.j){try{rg=JSON.parse(cg.j)}catch(e){}}
@@ -1039,8 +791,8 @@ async function dPaint(){
     const e=v.ext;
     if(e==='pdf')await dPdf(v,b);
     else if(e==='docx'){await dLoadJS('lib/mammoth.browser.min.js');const r=await mammoth.convertToHtml({arrayBuffer:await dBuf(v)});if(D.view!==v)return;b.innerHTML=`<div class="ddoc">${r.value||'<p class="hint">Tài liệu trống.</p>'}</div>`}
-    else if(e==='xlsx'||e==='xls'||e==='ods'){const wb=XLSX.read(await dBuf(v),{type:'array'});if(D.view===v)dSheets(wb,b)}
-    else if(e==='csv'){const wb=XLSX.read(new TextDecoder().decode(await dBuf(v)),{type:'string'});if(D.view===v)dSheets(wb,b)}
+    else if(e==='xlsx'||e==='xls'||e==='ods'){await dLoadJS('lib/xlsx.min.js');const wb=XLSX.read(await dBuf(v),{type:'array'});if(D.view===v)dSheets(wb,b)}
+    else if(e==='csv'){await dLoadJS('lib/xlsx.min.js');const wb=XLSX.read(new TextDecoder().decode(await dBuf(v)),{type:'string'});if(D.view===v)dSheets(wb,b)}
     else if(e==='txt'||e==='md'||e==='json'){const t=new TextDecoder().decode(await dBuf(v));if(D.view===v)b.innerHTML=`<pre class="dtxt">${esc(t)}</pre>`}
     else{
       const src=v.blob?URL.createObjectURL(v.blob):v.url;
@@ -1096,7 +848,7 @@ function dDownload(){
 async function dPrefetch(){
   const st=document.getElementById('d-st'),L=D.list||[];let n=0,bad=0;
   if(!L.length){if(st)st.textContent='Chưa có tài liệu nào để tải.';return}
-  for(const u of['lib/pdf.min.js','lib/pdf.worker.min.js','lib/mammoth.browser.min.js'])try{await fetch(u)}catch(e){}
+  for(const u of['lib/pdf.min.js','lib/pdf.worker.min.js','lib/mammoth.browser.min.js','lib/xlsx.min.js'])try{await fetch(u)}catch(e){}
   for(const x of L){try{const r=await fetch(dUrl(x.f));if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}n++;if(st)st.textContent=`Đã tải ${n}/${L.length}…`}
   if(st)st.textContent=bad?`Xong, ${bad} file chưa tải được.`:'Xong. Đã lưu để đọc khi không có mạng.';
 }
