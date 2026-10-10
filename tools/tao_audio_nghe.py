@@ -31,9 +31,8 @@ def build_ssml(turns):
     parts = ['<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ja-JP">']
     for i, t in enumerate(turns):
         text = sax.escape(t["text"])
-        parts.append(f'<voice name="{t["voice"]}"><prosody rate="{RATE}">{text}</prosody></voice>')
-        if i < len(turns) - 1:
-            parts.append('<break time="600ms"/>')
+        # thêm dấu chấm để tạo ngắt nghỉ tự nhiên
+        parts.append(f'<voice name="{t["voice"]}"><prosody rate="{RATE}">{text}。</prosody></voice>')
     parts.append('</speak>')
     return ''.join(parts)
 
@@ -47,7 +46,7 @@ async def gen_one(item, repo_root):
     try:
         if item["kind"] == "dialogue":
             ssml = build_ssml(item["turns"])
-            tts = edge_tts.Communicate(ssml, "ja-JP-NanamiNeural")
+            tts = edge_tts.Communicate(ssml)
         else:
             tts = edge_tts.Communicate(item["text"], item["voice"], rate=RATE)
         await tts.save(out)
