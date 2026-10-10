@@ -195,3 +195,5 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 /* nút trong thẻ đã làm: viền xanh lá nhạt */
 .setc.done .sb{border-color:color-mix(in srgb,var(--ok) 45%,var(--line));color:var(--ok)}
 .setc.done .sb:hover{border-color:var(--ok);color:var(--ok);box-shadow:0 4px 12px rgba(30,158,106,.18)}
+/* nút trong thẻ bài tập luôn dính đáy để các thẻ thẳng hàng */
+.setc .sb{margin-top:auto}
