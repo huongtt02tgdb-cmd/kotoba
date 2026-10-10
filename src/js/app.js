@@ -278,6 +278,7 @@ ${Q.wrong.length&&Q.mode!=='test'?`<div class="panel"><h2>Từ cần ôn thêm</
 /* ---------- NGỮ PHÁP ---------- */
 const GD=/*GD*/__GD_JSON__/*GD*/;
 const RD=/*RD*/__RD_JSON__/*RD*/;
+const LS=/*LS*/__LD_JSON__/*LS*/;
 const SK={nghe:'Nghe',doc:'Đọc',viet:'Viết',hieu:'Hiểu'};
 const GPT={1:{1:"N1 は N2 です",2:"N1 は N2 じゃありません",3:"N1 は ～ですか (だれ・なんさい)",4:"N も ～です",5:"N1 の N2"},2:{1:"これ・それ・あれ",2:"A ですか、B ですか",3:"N1 の N2 です (だれの)",4:"この・その・あの + N",5:"N1 の N2 (なんの)"},3:{1:"ここ・そこ・あそこ",2:"N1 は N2 (vị trí)",3:"N1 は どこ/どちらですか",4:"この・その・あの + N",5:"～いくらですか"},4:{1:"～時・～分です",2:"N(thời gian) は ～曜日です",3:"V ます・V ません・V ました",4:"N(thời gian) に V",5:"N1 から N2 まで"},5:{1:"N(địa điểm) へ 行きます・来ます・帰ります",2:"N(phương tiện) で 行きます・来ます・帰ります",3:"N(người) と V",4:"いつ / N(thời gian) に V",5:"N1 から N2 まで (ngày tháng)"},6:{1:"N を V",2:"N(địa điểm) で N を V",3:"V ませんか (rủ rê)",4:"V ましょう"},7:{1:"N で V (dụng cụ/cách thức)",2:"「～」は ～語で 何ですか",3:"N(người) に あげます・かします・おしえます",4:"N(người) に/から もらいます・かります・ならいます",5:"もう V ましたか"},8:{1:"N は Aいです・Aなです",2:"Aい/Aな + N",3:"あまり + phủ định",4:"～。そして、～ / ～が、～"},9:{1:"S は N が すき/きらい/じょうず/へた です",2:"S は N が あります/分かります",3:"どうして～か、～から"},10:{1:"N に N が あります／います",2:"N は N に あります／います（どこ）",3:"N の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく／あいだ に",4:"N や N［など］／なにが ありますか"},11:{1:"N を [số lượng] V ます (ひとつ・まい・だい)",2:"Đếm người: ひとり・ふたり・～にん／なんにん",3:"Khoảng thời gian: ～じかん／にち／しゅうかん／かげつ／ねん・かかります・やすみます・どのぐらい",4:"～に ～かい／N だけ／ぜんぶで"},12:{1:"Quá khứ của danh từ / tính từ な (でした・では ありませんでした)",2:"Quá khứ của tính từ い (かったです・くなかったです)",3:"So sánh hơn: より・ほう・どちら・どちらも",4:"So sánh nhất: いちばん"},13:{1:"N が ほしいです／ほしくないです",2:"V-たいです／V-たくないです",3:"N へ V-stem に いきます (mục đích)",4:"Hội thoại và đọc hiểu (ほしい・たい・に いきます)",5:"Ôn trộn Bài 10–13"},14:{1:"Động từ thể て (nhóm 1/2/3)",2:"V ています (đang diễn ra)",3:"V ています (thói quen / trạng thái)"},15:{1:"V てもいいですか (xin phép)",2:"V てはいけません (cấm)",3:"V ないでください (đừng làm)"},16:{1:"V1 てから、V2 (sau khi)",2:"Aい→Aくて / Aな→Aで / N+で (nối câu)"},17:{1:"V なくてもいいです (không cần)",2:"V なければなりません (phải làm)"},18:{1:"Động từ thể từ điển (辞書形)",2:"V ること ができます (có thể)"},19:{1:"V たことがあります (đã từng)",2:"V1 たり、V2 たりします (liệt kê)",3:"A くなります / に なります (trở nên)"},20:{1:"Thể thường của động từ",2:"Thể thường của tính từ・danh từ"},21:{1:"「Câu」+ と言います (tường thuật)",2:"Thể thường + でしょう? (xác nhận)"},22:{1:"Mệnh đề bổ nghĩa + N (định ngữ)"},23:{1:"Aい/Aな/N + とき (khi)",2:"V ると、〜 (cứ...thì)"},24:{1:"V てくれます (làm cho tôi)",2:"V てあげます (làm cho người khác)",3:"V てもらいます (được làm cho)"},25:{1:"V1 たら、V2 (nếu / sau khi)",2:"V ても (dù...cũng)"}};
 Object.assign(GPT,{"3": {"1": "ここ・そこ・あそこ", "2": "N1 は N2 (vị trí) です", "3": "N1 は どこ/どちら ですか", "4": "N1 の N2 (どこの)", "5": "～いくらですか"}, "4": {"1": "～じ ～ふん です", "2": "N は ～ようび です", "3": "時間 は V (ます・ません・ました・ませんでした)", "4": "N (thời gian) に V", "5": "N1 から N2 まで"}, "5": {"1": "N (địa điểm) へ いきます・きます・かえります", "2": "N (phương tiện) で", "3": "N (người) と", "4": "N (thời gian) に", "5": "～月～日 (たんじょうびは いつですか)"}, "6": {"1": "(S は) N を V (なにを・なにも)", "2": "～は 地点 で N を V", "3": "(いっしょに) V ませんか", "4": "V ましょう"}, "7": {"1": "N で V (phương tiện)", "2": "「từ/câu」は ～ごで なんですか", "3": "N (người nhận) に ～ V (あげます)", "4": "N (người cho) に/から ～ V (もらいます)", "5": "もう V ましたか"}, "8": {"1": "N は A い/A な です (khẳng định, phủ định, どうですか)", "2": "N1 は A い/A な N2 です (どんな N2)", "3": "あまり ～ない", "4": "～。そして、～ / ～が、～"}, "9": {"1": "S は N が すき/きらい/じょうず/へた", "2": "S は N が あります/わかります (+ よく・だいたい・すこし・あまり・ぜんぜん)", "3": "どうして ～か。 ～から。"}});
@@ -285,8 +286,8 @@ Object.assign(GPT,{"10": {"1": "N に N が あります／います", "2": "N �
 
 /* ---------- nhập thêm bài tập ngữ pháp từ file ---------- */
 let tab='vocab',G=null,gcfg={ls:new Set([1]),pt:new Set(),sk:new Set(['nghe','doc','viet','hieu']),n:'20'};
-const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='read'?'on':''}" onclick="setTab('read')">Đọc hiểu</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
-const setTab=t=>{tab=t;RP=null;render()};
+const tabs=t=>`<div class="top"><h1>Kotoba<small>Ôn tiếng Nhật</small></h1><div class="tabs">${stChip()}<button class="tab ${t==='vocab'?'on':''}" onclick="setTab('vocab')">Từ vựng</button><button class="tab ${t==='gram'?'on':''}" onclick="setTab('gram')">Ngữ pháp</button><button class="tab ${t==='read'?'on':''}" onclick="setTab('read')">Đọc hiểu</button><button class="tab ${t==='listen'?'on':''}" onclick="setTab('listen')">Nghe hiểu</button><button class="tab ${t==='stat'?'on':''}" onclick="setTab('stat')">Chuỗi học</button><button class="tab ${t==='docs'?'on':''}" onclick="setTab('docs')">Tài liệu</button><button class="tab" onclick="auOut()" title="${esc(AU.email)}">Đăng xuất</button></div></div>`;
+const setTab=t=>{tab=t;RP=null;LP=null;render()};
 const gLessons=()=>[...new Set(GD.map(q=>q.l))].sort((a,b)=>a-b);
 const gPool=()=>GD.filter(q=>gcfg.ls.has(q.l)&&(!gcfg.pt.size||gcfg.pt.has(q.l+'.'+q.g))&&gcfg.sk.has(q.s));
 function gTog(kind,v){
@@ -367,6 +368,69 @@ function rOK(q,a){
 }
 function rSubmit(){RP.fin=true;render();setTimeout(()=>{const e=document.getElementById('rdr');if(e)e.scrollIntoView({behavior:'smooth'})},50)}
 function rQuit(){RP=null;render()}
+
+/* ---------- NGHE HIỂU ---------- */
+let lLesson=1,LP=null;
+function lLessons(){return[...new Set(LS.map(r=>r.l))].sort((a,b)=>a-b)}
+function lAudio(p){return`audio/listen/b${String(p.l).padStart(2,'0')}_${String(LS.filter(x=>x.l===p.l).indexOf(p)+1).padStart(2,'0')}.mp3`}
+function lhome(){
+  const L=lLessons();if(!L.length)return`${tabs('listen')}<div class="panel"><h2>Nghe hiểu</h2><p class="hint">Chưa có bài nghe nào.</p></div>`;
+  const card=l=>{
+    const ps=LS.filter(r=>r.l===l),nq=ps.reduce((t,r)=>t+r.questions.length,0);
+    const titles=ps.map(p=>`<span class="sk">${esc(p.title)}</span>`).join('');
+    return`<div class="setc"><div class="sh"><span class="sno">🎧</span><div><b>Bài ${l}</b><div class="hint" style="margin:0">${ps.length} bài nghe · ${nq} câu hỏi</div></div></div><div class="sks">${titles}</div><button class="pri sb" onclick="lPlay(${l})">Nghe</button></div>`;
+  };
+  return`${tabs('listen')}
+<div class="grid"><div>
+<div class="panel"><h2>Nghe hiểu</h2>
+<p class="hint" style="margin:-4px 0 12px">Mỗi bài có 5 bài nghe (hội thoại + độc thoại), mỗi bài nghe 10 câu hỏi. Giọng nam/nữ xen kẽ. Nghe xong mới hiện script để đối chiếu.</p>
+<div class="setgrid">${L.map(card).join('')}</div></div>
+</div>
+</div>`;
+}
+function lPlay(l){
+  const ps=LS.filter(r=>r.l===l);if(!ps.length)return;
+  LP={l:l,pi:0,ans:{},fin:false};scrollTo(0,0);render();
+}
+function lSetPi(i){LP.pi=i;LP.ans={};LP.fin=false;render()}
+function lMc(qi,j){if(LP.fin)return;LP.ans[qi]=j;render()}
+function lFill(qi,v){LP.ans[qi]=v}
+function lOK(q,a){
+  if(q.t==='mc')return a===q.a;
+  if(q.t==='fill')return q.a.some(x=>gn(x)===gn(a||''));
+  return false;
+}
+function lSubmit(){LP.fin=true;render();setTimeout(()=>{const e=document.getElementById('ldr');if(e)e.scrollIntoView({behavior:'smooth'})},50)}
+function lQuit(){LP=null;render()}
+function lPlayUI(){
+  const ps=LS.filter(r=>r.l===LP.l),p=ps[LP.pi],qs=p.questions,n=qs.length;
+  const done=Object.keys(LP.ans).length;
+  const score=LP.fin?qs.filter((q,i)=>lOK(q,LP.ans[i])).length:0;
+  const qcard=(q,i)=>{
+    const a=LP.ans[i],ok=LP.fin?lOK(q,a):null;
+    let body='';
+    if(q.t==='mc')body=`<div class="opts">${q.o.map((o,j)=>`<button class="opt jp ${a===j?'sel':''} ${LP.fin?(j===q.a?'ok':(a===j?'no':'')):''}" ${LP.fin?'disabled':''} onclick="lMc(${i},${j})"><b class="lt">${'ABCD'[j]||j+1}</b><span>${esc(o)}</span></button>`).join('')}</div>`;
+    else body=`<div class="fillrow jp"><span>${esc(q.q.split('___')[0]||'')}</span><input class="gin jp" autocomplete="off" ${LP.fin?'disabled':''} style="width:${Math.max(6,(q.a[0]||'').length*1.6+2)}ch" value="${esc(a||'')}" oninput="lFill(${i},this.value)"><span>${esc(q.q.split('___')[1]||'')}</span></div>`;
+    return`<section class="q pq ${ok===true?'ok':ok===false?'no':''}"><div class="qh"><span class="qn">${i+1}</span><span class="sk sk-${q.t}">${q.t==='mc'?'Trắc nghiệm':'Điền từ'}</span></div><div class="pbody">${body}</div>${LP.fin?`<div class="hint" style="margin-top:6px">${ok?'✓ Đúng':'✗ Sai — Đáp án: <b class="jp">'+esc(q.t==='mc'?q.o[q.a]:q.a[0])+'</b>'}<br>${esc(q.x||'')}</div>`:''}</section>`;
+  };
+  const voiceIcon=p.voice==='male'?'👨':'👩';
+  const voiceName=p.voice==='male'?'Giọng nam (Keita)':'Giọng nữ (Nanami)';
+  return`${tabs('listen')}
+<div class="panel" id="ldr"><div class="ph"><h2>🎧 Bài ${LP.l} · ${esc(p.title)}</h2><button class="ghost" onclick="lQuit()">✕ Thoát</button></div>
+<div class="chips" style="margin-bottom:12px">${ps.map((x,i)=>`<button class="chip ${i===LP.pi?'on':''}" onclick="lSetPi(${i})">Bài nghe ${i+1}<i>${x.questions.length} câu</i></button>`).join('')}</div>
+${LP.fin?`<div class="panel stcard" style="margin:0 0 12px"><h2>Kết quả: ${score}/${n}</h2><div class="prog"><i style="width:${n?score/n*100:0}%"></i></div></div>`:''}
+<div class="rd-wrap">
+<div class="rd-left"><div class="rd-pass">
+<h3>🎧 ${esc(p.title)}</h3>
+<p class="hint" style="margin:0 0 12px">${voiceIcon} ${voiceName} · ${p.kind==='dialogue'?'Hội thoại':'Độc thoại'}</p>
+<audio controls preload="auto" style="width:100%" src="${lAudio(p)}"></audio>
+<p class="hint" style="margin:10px 0 0">Nghe kỹ rồi trả lời câu hỏi. ${LP.fin?'':'Script sẽ hiện sau khi nộp bài.'}</p>
+${LP.fin?`<div class="jp" style="white-space:pre-line;line-height:2;margin-top:12px;border-top:1px solid var(--line);padding-top:12px"><b>Script:</b><br>${esc(p.script)}</div>`:''}
+</div></div>
+<div class="rd-right" id="ldq">${qs.map(qcard).join('')}
+<div class="row" style="margin-top:12px">${LP.fin?`<button class="btn" onclick="lSetPi(${LP.pi})">Làm lại</button>`:`<button class="pri" onclick="lSubmit()">Nộp bài (${done}/${n})</button>`}</div></div>
+</div></div>`;
+}
 function rPlayUI(){
   const ps=RD.filter(r=>r.l===RP.l),p=ps[RP.pi],qs=p.questions,n=qs.length;
   const done=Object.keys(RP.ans).length;
@@ -489,7 +553,7 @@ const gui=()=>G.fin?gresult():gpaper();
 function render(){
   if(!auOn()){$('#app').innerHTML=auGate();return}
   const tw=$('.tw'),st=tw?tw.scrollTop:0;
-  $('#app').innerHTML=G?gui():Q?quiz():RP?rPlayUI():tab==='gram'?ghome():tab==='read'?rhome():tab==='stat'?shome():tab==='docs'?dhome():home();
+  $('#app').innerHTML=G?gui():Q?quiz():RP?rPlayUI():LP?lPlayUI():tab==='gram'?ghome():tab==='read'?rhome():tab==='listen'?lhome():tab==='stat'?shome():tab==='docs'?dhome():home();
   if(!Q){const t2=$('.tw');if(t2)t2.scrollTop=st}
   if(Q&&Q.mode!=='test'&&(cm()==='ty'||cm()==='ls')&&!Q.state&&Q.i<Q.list.length){
     setTimeout(()=>$('#ans')?.focus());
