@@ -992,6 +992,13 @@ async function dPrefetch(){
 }
 
 
+
+// nút Hỏi AI trong phần chấm bài
+function askAI(q){
+  const safe=String(q||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');
+  return `<button class="btn askai" onclick="cbOpenWithCtx('${safe}')">\u{1F916} Hỏi AI</button>`;
+}
+
 /* ---------- CHATBOT AI ---------- */
 let CB={open:false,msgs:[],ctx:null,busy:false};
 function cbRender(){
