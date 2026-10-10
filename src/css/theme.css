@@ -132,7 +132,9 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .gin{background:color-mix(in srgb,var(--pri) 6%,var(--card));border-radius:10px}
 .pq .ty{border-radius:12px;font-size:22px}
 .gtitle{margin:0 0 10px}.gtitle small{color:var(--mute)}.gtitle h2{font-size:21px;margin:2px 0 0}
-.setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.setgrid{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.setgrid .setc{flex:0 0 290px;scroll-snap-align:start}
+@media(max-width:600px){.setgrid .setc{flex-basis:260px}}
 .setc{border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:0 3px 12px rgba(27,33,64,.08);transition:all .2s ease}
 .setc:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(27,33,64,.13);border-color:color-mix(in srgb,var(--pri) 40%,var(--line))}
 .setc.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--card))}
