@@ -728,7 +728,8 @@ function syStatus(){
 function syPaint(){const e=document.getElementById('sy-st');if(e)e.innerHTML=syStatus()}
 function syPanelOld(){
   if(SY.on)return`<div class="panel stcard stwide"><h2>Đồng bộ giữa các thiết bị</h2><p class="hint" id="sy-st" style="margin:0 0 8px">${syStatus()}</p><div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn" onclick="syNow(true)">⟳ Đồng bộ ngay</button><button class="btn" onclick="syCopyLink()">🔗 Sao chép liên kết kết nối</button><button class="btn" onclick="syOff()">Tắt đồng bộ</button></div><p class="hint" style="margin:8px 0 0">Mã đồng bộ: <b>${esc(SY.code)}</b>. Giữ bí mật: ai có mã đều đọc và ghi được số liệu học. Mở liên kết kết nối trên thiết bị khác để dùng chung chuỗi.</p></div>`;
-  return`<div class="panel stcard stwide"><h2>Đồng bộ giữa các thiết bị</h2><p class="hint" style="margin:0 0 8px">Cộng dồn thời gian học và chuỗi từ nhiều thiết bị. Cần một cơ sở dữ liệu Firebase miễn phí (xem file HUONG_DAN_DONG_BO.md).</p><input id="sy-url" placeholder="Địa chỉ Firebase, vd: https://ten-du-an-default-rtdb.firebaseio.com" value="${esc(SY.url)}" style="margin:0 0 8px"><div class="row" style="gap:8px;align-items:center"><input id="sy-code" placeholder="Mã đồng bộ (từ 8 ký tự)" style="margin:0"><button class="btn" onclick="syGen()">Tạo mã</button></div><div class="row" style="margin-top:8px"><button class="btn sel" onclick="syConnect()">Bật đồng bộ</button></div><p class="hint" id="sy-msg" style="margin:8px 0 0">Thiết bị thứ hai: dùng cùng địa chỉ và cùng mã, hoặc mở liên kết kết nối.</p></div>`;
+  return`<div class="panel stcard stwide"><h2>Đồng bộ giữa các thiết bị</h2><p class="hint" style="margin:0 0 8px">Cộng dồn thời gian học và chuỗi từ nhiều thiết bị. Cần một cơ sở dữ liệu Firebase miễn phí (xem file HUONG_DAN_DONG_BO.md).</p><input id="sy-url" placeholder="Địa chỉ Firebase, vd: https://ten-du-an-default-rtdb.firebaseio.com" value="${esc(SY.url)}" style="margin:0 0 8px">
+<input placeholder="URL chatbot AI (vd: https://xxx.workers.dev)" id="cb-url" style="margin:8px 0;width:100%" value="'+esc(localStorage.getItem('kotoba-cb-url')||'')+'" onchange="localStorage.setItem('kotoba-cb-url',this.value)"><div class="row" style="gap:8px;align-items:center"><input id="sy-code" placeholder="Mã đồng bộ (từ 8 ký tự)" style="margin:0"><button class="btn" onclick="syGen()">Tạo mã</button></div><div class="row" style="margin-top:8px"><button class="btn sel" onclick="syConnect()">Bật đồng bộ</button></div><p class="hint" id="sy-msg" style="margin:8px 0 0">Thiết bị thứ hai: dùng cùng địa chỉ và cùng mã, hoặc mở liên kết kết nối.</p></div>`;
 }
 /* ---------- tài khoản (Firebase Authentication email + mật khẩu, REST) ---------- */
 const AUKEY=(window.FBCFG&&FBCFG.key)||'',AUDB=(window.FBCFG&&FBCFG.db)||'',AUPF=STK.split('-')[0],AUK=STK.replace('study','auth');
@@ -1034,11 +1035,28 @@ function cbSend(){
   CB.msgs.push({r:'u',t});
   i.value='';
   CB.busy=true;cbRender();
-  setTimeout(()=>{
+  const url=(window.CB_API||localStorage.getItem('kotoba-cb-url')||'').trim();
+  if(!url){
+    setTimeout(()=>{
+      CB.busy=false;
+      CB.msgs.push({r:'ai',t:'AI chưa được kết nối. Vào Cài đặt → nhập URL chatbot AI là xong!'});
+      cbRender();
+    },600);
+    return;
+  }
+  fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:t,history:CB.msgs.slice(-8),questionCtx:CB.ctx?CB.ctx.q:''})})
+  .then(r=>r.json())
+  .then(j=>{
     CB.busy=false;
-    CB.msgs.push({r:'ai',t:'AI chưa được kết nối. Bạn cần:\n1. Tạo API key tại Google AI Studio (miễn phí)\n2. Deploy Cloud Function\n\nXong là mình trả lời được ngay!'});
+    CB.msgs.push({r:'ai',t:j.reply||j.error||'Lỗi không xác định'});
     cbRender();
-  },800);
+  })
+  .catch(()=>{
+    CB.busy=false;
+    CB.msgs.push({r:'ai',t:'Không kết nối được AI. Kiểm tra lại URL trong Cài đặt nhé.'});
+    cbRender();
+  });
 }
 function cbKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();cbSend()}}
 // khởi tạo nút chat khi tải trang
