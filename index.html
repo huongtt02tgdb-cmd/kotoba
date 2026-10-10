@@ -1073,7 +1073,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101227';
+const APP_BUILD='202610101239';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
