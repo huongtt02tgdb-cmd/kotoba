@@ -208,10 +208,6 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .dtbl{border-collapse:collapse;font-size:14px}.dtbl td{border:1px solid var(--line);padding:3px 8px;white-space:pre-wrap;vertical-align:top}.dtbl tr:first-child td{font-weight:700;background:color-mix(in srgb,var(--pri) 10%,transparent)}
 .dtxt{white-space:pre-wrap;word-break:break-word;font:inherit;line-height:1.6;margin:0}
 @media(max-width:560px){.tabs .tab{padding-left:10px;padding-right:10px;font-size:.92rem}}
-/* banner cập nhật bản mới */
-#updb{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:9999;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 12px 10px 20px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.3);animation:updin .3s ease}
-@keyframes updin{from{transform:translate(-50%,20px);opacity:0}}
-@media(prefers-reduced-motion:reduce){#updb{animation:none}}
 </style>
 </head>
 <body>
@@ -980,26 +976,26 @@ addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')
 addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-/* ---------- tự động phát hiện bản mới ---------- */
-const APP_BUILD='202610101111';
-let _updShown=false,_reloading=false;
+/* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
+const APP_BUILD='202610101114';
+let _updDone=false,_reloading=false;
 function updCheck(){
-  if(_updShown||!navigator.onLine)return;
+  if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
   fetch('sw.js',{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
     const m=/BUILD='(\d+)'/.exec(t);
-    if(m&&m[1]!==APP_BUILD)updShow();
+    if(m&&m[1]!==APP_BUILD)updAuto();
   }).catch(()=>{});
 }
-function updShow(){
-  if(_updShown)return;_updShown=true;
-  const d=document.createElement('div');d.id='updb';
-  d.innerHTML='<span>Có bản cập nhật mới</span><button class="btn pri" style="width:auto;padding:8px 18px" onclick="updGo()">Cập nhật ngay</button>';
-  document.body.appendChild(d);
+function updAuto(){
+  _updDone=true;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!_reloading){_reloading=true;updSafeReload()}});
+  navigator.serviceWorker.getRegistration().then(r=>{if(r)r.update()});
+  setTimeout(()=>{if(!_reloading){_reloading=true;updSafeReload()}},30000);
 }
-function updGo(){
-  if(!('serviceWorker' in navigator)){location.reload();return}
-  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!_reloading){_reloading=true;location.reload()}});
-  navigator.serviceWorker.getRegistration().then(r=>{if(r)r.update();setTimeout(()=>{if(!_reloading){_reloading=true;location.reload()}},8000)});
+function updSafeReload(){
+  // đang làm bài dở thì đợi, tránh mất tiến trình
+  try{if(typeof G!=='undefined'&&(G||Q||RP)){setTimeout(updSafeReload,60000);return}}catch(e){}
+  location.reload();
 }
 setTimeout(updCheck,8000);setInterval(updCheck,20*60*1000);
 /* ---------- tài liệu: xem PDF, Word, Excel... ngay trên trang ---------- */
