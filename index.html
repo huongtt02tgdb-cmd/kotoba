@@ -20,6 +20,7 @@
 :root[data-theme="dark"]{--bg:#12162B;--card:#1C2140;--ink:#ECEFFA;--mute:#9AA3C7;--pri:#7C8CFF;--pri-ink:#10142B;--line:#2C3360;--ok:#3CC98F;--bad:#FF6B84;--o1:#7C8CFF;--o2:#3CC98F;--o3:#FFC93C;--o4:#FF7FB6}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
+html,body{overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 'Be Vietnam Pro','Segoe UI',system-ui,'Hiragino Sans','Yu Gothic','Meiryo','Noto Sans JP',sans-serif}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -982,7 +983,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101124';
+const APP_BUILD='202610101126';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
