@@ -24,11 +24,12 @@ def main() -> None:
 
     # app.js carries placeholders for the raw JSON payloads
     app_js = read('js/app.js')
-    if '__VDEF_JSON__' not in app_js or '__GD_JSON__' not in app_js or '__RD_JSON__' not in app_js:
-        sys.exit('error: src/js/app.js is missing __VDEF_JSON__ / __GD_JSON__ / __RD_JSON__ placeholders')
+    if '__VDEF_JSON__' not in app_js or '__GD_JSON__' not in app_js or '__RD_JSON__' not in app_js or '__LD_JSON__' not in app_js:
+        sys.exit('error: src/js/app.js is missing __VDEF_JSON__ / __GD_JSON__ / __RD_JSON__ / __LD_JSON__ placeholders')
     app_js = app_js.replace('__VDEF_JSON__', read('data/vocab.json'))
     app_js = app_js.replace('__GD_JSON__', read('data/grammar.json'))
     app_js = app_js.replace('__RD_JSON__', read('data/reading.json'))
+    app_js = app_js.replace('__LD_JSON__', read('data/listening.json'))
     app_build = datetime.datetime.now().strftime('%Y%m%d%H%M')
     app_js = app_js.replace('__APP_BUILD__', app_build)
 
