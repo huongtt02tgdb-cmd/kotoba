@@ -28,8 +28,8 @@ h2{font-size:17px;margin:0 0 10px;font-weight:700}
 .chip:hover{border-color:var(--pri);transform:translateY(-1px);box-shadow:0 3px 8px rgba(46,63,163,.12)}
 .chip.on{background:var(--pri);border-color:var(--pri);color:var(--pri-ink);box-shadow:0 3px 10px rgba(46,63,163,.25)}
 .chip i{font-style:normal;opacity:.7;margin-left:5px;font-size:12px}
-.btn{border:2px solid var(--line);background:transparent;border-radius:10px;padding:7px 14px}
-.btn:hover{border-color:var(--pri)}
+.btn{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:9px 16px;font-weight:600;box-shadow:0 1px 3px rgba(27,33,64,.06);transition:all .18s ease}
+.btn:hover{border-color:var(--pri);color:var(--pri);transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,63,163,.14)}
 .pri{background:linear-gradient(135deg,var(--pri),color-mix(in srgb,var(--pri) 82%,#000));color:var(--pri-ink);border:0;border-radius:14px;padding:13px 20px;font-weight:700;font-size:16px;width:100%;box-shadow:0 4px 14px rgba(46,63,163,.28);transition:all .18s ease}
 .pri:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,63,163,.35)}
 .pri:active:not(:disabled){transform:translateY(0)}
@@ -132,8 +132,8 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .pq .ty{border-radius:12px;font-size:22px}
 .gtitle{margin:0 0 10px}.gtitle small{color:var(--mute)}.gtitle h2{font-size:21px;margin:2px 0 0}
 .setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.setc{border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:0 2px 8px rgba(27,33,64,.06);transition:all .2s ease}
-.setc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(27,33,64,.1);border-color:color-mix(in srgb,var(--pri) 35%,var(--line))}
+.setc{border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:0 3px 12px rgba(27,33,64,.08);transition:all .2s ease}
+.setc:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(27,33,64,.13);border-color:color-mix(in srgb,var(--pri) 40%,var(--line))}
 .setc.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--card))}
 .sh{display:flex;gap:12px;align-items:center}
 .sno{width:38px;height:38px;border-radius:50%;background:var(--pri);color:var(--pri-ink);display:grid;place-items:center;font-weight:800;font-size:17px;flex:none}
@@ -192,3 +192,6 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .dtbl{border-collapse:collapse;font-size:14px}.dtbl td{border:1px solid var(--line);padding:3px 8px;white-space:pre-wrap;vertical-align:top}.dtbl tr:first-child td{font-weight:700;background:color-mix(in srgb,var(--pri) 10%,transparent)}
 .dtxt{white-space:pre-wrap;word-break:break-word;font:inherit;line-height:1.6;margin:0}
 @media(max-width:560px){.tabs .tab{padding-left:10px;padding-right:10px;font-size:.92rem}}
+/* nút trong thẻ đã làm: viền xanh lá nhạt */
+.setc.done .sb{border-color:color-mix(in srgb,var(--ok) 45%,var(--line));color:var(--ok)}
+.setc.done .sb:hover{border-color:var(--ok);color:var(--ok);box-shadow:0 4px 12px rgba(30,158,106,.18)}
