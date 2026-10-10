@@ -762,26 +762,26 @@ addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')
 addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-/* ---------- tự động phát hiện bản mới ---------- */
+/* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
 const APP_BUILD='__APP_BUILD__';
-let _updShown=false,_reloading=false;
+let _updDone=false,_reloading=false;
 function updCheck(){
-  if(_updShown||!navigator.onLine)return;
+  if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
   fetch('sw.js',{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
     const m=/BUILD='(\d+)'/.exec(t);
-    if(m&&m[1]!==APP_BUILD)updShow();
+    if(m&&m[1]!==APP_BUILD)updAuto();
   }).catch(()=>{});
 }
-function updShow(){
-  if(_updShown)return;_updShown=true;
-  const d=document.createElement('div');d.id='updb';
-  d.innerHTML='<span>Có bản cập nhật mới</span><button class="btn pri" style="width:auto;padding:8px 18px" onclick="updGo()">Cập nhật ngay</button>';
-  document.body.appendChild(d);
+function updAuto(){
+  _updDone=true;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!_reloading){_reloading=true;updSafeReload()}});
+  navigator.serviceWorker.getRegistration().then(r=>{if(r)r.update()});
+  setTimeout(()=>{if(!_reloading){_reloading=true;updSafeReload()}},30000);
 }
-function updGo(){
-  if(!('serviceWorker' in navigator)){location.reload();return}
-  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!_reloading){_reloading=true;location.reload()}});
-  navigator.serviceWorker.getRegistration().then(r=>{if(r)r.update();setTimeout(()=>{if(!_reloading){_reloading=true;location.reload()}},8000)});
+function updSafeReload(){
+  // đang làm bài dở thì đợi, tránh mất tiến trình
+  try{if(typeof G!=='undefined'&&(G||Q||RP)){setTimeout(updSafeReload,60000);return}}catch(e){}
+  location.reload();
 }
 setTimeout(updCheck,8000);setInterval(updCheck,20*60*1000);
 /* ---------- tài liệu: xem PDF, Word, Excel... ngay trên trang ---------- */
