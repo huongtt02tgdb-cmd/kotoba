@@ -1035,7 +1035,7 @@ function cbSend(){
   CB.msgs.push({r:'u',t});
   i.value='';
   CB.busy=true;cbRender();
-  const url=(window.CB_API||localStorage.getItem('kotoba-cb-url')||'').trim();
+  const url=(window.CB_API||localStorage.getItem('kotoba-cb-url')||'https://kotoba-chatbot.myan1-kotoba.workers.dev').trim();
   if(!url){
     setTimeout(()=>{
       CB.busy=false;
