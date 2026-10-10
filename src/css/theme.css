@@ -192,7 +192,3 @@ summary{cursor:pointer;margin-top:12px;font-weight:700}
 .dtbl{border-collapse:collapse;font-size:14px}.dtbl td{border:1px solid var(--line);padding:3px 8px;white-space:pre-wrap;vertical-align:top}.dtbl tr:first-child td{font-weight:700;background:color-mix(in srgb,var(--pri) 10%,transparent)}
 .dtxt{white-space:pre-wrap;word-break:break-word;font:inherit;line-height:1.6;margin:0}
 @media(max-width:560px){.tabs .tab{padding-left:10px;padding-right:10px;font-size:.92rem}}
-/* banner cập nhật bản mới */
-#updb{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:9999;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 12px 10px 20px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.3);animation:updin .3s ease}
-@keyframes updin{from{transform:translate(-50%,20px);opacity:0}}
-@media(prefers-reduced-motion:reduce){#updb{animation:none}}
