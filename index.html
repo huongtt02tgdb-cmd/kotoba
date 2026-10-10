@@ -977,7 +977,7 @@ addEventListener('pagehide',syPush);addEventListener('online',()=>syNow());
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 /* ---------- tự động cập nhật bản mới (không cần bấm) ---------- */
-const APP_BUILD='202610101114';
+const APP_BUILD='202610101115';
 let _updDone=false,_reloading=false;
 function updCheck(){
   if(_updDone||!navigator.onLine||!('serviceWorker' in navigator))return;
@@ -997,7 +997,7 @@ function updSafeReload(){
   try{if(typeof G!=='undefined'&&(G||Q||RP)){setTimeout(updSafeReload,60000);return}}catch(e){}
   location.reload();
 }
-setTimeout(updCheck,8000);setInterval(updCheck,20*60*1000);
+updCheck();setInterval(updCheck,20*60*1000);
 /* ---------- tài liệu: xem PDF, Word, Excel... ngay trên trang ---------- */
 const DLK=STK.replace('study','docs');
 let D={list:null,err:'',loading:false,q:'',view:null,zoom:1,pg:1,np:0,sheet:0,pdf:null,obs:null,tok:0};
